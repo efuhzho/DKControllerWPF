@@ -32,6 +32,11 @@ namespace DKControllerWPF
             cbxSerialPortsNames.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Handshake
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (!dandick.IsOpen())
@@ -56,12 +61,35 @@ namespace DKControllerWPF
             }           
         }
 
+        /// <summary>
+        /// ReadACSourceRanges
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_ReadACSourceRanges(object sender, RoutedEventArgs e)
         {
             if (!dandick.IsOpen())
             {
                 MessageBox.Show("串口都没打开，你读个毛啊！");
                 return;
+            }
+            var d = dandick.ReadACSourceRanges();
+            ReadACSourceRangesIsSuccess.Text=d.IsSuccess.ToString();
+            ReadACSourceRangesErrorCode.Text=d.ErrorCode.ToString();
+            ReadACSourceRangesMesseage.Text = d.Message;
+            if (d.IsSuccess)
+            {
+                ReadACSourceRangesResponse.Text = SoftBasic.ByteToHexString(d.Content,' ');
+                txbURangeCount.Text=dandick.ACU_RangesCount.ToString();
+                txbIRangeCount.Text = dandick.ACI_RangesCount.ToString();
+                txbIProtectRangeCount.Text = dandick.IProtectRangesCount.ToString();
+                txbURangsASingle.Text=dandick.URanges_Asingle.ToString();
+                txbIRangsASingle.Text = dandick.IRanges_Asingle.ToString();
+                txbIProtectRangsASingle.Text = dandick.IProtectRanges_Asingle.ToString();
+                cbxACURangs.ItemsSource = dandick.ACU_RangesList;                
+                cbxACIRangs.ItemsSource = dandick.ACI_RangesList;
+                cbxACIRangs.SelectedIndex = 0;
+                cbxACURangs.SelectedIndex = 0;
             }
         }
 
@@ -106,6 +134,60 @@ namespace DKControllerWPF
             cbxSerialPortsNames.IsEnabled = false;
             innit();
             cbxSerialPortsNames.IsEnabled = true;
+        }
+
+        /// <summary>
+        /// ReadDCSourceRanges
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_ReadDCSourceRanges(object sender, RoutedEventArgs e)
+        {
+            if (!dandick.IsOpen())
+            {
+                MessageBox.Show("串口都没打开，你读个嘚DCSourceRanges啊！");
+                return;
+            }
+            var d = dandick.ReadDCSourceRanges();
+            ReadDCSourceRangesIsSuccess.Text = d.IsSuccess.ToString();
+            ReadDCSourceRangesErrorCode.Text = d.ErrorCode.ToString();
+            ReadDCSourceRangesMesseage.Text = d.Message;
+            if (d.IsSuccess)
+            {
+                ReadDCSourceRangesResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
+              
+                txbDCURangeCount.Text = dandick.DCI_RangesCount.ToString();
+                txbDCIRangeCount.Text = dandick.DCI_RangesCount.ToString();
+                cbxDCURangs.ItemsSource = dandick.DCU_Ranges;
+                cbxDCIRangs.ItemsSource = dandick.DCU_Ranges;
+            }
+        }
+
+        /// <summary>
+        /// 读取直流表档位
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_ReadDCMeterRanges(object sender, RoutedEventArgs e)
+        {
+            if (!dandick.IsOpen())
+            {
+                MessageBox.Show("串口都没打开，你读个嘚DCMeterRanges啊！");
+                return;
+            }
+            var d = dandick.ReadDCMeterRanges();
+            ReadDCMeterRangesIsSuccess.Text = d.IsSuccess.ToString();
+            ReadDCMeterRangesErrorCode.Text = d.ErrorCode.ToString();
+            ReadDCMeterRangesMesseage.Text = d.Message;
+            if (d.IsSuccess)
+            {
+                ReadDCSourceRangesResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
+              
+                txbDCMURangeCount.Text = dandick.DCM_URangesCount.ToString();
+                txbDCMIRangeCount.Text = dandick.DCM_IRangesCount.ToString();
+                cbxDCMURangs.ItemsSource = dandick.DCM_URanges;
+                cbxDCMIRangs.ItemsSource = dandick.DCM_IRanges;
+            }
         }
     }
 }
