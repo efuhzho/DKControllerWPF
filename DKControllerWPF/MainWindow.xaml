@@ -41,6 +41,15 @@
                     Margin="10"
                     Padding="5"
                     Click="btnrefresh_Click" />
+            <Label Content="数据格式："
+                   Margin="10,10,0,10"
+                   Padding="5"
+                   VerticalContentAlignment="Center" />
+            <ComboBox MinWidth="100"
+                      Name="cbxDataFormat"
+                      Margin="0,10,10,10"
+                      Padding="5"
+                      SelectionChanged="cbxDataFormat_SelectionChanged" />
         </StackPanel>
         <!--#endregion 设置-->
         <TabControl TabStripPlacement="Left"
@@ -56,9 +65,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        
                         <!--#region  Handshake-->
                         <GroupBox Grid.Row="0"
                                   Header="联机命令，读取型号和版本号"
@@ -185,7 +193,6 @@
                             </Grid>
                         </GroupBox>
                         <!--#endregion HandShake-->
-                        
                         <!--#region  ReadACSourceRanges-->
                         <GroupBox Grid.Row="1"
                                   Header="读取交流源/表档位"
@@ -314,7 +321,6 @@
                             </Grid>
                         </GroupBox>
                         <!--#endregion ReadACSourceRanges-->
-                        
                         <!--#region ReadDCSourceRanges -->
                         <GroupBox Grid.Row="2"
                                   Header="读取直流源档位"
@@ -332,7 +338,7 @@
                                     <Button Content="ReadDCSourceRanges"
                                             Padding="10,5"
                                             Margin="5"
-                                            Click="Button_Click_ReadDCSourceRanges"/>
+                                            Click="Button_Click_ReadDCSourceRanges" />
                                     <TextBlock Text="IsSuccess:"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
@@ -402,13 +408,11 @@
                                                  VerticalContentAlignment="Center"
                                                  Margin="5"
                                                  Padding="5" />
-                                    </StackPanel>                                   
-                                   
+                                    </StackPanel>
                                 </WrapPanel>
                             </Grid>
-                        </GroupBox>                        
+                        </GroupBox>
                         <!--#endregion ReadDCSourceRanges-->
-                        
                         <!--#region ReadDCMeterRanges -->
                         <GroupBox Grid.Row="3"
                                   Header="读取直流表档位"
@@ -501,6 +505,80 @@
                             </Grid>
                         </GroupBox>
                         <!--#endregion ReadDCMeterRanges-->
+                        <!--#region SetDisplayPage -->
+                        <GroupBox Grid.Row="4"
+                                  Header="设置当前显示页面"
+                                  Margin="10"
+                                  Background="AliceBlue">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="10">
+                                    <Button Content="SetDisplayPage"
+                                            Padding="10,5"
+                                            Margin="5"
+                                            Click="Button_Click_SetDisplayPage" />
+                                    <TextBlock Text="IsSuccess:"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="10,5,0,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxSetDisplayPageIsSuccess"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="ErrorCode:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxSetDisplayPageErrorCode"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="Message:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxSetDisplayPageMesseage"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <Label Content="DisplayPage:"
+                                           VerticalContentAlignment="Center"
+                                           Margin="10,5,0,5" />
+                                    <ComboBox x:Name="cbxSetDisplayPage"
+                                              Margin="5"
+                                              Padding="5"
+                                              SelectedIndex="0"
+                                              IsReadOnly="True" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <TextBlock Text="Content:下位机回复的原始报文"
+                                               Margin="10,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxSetDisplayPageResponse"
+                                             Margin="10,5"
+                                             Padding="10"
+                                             Background="AliceBlue"
+                                             TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                                <WrapPanel Grid.Row="2">
+                                    <StackPanel Margin="10"
+                                                Orientation="Horizontal">
+                                        <Label Content="当前显示页面："
+                                               Margin="5" />
+                                        <TextBox x:Name="tbxSetDisplayPage"
+                                                 VerticalContentAlignment="Center"
+                                                 Margin="5"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                </WrapPanel>
+                            </Grid>
+                        </GroupBox>
+                        <!--#endregion SetDisplayPage-->
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -508,7 +586,199 @@
             <!--#region 交流源/表-->
             <TabItem Header="交流源/表"
                      Padding="10">
-                
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <!--#region StopACSource -->
+                        <GroupBox Grid.Row="0"
+                                  Header="交流源停止命令"
+                                  Margin="10"
+                                  Background="AliceBlue">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="10">
+                                    <Button Content="StopACSource"
+                                            Padding="10,5"
+                                            Margin="5"
+                                            Click="Button_Click_StopACSource" />
+                                    <TextBlock Text="IsSuccess:"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="10,5,0,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxStopACSourceIsSuccess"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="ErrorCode:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxStopACSourceErrorCode"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="Message:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxStopACSourceMesseage"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <TextBlock Text="Content:下位机回复的原始报文"
+                                               Margin="10,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxStopACSourceeResponse"
+                                             Margin="10,5"
+                                             Padding="10"
+                                             Background="AliceBlue"
+                                             TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                        <!--#endregion StopACSource-->
+                        <!--#region StarACSource -->
+                        <GroupBox Grid.Row="1"
+                                  Header="交流源打开命令"
+                                  Margin="10"
+                                  Background="AliceBlue">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="10">
+                                    <Button Content="StartACSource"
+                                            Padding="10,5"
+                                            Margin="5"
+                                            Click="Button_Click_StarACSource" />
+                                    <TextBlock Text="IsSuccess:"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="10,5,0,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxStartACSourceIsSuccess"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="ErrorCode:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxStartACSourceErrorCode"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="Message:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxStartACSourceMesseage"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <TextBlock Text="Content:下位机回复的原始报文"
+                                               Margin="10,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxStartACSourceResponse"
+                                             Margin="10,5"
+                                             Padding="10"
+                                             Background="AliceBlue"
+                                             TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                        <!--#endregion StopACSource-->
+                        <!--#region SetWireMode -->
+                        <GroupBox Grid.Row="2"
+                                  Header="设置接线模式"
+                                  Margin="10"
+                                  Background="AliceBlue">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="10">
+                                    <Button Content="SetWireMode"
+                                            Padding="10,5"
+                                            Margin="5"
+                                            Click="Button_Click_SetWireMode" />
+                                    <TextBlock Text="IsSuccess:"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="10,5,0,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxSetWireModeIsSuccess"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="ErrorCode:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxSetWireModeErrorCode"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="Message:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxSetWireModeMesseage"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <Label Content="WireMode:"
+                                           VerticalContentAlignment="Center"
+                                           Margin="10,5,0,5" />
+                                    <ComboBox x:Name="cbxSetWireMode"
+                                              Margin="5"
+                                              Padding="5"
+                                              SelectedIndex="0"
+                                              IsReadOnly="True" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <TextBlock Text="Content:下位机回复的原始报文"
+                                               Margin="10,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxSetWireModeResponse"
+                                             Margin="10,5"
+                                             Padding="10"
+                                             Background="AliceBlue"
+                                             TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="2"
+                                            Margin="10"
+                                            Orientation="Horizontal">
+                                    <Label Content="当前接线模式："
+                                           Margin="5" />
+                                    <TextBox x:Name="tbxSetWireModePage"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                        <!--#endregion SetWireMode-->
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
             <!--#endregion 交流源/表-->
             <!--#region 直流表-->
