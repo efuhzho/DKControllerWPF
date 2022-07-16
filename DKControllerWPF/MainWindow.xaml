@@ -866,7 +866,6 @@
                                 </StackPanel>
                             </Grid>
                         </GroupBox>
-                        
                         <!--#endregion SetACSourceRange-->
                     </Grid>
                 </ScrollViewer>

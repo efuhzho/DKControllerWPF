@@ -12,7 +12,8 @@ namespace DKControllerWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DK81Device dandick;
+        private DK81Device dandick;       
+
         public MainWindow()
         {
             dandick = new DK81Device();
@@ -39,7 +40,7 @@ namespace DKControllerWPF
             cbxSetDisplayPage.SelectedIndex = (int)dandick.DisplayPage;
 
             //初始化接线模式设置列表框
-            cbxSetWireMode.ItemsSource=Enum.GetNames(typeof(WireMode));
+            cbxSetWireMode.ItemsSource = Enum.GetNames(typeof(WireMode));
             cbxSetWireMode.SelectedIndex = (int)dandick.WireMode;
 
         }
@@ -69,7 +70,7 @@ namespace DKControllerWPF
                 txbIsACSource.Text = dandick.IsACU_Activated.ToString();
                 txbVersion.Text = dandick.Version.ToString();
                 txbSerialNO.Text = dandick.SN;
-                txbModel.Text = dandick.Model;
+                txbModel.Text = dandick.Model;   
             }
         }
 
@@ -105,6 +106,11 @@ namespace DKControllerWPF
             }
         }
 
+        /// <summary>
+        /// 打开串口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnOpen_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -124,6 +130,11 @@ namespace DKControllerWPF
 
         }
 
+        /// <summary>
+        /// 关闭串口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -141,6 +152,11 @@ namespace DKControllerWPF
             }
         }
 
+        /// <summary>
+        /// 刷新串口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnrefresh_Click(object sender, RoutedEventArgs e)
         {
             cbxSerialPortsNames.IsEnabled = false;
@@ -225,9 +241,9 @@ namespace DKControllerWPF
             tbxSetDisplayPageMesseage.Text = d.Message;
             if (d.IsSuccess)
             {
-                tbxSetDisplayPage.Text = SoftBasic.ByteToHexString(d.Content,' ');
+                tbxSetDisplayPage.Text = SoftBasic.ByteToHexString(d.Content, ' ');
+                tbxSetDisplayPage.Text = dandick.DisplayPage.ToString();
             }
-            tbxSetDisplayPage.Text = dandick.DisplayPage.ToString();
         }
 
         /// <summary>
@@ -243,7 +259,7 @@ namespace DKControllerWPF
                 return;
             }
 
-            var d=dandick.StopACSource();
+            var d = dandick.StopACSource();
             tbxStopACSourceErrorCode.Text = d.ErrorCode.ToString();
             tbxStopACSourceIsSuccess.Text = d.IsSuccess.ToString();
             tbxStopACSourceMesseage.Text = d.Message;
@@ -311,7 +327,7 @@ namespace DKControllerWPF
                 MessageBox.Show("串口都没打开，你读个嘚啊！");
                 return;
             }
-            var d = dandick.SetACSourceRange(cbxACSourceURanges.SelectedIndex,cbxACSourceIRanges.SelectedIndex);
+            var d = dandick.SetACSourceRange(cbxACSourceURanges.SelectedIndex, cbxACSourceIRanges.SelectedIndex);
             tbxSetACSourceRangeErrorCode.Text = d.ErrorCode.ToString();
             tbxSetACSourceRangeIsSuccess.Text = d.IsSuccess.ToString();
             tbxSetACSourceRangeMesseage.Text = d.Message;
@@ -321,7 +337,7 @@ namespace DKControllerWPF
                 tbxACSourceURange.Text = dandick.ACU_RangeIndex.ToString();
                 tbxACSourceIRange.Text = dandick.ACI_RangeIndex.ToString();
             }
-          
+
         }
     }
 }
