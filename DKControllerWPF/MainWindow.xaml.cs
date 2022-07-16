@@ -298,5 +298,30 @@ namespace DKControllerWPF
             }
             tbxSetWireModePage.Text = dandick.WireMode.ToString();
         }
+
+        /// <summary>
+        /// 设置交流源档位
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_SetACSourceRange(object sender, RoutedEventArgs e)
+        {
+            if (!dandick.IsOpen())
+            {
+                MessageBox.Show("串口都没打开，你读个嘚啊！");
+                return;
+            }
+            var d = dandick.SetACSourceRange(cbxACSourceURanges.SelectedIndex,cbxACSourceIRanges.SelectedIndex);
+            tbxSetACSourceRangeErrorCode.Text = d.ErrorCode.ToString();
+            tbxSetACSourceRangeIsSuccess.Text = d.IsSuccess.ToString();
+            tbxSetACSourceRangeMesseage.Text = d.Message;
+            if (d.IsSuccess)
+            {
+                tbxSetACSourceRangeResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
+                tbxACSourceURange.Text = dandick.ACU_RangeIndex.ToString();
+                tbxACSourceIRange.Text = dandick.ACI_RangeIndex.ToString();
+            }
+          
+        }
     }
 }
