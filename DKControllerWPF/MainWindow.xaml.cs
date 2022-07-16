@@ -242,8 +242,9 @@ namespace DKControllerWPF
             if (d.IsSuccess)
             {
                 tbxSetDisplayPage.Text = SoftBasic.ByteToHexString(d.Content, ' ');
-                tbxSetDisplayPage.Text = dandick.DisplayPage.ToString();
             }
+            tbxSetDisplayPage.Text = dandick.DisplayPage.ToString();
+
         }
 
         /// <summary>
@@ -337,7 +338,16 @@ namespace DKControllerWPF
                 tbxACSourceURange.Text = dandick.ACU_RangeIndex.ToString();
                 tbxACSourceIRange.Text = dandick.ACI_RangeIndex.ToString();
             }
+        }
 
+        private void tbtnTabControl_Checked(object sender, RoutedEventArgs e)
+        {
+            tabControl.TabStripPlacement = System.Windows.Controls.Dock.Bottom;
+        }
+
+        private void tbtnTabControl_Unchecked(object sender, RoutedEventArgs e)
+        {
+            tabControl.TabStripPlacement=System.Windows.Controls.Dock.Left;
         }
     }
 }

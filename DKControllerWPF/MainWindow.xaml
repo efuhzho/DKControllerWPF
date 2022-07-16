@@ -50,9 +50,16 @@
                       Margin="0,10,10,10"
                       Padding="5"
                       SelectionChanged="cbxDataFormat_SelectionChanged" />
+            <ToggleButton x:Name="tbtnTabControl"
+                          Content="TabStripPlacement"
+                          Margin="10"
+                          Padding="5"
+                          Checked="tbtnTabControl_Checked"
+                          Unchecked="tbtnTabControl_Unchecked" />
         </StackPanel>
         <!--#endregion 设置-->
         <TabControl TabStripPlacement="Left"
+                    Name="tabControl"
                     Grid.Row="1"
                     Margin="10">
             <!--#region 系统信息-->
