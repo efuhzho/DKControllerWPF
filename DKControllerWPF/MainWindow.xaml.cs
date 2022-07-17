@@ -43,6 +43,13 @@ namespace DKControllerWPF
             cbxSetWireMode.ItemsSource = Enum.GetNames(typeof(WireMode));
             cbxSetWireMode.SelectedIndex = (int)dandick.WireMode;
 
+            //初始化闭环模式设置列表
+            cbxSetClosedLoopMode.ItemsSource=Enum.GetNames(typeof(CloseLoopMode));
+            cbxSetClosedLoopMode.SelectedIndex = (int)dandick.CloseLoopMode;
+
+            //初始化谐波模式设置列表
+            cbxSetClosedLoopHarmonicMode.ItemsSource = Enum.GetNames(typeof(HarmonicMode));
+            cbxSetClosedLoopHarmonicMode.SelectedIndex = (int)dandick.HarmonicMode;
         }
 
         /// <summary>
@@ -391,6 +398,11 @@ namespace DKControllerWPF
            
         }
 
+        /// <summary>
+        /// 设置相位
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_WritePhase(object sender, RoutedEventArgs e)
         {
             if (!dandick.IsOpen())
@@ -424,6 +436,11 @@ namespace DKControllerWPF
             }
         }
 
+        /// <summary>
+        /// 设置频率
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_WriteFrequency(object sender, RoutedEventArgs e)
         {
             if (!dandick.IsOpen())
@@ -450,6 +467,32 @@ namespace DKControllerWPF
 
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// 设置闭环模式
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_SetClosedLoop(object sender, RoutedEventArgs e)
+        {
+            if (!dandick.IsOpen())
+            {
+                MessageBox.Show("串口都没打开，你读个嘚啊！");
+                return;
+            }
+            CloseLoopMode closeLoopMode = (CloseLoopMode)Enum.Parse(typeof(CloseLoopMode), cbxSetClosedLoopMode.Text);
+            HarmonicMode harmonicMode=(HarmonicMode)Enum.Parse (typeof(HarmonicMode), cbxSetClosedLoopHarmonicMode.Text);
+            var result=dandick.SetClosedLoop(closeLoopMode, harmonicMode);
+            tbxSetClosedLoopIsSuccess.Text = result.IsSuccess.ToString();
+            tbxSetClosedLoopErrorCode.Text = result.ErrorCode.ToString();
+            tbxSetClosedLoopMesseage.Text = result.Message.ToString();
+            if (result.IsSuccess)
+            {
+                tbxSetClosedLoopResponse.Text = SoftBasic.ByteToHexString(result.Content);
+            }
+            tbxSetClosedLoop.Text = dandick.CloseLoopMode.ToString();
+            tbxHarmonicMode.Text=dandick.HarmonicMode.ToString();
         }
     }
 }
