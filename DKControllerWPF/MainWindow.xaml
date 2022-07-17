@@ -600,6 +600,15 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <!--5-->
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <!--10-->
+                            <RowDefinition Height="auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <!--#region StopACSource -->
@@ -874,6 +883,371 @@
                             </Grid>
                         </GroupBox>
                         <!--#endregion SetACSourceRange-->
+                        <!--#region WriteACSourceAmplitude -->
+                        <GroupBox Grid.Row="4"
+                                  Header="设置交流源幅度"
+                                  Margin="10"
+                                  Background="AliceBlue">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="10">
+                                    <Button Content="WriteACSourceAmplitude"
+                                            Padding="10,5"
+                                            Margin="5"
+                                            Click="Button_Click_WriteACSourceAmplitude" />
+                                    <TextBlock Text="IsSuccess:"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="10,5,0,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxWriteACSourceAmplitudeIsSuccess"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="ErrorCode:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxWriteACSourceAmplitudeErrorCode"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="Message:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxWriteACSourceAmplitudeMesseage"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <TextBlock Text="Content:下位机回复的原始报文"
+                                               Margin="10,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxWriteACSourceAmplitudeResponse"
+                                             Margin="10,5"
+                                             Padding="10"
+                                             Background="AliceBlue"
+                                             TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                                <WrapPanel Grid.Row="2">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="Ua:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeUa"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="Ub:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeUb"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="Uc:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeUc"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="Ia:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeIa"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="Ib:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeIb"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="Ic:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeIc"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="IPa:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeIPa"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="IPb:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeIPb"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="IPc:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeIPc"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                </WrapPanel>
+                            </Grid>
+                        </GroupBox>
+                        <!--#endregion WriteACSourceAmplitude-->
+                        <!--#region WritePhase -->
+                        <GroupBox Grid.Row="5"
+                                  Header="设置相位"
+                                  Margin="10"
+                                  Background="AliceBlue">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="10">
+                                    <Button Content="WritePhase"
+                                            Padding="10,5"
+                                            Margin="5"
+                                            Click="Button_Click_WritePhase" />
+                                    <TextBlock Text="IsSuccess:"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="10,5,0,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxWritePhaseIsSuccess"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="ErrorCode:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxWritePhaseErrorCode"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="Message:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxWritePhaseMesseage"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <TextBlock Text="Content:下位机回复的原始报文"
+                                               Margin="10,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxWritePhaseResponse"
+                                             Margin="10,5"
+                                             Padding="10"
+                                             Background="AliceBlue"
+                                             TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                                <WrapPanel Grid.Row="2">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="ΦUa:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeFaiUa"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5"
+                                                 Text="0"
+                                                 IsReadOnly="True"
+                                                 IsEnabled="False" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="ΦUb:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeFaiUb"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="ΦUc:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeFaiUc"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="ΦIa:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeFaiIa"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="ΦIb:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeFaiIb"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="ΦIc:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbAmplitudeFaiIc"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                </WrapPanel>
+                            </Grid>
+                        </GroupBox>
+                        <!--#endregion WritePhase-->
+                        <!--#region WriteFrequency -->
+                        <GroupBox Grid.Row="6"
+                                  Header="设置频率"
+                                  Margin="10"
+                                  Background="AliceBlue">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="10">
+                                    <Button Content="WriteFrequency"
+                                            Padding="10,5"
+                                            Margin="5"
+                                            Click="Button_Click_WriteFrequency" />
+                                    <TextBlock Text="IsSuccess:"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="10,5,0,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxWriteFrequencyIsSuccess"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="ErrorCode:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxWriteFrequencyErrorCode"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="Message:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxWriteFrequencyMesseage"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <TextBlock Text="Content:下位机回复的原始报文"
+                                               Margin="10,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxWriteFrequencyResponse"
+                                             Margin="10,5"
+                                             Padding="10"
+                                             Background="AliceBlue"
+                                             TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                                <WrapPanel Grid.Row="2">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="F:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbWriteFrequency"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10,10,0,10"
+                                                   Padding="5"
+                                                   Text="Fc:"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                        <TextBox x:Name="txbWriteFrequencyC"
+                                                 MinWidth="80"
+                                                 Margin="0,10,10,10"
+                                                 Padding="5"
+                                                 Text="50" />
+                                    </StackPanel>
+                                </WrapPanel>
+                            </Grid>
+                        </GroupBox>
+                        <!--#endregion WriteFrequency-->
+                        <!--#region SetClosedLoop -->
+                        
+                        <!--#endregion SetClosedLoop-->
                     </Grid>
                 </ScrollViewer>
             </TabItem>

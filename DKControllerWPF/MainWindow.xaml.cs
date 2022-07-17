@@ -349,5 +349,107 @@ namespace DKControllerWPF
         {
             tabControl.TabStripPlacement=System.Windows.Controls.Dock.Left;
         }
+
+        /// <summary>
+        /// 设置交流源幅度
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_WriteACSourceAmplitude(object sender, RoutedEventArgs e)
+        {
+            if (!dandick.IsOpen())
+            {
+                MessageBox.Show("串口都没打开，你读个嘚啊！");
+                return;
+            }
+            try
+            {
+                float[] amplitude = new float[9];
+                amplitude[0] = float.Parse(txbAmplitudeUa.Text);
+                amplitude[1] = float.Parse(txbAmplitudeUb.Text);
+                amplitude[2] = float.Parse(txbAmplitudeUc.Text);
+                amplitude[3] = float.Parse(txbAmplitudeIa.Text);
+                amplitude[4] = float.Parse(txbAmplitudeIb.Text);
+                amplitude[5] = float.Parse(txbAmplitudeIc.Text);
+                amplitude[6] = float.Parse(txbAmplitudeIPa.Text);
+                amplitude[7] = float.Parse(txbAmplitudeIPb.Text);
+                amplitude[8] = float.Parse(txbAmplitudeIPc.Text);
+                var result=dandick.WriteACSourceAmplitude(amplitude);
+                tbxWriteACSourceAmplitudeIsSuccess.Text = result.IsSuccess.ToString();
+                tbxWriteACSourceAmplitudeErrorCode.Text = result.ErrorCode.ToString();
+                tbxWriteACSourceAmplitudeMesseage.Text = result.Message.ToString();
+                if (result.IsSuccess)
+                {
+                    tbxWriteACSourceAmplitudeResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+           
+        }
+
+        private void Button_Click_WritePhase(object sender, RoutedEventArgs e)
+        {
+            if (!dandick.IsOpen())
+            {
+                MessageBox.Show("串口都没打开，你读个嘚啊！");
+                return;
+            }
+            try
+            {
+                float[] amplitude = new float[6];
+                amplitude[0] = float.Parse(txbAmplitudeFaiUa.Text);
+                amplitude[1] = float.Parse(txbAmplitudeFaiUb.Text);
+                amplitude[2] = float.Parse(txbAmplitudeFaiUc.Text);
+                amplitude[3] = float.Parse(txbAmplitudeFaiIa.Text);
+                amplitude[4] = float.Parse(txbAmplitudeFaiIb.Text);
+                amplitude[5] = float.Parse(txbAmplitudeFaiIc.Text);
+             
+                var result = dandick.WritePhase(amplitude);
+                tbxWritePhaseIsSuccess.Text = result.IsSuccess.ToString();
+                tbxWritePhaseErrorCode.Text = result.ErrorCode.ToString();
+                tbxWritePhaseMesseage.Text = result.Message.ToString();
+                if (result.IsSuccess)
+                {
+                    tbxWriteACSourceAmplitudeResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Button_Click_WriteFrequency(object sender, RoutedEventArgs e)
+        {
+            if (!dandick.IsOpen())
+            {
+                MessageBox.Show("串口都没打开，你读个嘚啊！");
+                return;
+            }
+            try
+            {                
+                float f = float.Parse(txbWriteFrequency.Text);
+                float fc= float.Parse(txbWriteFrequencyC.Text);               
+
+                var result = dandick.WriteFrequency(f,fc);
+                tbxWriteFrequencyIsSuccess.Text = result.IsSuccess.ToString();
+                tbxWriteFrequencyErrorCode.Text = result.ErrorCode.ToString();
+                tbxWriteFrequencyMesseage.Text = result.Message.ToString();
+                if (result.IsSuccess)
+                {
+                    tbxWriteACSourceAmplitudeResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
