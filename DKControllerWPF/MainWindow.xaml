@@ -1345,6 +1345,89 @@
                             </Grid>
                         </GroupBox>                        
                         <!--#endregion SetClosedLoop-->
+                        <!--#region WriteHarmonics -->
+                        <GroupBox Grid.Row="8"
+                                  Header="设置谐波参数"
+                                  Margin="10"
+                                  Background="AliceBlue">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="10">
+                                    <Button Content="WriteHarmonics"
+                                            Padding="10,5"
+                                            Margin="10"
+                                            Click="Button_Click_WriteHarmonics" />
+                                    <TextBlock Text="IsSuccess:"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="10,5,0,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxWriteHarmonicsIsSuccess"
+                                             VerticalContentAlignment="Center"
+                                             Margin="10"
+                                             Padding="5" />
+                                    <TextBlock Text="ErrorCode:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxWriteHarmonicsErrorCode"
+                                             VerticalContentAlignment="Center"
+                                             Margin="10"
+                                             Padding="5" />
+                                    <TextBlock Text="Message:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxWriteHarmonicsMesseage"
+                                             VerticalContentAlignment="Center"
+                                             Margin="10"
+                                             Padding="5" />
+                                    <TextBlock Text="谐波通道:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <ComboBox x:Name="cbxHarmonicChannels"
+                                              Margin="10"
+                                              Padding="5" SelectedIndex="0"/>
+                                    <TextBlock Text="谐波次数:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxWriteHarmonicsTimes"
+                                             VerticalContentAlignment="Center"
+                                             Margin="10"
+                                             Padding="5" />
+                                    <TextBlock Text="谐波幅度:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox x:Name="tbxWriteHarmonicsAmplitude"
+                                             VerticalContentAlignment="Center"
+                                             Margin="10"
+                                             Padding="5" />
+                                    <TextBlock Text="谐波相位:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxWriteHarmonicsAngle"
+                                             VerticalContentAlignment="Center"
+                                             Margin="10"
+                                             Padding="5" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <TextBlock Text="Content:下位机回复的原始报文"
+                                               Margin="10,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxWriteHarmonicsResponse"
+                                             Margin="10,5"
+                                             Padding="10"
+                                             Background="AliceBlue"
+                                             TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                        
+                        <!--#endregion WriteHarmonics-->
                     </Grid>
                 </ScrollViewer>
             </TabItem>

@@ -12,7 +12,7 @@ namespace DKControllerWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DK81Device dandick;       
+        private DK81Device dandick;
 
         public MainWindow()
         {
@@ -44,12 +44,14 @@ namespace DKControllerWPF
             cbxSetWireMode.SelectedIndex = (int)dandick.WireMode;
 
             //初始化闭环模式设置列表
-            cbxSetClosedLoopMode.ItemsSource=Enum.GetNames(typeof(CloseLoopMode));
+            cbxSetClosedLoopMode.ItemsSource = Enum.GetNames(typeof(CloseLoopMode));
             cbxSetClosedLoopMode.SelectedIndex = (int)dandick.CloseLoopMode;
 
             //初始化谐波模式设置列表
             cbxSetClosedLoopHarmonicMode.ItemsSource = Enum.GetNames(typeof(HarmonicMode));
             cbxSetClosedLoopHarmonicMode.SelectedIndex = (int)dandick.HarmonicMode;
+
+            cbxHarmonicChannels.ItemsSource = Enum.GetNames(typeof(ChannelsHarmonic));
         }
 
         /// <summary>
@@ -77,7 +79,7 @@ namespace DKControllerWPF
                 txbIsACSource.Text = dandick.IsACU_Activated.ToString();
                 txbVersion.Text = dandick.Version.ToString();
                 txbSerialNO.Text = dandick.SN;
-                txbModel.Text = dandick.Model;   
+                txbModel.Text = dandick.Model;
             }
         }
 
@@ -354,7 +356,7 @@ namespace DKControllerWPF
 
         private void tbtnTabControl_Unchecked(object sender, RoutedEventArgs e)
         {
-            tabControl.TabStripPlacement=System.Windows.Controls.Dock.Left;
+            tabControl.TabStripPlacement = System.Windows.Controls.Dock.Left;
         }
 
         /// <summary>
@@ -381,7 +383,7 @@ namespace DKControllerWPF
                 amplitude[6] = float.Parse(txbAmplitudeIPa.Text);
                 amplitude[7] = float.Parse(txbAmplitudeIPb.Text);
                 amplitude[8] = float.Parse(txbAmplitudeIPc.Text);
-                var result=dandick.WriteACSourceAmplitude(amplitude);
+                var result = dandick.WriteACSourceAmplitude(amplitude);
                 tbxWriteACSourceAmplitudeIsSuccess.Text = result.IsSuccess.ToString();
                 tbxWriteACSourceAmplitudeErrorCode.Text = result.ErrorCode.ToString();
                 tbxWriteACSourceAmplitudeMesseage.Text = result.Message.ToString();
@@ -395,7 +397,7 @@ namespace DKControllerWPF
 
                 MessageBox.Show(ex.Message);
             }
-           
+
         }
 
         /// <summary>
@@ -419,7 +421,7 @@ namespace DKControllerWPF
                 amplitude[3] = float.Parse(txbAmplitudeFaiIa.Text);
                 amplitude[4] = float.Parse(txbAmplitudeFaiIb.Text);
                 amplitude[5] = float.Parse(txbAmplitudeFaiIc.Text);
-             
+
                 var result = dandick.WritePhase(amplitude);
                 tbxWritePhaseIsSuccess.Text = result.IsSuccess.ToString();
                 tbxWritePhaseErrorCode.Text = result.ErrorCode.ToString();
@@ -449,11 +451,11 @@ namespace DKControllerWPF
                 return;
             }
             try
-            {                
+            {
                 float f = float.Parse(txbWriteFrequency.Text);
-                float fc= float.Parse(txbWriteFrequencyC.Text);               
+                float fc = float.Parse(txbWriteFrequencyC.Text);
 
-                var result = dandick.WriteFrequency(f,fc);
+                var result = dandick.WriteFrequency(f, fc);
                 tbxWriteFrequencyIsSuccess.Text = result.IsSuccess.ToString();
                 tbxWriteFrequencyErrorCode.Text = result.ErrorCode.ToString();
                 tbxWriteFrequencyMesseage.Text = result.Message.ToString();
@@ -482,8 +484,8 @@ namespace DKControllerWPF
                 return;
             }
             CloseLoopMode closeLoopMode = (CloseLoopMode)Enum.Parse(typeof(CloseLoopMode), cbxSetClosedLoopMode.Text);
-            HarmonicMode harmonicMode=(HarmonicMode)Enum.Parse (typeof(HarmonicMode), cbxSetClosedLoopHarmonicMode.Text);
-            var result=dandick.SetClosedLoop(closeLoopMode, harmonicMode);
+            HarmonicMode harmonicMode = (HarmonicMode)Enum.Parse(typeof(HarmonicMode), cbxSetClosedLoopHarmonicMode.Text);
+            var result = dandick.SetClosedLoop(closeLoopMode, harmonicMode);
             tbxSetClosedLoopIsSuccess.Text = result.IsSuccess.ToString();
             tbxSetClosedLoopErrorCode.Text = result.ErrorCode.ToString();
             tbxSetClosedLoopMesseage.Text = result.Message.ToString();
@@ -492,7 +494,40 @@ namespace DKControllerWPF
                 tbxSetClosedLoopResponse.Text = SoftBasic.ByteToHexString(result.Content);
             }
             tbxSetClosedLoop.Text = dandick.CloseLoopMode.ToString();
-            tbxHarmonicMode.Text=dandick.HarmonicMode.ToString();
+            tbxHarmonicMode.Text = dandick.HarmonicMode.ToString();
+        }
+
+        private void Button_Click_WriteHarmonics(object sender, RoutedEventArgs e)
+        {
+            if (!dandick.IsOpen())
+            {
+                MessageBox.Show("串口都没打开，你读个嘚啊！");
+                return;
+            }
+            try
+            {
+                ChannelsHarmonic channelsHarmonic = (ChannelsHarmonic)Enum.Parse(typeof(ChannelsHarmonic), cbxHarmonicChannels.Text);
+                Harmonics harmonic = new Harmonics()
+                {
+                    Amplitude = float.Parse(tbxWriteHarmonicsAmplitude.Text),
+                    HarmonicTimes = byte.Parse(tbxWriteHarmonicsTimes.Text),
+                    Angle = float.Parse(tbxWriteHarmonicsAngle.Text),
+                };
+                var result=dandick.WriteHarmonics(channelsHarmonic, harmonic);
+                tbxWriteHarmonicsIsSuccess.Text = result.IsSuccess.ToString();
+                tbxWriteHarmonicsErrorCode.Text = result.ErrorCode.ToString();
+                tbxWriteHarmonicsMesseage.Text = result.Message.ToString();
+                if (result.IsSuccess)
+                {
+                    tbxWriteHarmonicsResponse.Text=SoftBasic.ByteToHexString(result.Content);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
         }
     }
 }
