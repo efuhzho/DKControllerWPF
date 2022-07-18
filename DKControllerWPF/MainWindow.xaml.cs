@@ -4,6 +4,8 @@ using DKCommunication.Core;
 using System;
 using System.IO.Ports;
 using System.Windows;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DKControllerWPF
 {
@@ -51,7 +53,14 @@ namespace DKControllerWPF
             cbxSetClosedLoopHarmonicMode.ItemsSource = Enum.GetNames(typeof(HarmonicMode));
             cbxSetClosedLoopHarmonicMode.SelectedIndex = (int)dandick.HarmonicMode;
 
+            //初始化谐波设置通道列表
             cbxHarmonicChannels.ItemsSource = Enum.GetNames(typeof(ChannelsHarmonic));
+
+            //初始化有功功率设置通道列表
+            cbxChannelWattPower.ItemsSource = Enum.GetNames(typeof(ChannelWattPower));
+
+            //初始化无功功率设置通道列表
+            cbxChannelWattLessPower.ItemsSource = Enum.GetNames(typeof(ChannelWattLessPower));
         }
 
         /// <summary>
@@ -61,11 +70,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你连个嘚啊！");
-                return;
-            }
+           
             var result = dandick.Handshake();
             txbIsSuccess.Text = result.IsSuccess.ToString();
             txbErrorCode.Text = result.ErrorCode.ToString();
@@ -90,11 +95,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_ReadACSourceRanges(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个毛啊！");
-                return;
-            }
+           
             var d = dandick.ReadACSourceRanges();
             ReadACSourceRangesIsSuccess.Text = d.IsSuccess.ToString();
             ReadACSourceRangesErrorCode.Text = d.ErrorCode.ToString();
@@ -148,6 +149,7 @@ namespace DKControllerWPF
         {
             try
             {
+                _cts?.Cancel();
                 dandick.Close();
                 if (!dandick.IsOpen())
                 {
@@ -180,11 +182,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_ReadDCSourceRanges(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚DCSourceRanges啊！");
-                return;
-            }
+           
             var d = dandick.ReadDCSourceRanges();
             ReadDCSourceRangesIsSuccess.Text = d.IsSuccess.ToString();
             ReadDCSourceRangesErrorCode.Text = d.ErrorCode.ToString();
@@ -207,11 +205,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_ReadDCMeterRanges(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚DCMeterRanges啊！");
-                return;
-            }
+            
             var d = dandick.ReadDCMeterRanges();
             ReadDCMeterRangesIsSuccess.Text = d.IsSuccess.ToString();
             ReadDCMeterRangesErrorCode.Text = d.ErrorCode.ToString();
@@ -239,11 +233,6 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_SetDisplayPage(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚啊！");
-                return;
-            }
             var d = dandick.SetDisplayPage((DisplayPage)Enum.Parse(typeof(DisplayPage), cbxSetDisplayPage.SelectedItem.ToString()));
             tbxSetDisplayPageErrorCode.Text = d.ErrorCode.ToString();
             tbxSetDisplayPageIsSuccess.Text = d.IsSuccess.ToString();
@@ -263,11 +252,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_StopACSource(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚啊！");
-                return;
-            }
+           
 
             var d = dandick.StopACSource();
             tbxStopACSourceErrorCode.Text = d.ErrorCode.ToString();
@@ -286,12 +271,6 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_StarACSource(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚啊！");
-                return;
-            }
-
             var d = dandick.StartACSource();
             tbxStartACSourceErrorCode.Text = d.ErrorCode.ToString();
             tbxStartACSourceIsSuccess.Text = d.IsSuccess.ToString();
@@ -309,11 +288,6 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_SetWireMode(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚啊！");
-                return;
-            }
             var d = dandick.SetWireMode((WireMode)Enum.Parse(typeof(WireMode), cbxSetWireMode.SelectedItem.ToString()));
             tbxSetWireModeErrorCode.Text = d.ErrorCode.ToString();
             tbxSetWireModeIsSuccess.Text = d.IsSuccess.ToString();
@@ -332,11 +306,6 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_SetACSourceRange(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚啊！");
-                return;
-            }
             var d = dandick.SetACSourceRange(cbxACSourceURanges.SelectedIndex, cbxACSourceIRanges.SelectedIndex);
             tbxSetACSourceRangeErrorCode.Text = d.ErrorCode.ToString();
             tbxSetACSourceRangeIsSuccess.Text = d.IsSuccess.ToString();
@@ -366,11 +335,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_WriteACSourceAmplitude(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚啊！");
-                return;
-            }
+            
             try
             {
                 float[] amplitude = new float[9];
@@ -407,11 +372,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_WritePhase(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚啊！");
-                return;
-            }
+           
             try
             {
                 float[] amplitude = new float[6];
@@ -445,11 +406,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_WriteFrequency(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚啊！");
-                return;
-            }
+           
             try
             {
                 float f = float.Parse(txbWriteFrequency.Text);
@@ -478,11 +435,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_SetClosedLoop(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚啊！");
-                return;
-            }
+         
             CloseLoopMode closeLoopMode = (CloseLoopMode)Enum.Parse(typeof(CloseLoopMode), cbxSetClosedLoopMode.Text);
             HarmonicMode harmonicMode = (HarmonicMode)Enum.Parse(typeof(HarmonicMode), cbxSetClosedLoopHarmonicMode.Text);
             var result = dandick.SetClosedLoop(closeLoopMode, harmonicMode);
@@ -497,37 +450,184 @@ namespace DKControllerWPF
             tbxHarmonicMode.Text = dandick.HarmonicMode.ToString();
         }
 
+        /// <summary>
+        /// 设置谐波幅度
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_WriteHarmonics(object sender, RoutedEventArgs e)
         {
-            if (!dandick.IsOpen())
-            {
-                MessageBox.Show("串口都没打开，你读个嘚啊！");
-                return;
-            }
+            ChannelsHarmonic channelsHarmonic;         
             try
             {
-                ChannelsHarmonic channelsHarmonic = (ChannelsHarmonic)Enum.Parse(typeof(ChannelsHarmonic), cbxHarmonicChannels.Text);
                 Harmonics harmonic = new Harmonics()
                 {
                     Amplitude = float.Parse(tbxWriteHarmonicsAmplitude.Text),
                     HarmonicTimes = byte.Parse(tbxWriteHarmonicsTimes.Text),
                     Angle = float.Parse(tbxWriteHarmonicsAngle.Text),
                 };
-                var result=dandick.WriteHarmonics(channelsHarmonic, harmonic);
+                if ((bool)isMultiChannels.IsChecked)
+                {
+                    channelsHarmonic=(ChannelsHarmonic)int.Parse(HarmonicsMultiChannelsValue.Text);
+                }
+                else
+                {
+                     channelsHarmonic = (ChannelsHarmonic)Enum.Parse(typeof(ChannelsHarmonic), cbxHarmonicChannels.Text);
+                 
+                }
+            
+                var result = dandick.WriteHarmonics(channelsHarmonic, harmonic);
                 tbxWriteHarmonicsIsSuccess.Text = result.IsSuccess.ToString();
                 tbxWriteHarmonicsErrorCode.Text = result.ErrorCode.ToString();
                 tbxWriteHarmonicsMesseage.Text = result.Message.ToString();
+
                 if (result.IsSuccess)
                 {
-                    tbxWriteHarmonicsResponse.Text=SoftBasic.ByteToHexString(result.Content);
+                    tbxWriteHarmonicsResponse.Text = SoftBasic.ByteToHexString(result.Content);
                 }
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
+        private void isMultiChannels_Checked(object sender, RoutedEventArgs e)
+        {
+            tbIsMultiChl.Visibility = Visibility.Visible;
+            cbxHarmonicChannels.IsEnabled = false;
+            cbxHarmonicChannels.Foreground = System.Windows.Media.Brushes.Gray;
+        }
+
+        private void isMultiChannels_Unchecked(object sender, RoutedEventArgs e)
+        {
+            tbIsMultiChl.Visibility = Visibility.Collapsed;
+            cbxHarmonicChannels.IsEnabled = true;
+            cbxHarmonicChannels.Foreground = System.Windows.Media.Brushes.Black;
+        }
+
+        /// <summary>
+        /// 设置有功功率
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_WriteWattPower(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ChannelWattPower channelWattPower = (ChannelWattPower)(byte)Enum.Parse(typeof(ChannelWattPower), cbxChannelWattPower.Text);
+                //ChannelWattPower channelWattPower = (ChannelWattPower)cbxChannelWattPower.SelectedIndex;
+                float data = float.Parse(tbxWriteWattPowerData.Text);
+                var result=dandick.WriteWattPower(channelWattPower, data);
+                tbxWriteWattPowerIsSuccess.Text = result.IsSuccess.ToString();
+                tbxWriteWattPowerErrorCode.Text = result.ErrorCode.ToString();
+                tbxWriteWattPowerMesseage.Text = result.Message.ToString();
+
+                if (result.IsSuccess)
+                {
+                    tbxWriteWattPowerResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
+        }
+
+        /// <summary>
+        /// 设置无功功率
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_WriteWattLessPower(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ChannelWattLessPower channelWattLessPower = (ChannelWattLessPower)(byte)Enum.Parse(typeof(ChannelWattLessPower), cbxChannelWattLessPower.Text);
+                //ChannelWattLessPower channelWattLessPower = (ChannelWattLessPower)cbxChannelWattLessPower.SelectedIndex;
+                float data = float.Parse(tbxWriteWattLessPowerData.Text);
+                var result = dandick.WriteWattLessPower(channelWattLessPower, data);
+                tbxWriteWattLessPowerIsSuccess.Text = result.IsSuccess.ToString();
+                tbxWriteWattLessPowerErrorCode.Text = result.ErrorCode.ToString();
+                tbxWriteWattLessPowerMesseage.Text = result.Message.ToString();
+
+                if (result.IsSuccess)
+                {
+                    tbxWriteWattLessPowerResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                }
+
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        private CancellationTokenSource _cts;
+        private void Button_Click_ReadACSourceData(object sender, RoutedEventArgs e)
+        {
+            gridData.Visibility = Visibility.Visible ;
+            _cts = new CancellationTokenSource();
+            //开启线程
+            Task.Run(new Action(ReadingACSourceData), _cts.Token);
+        }
+
+        private void ReadingACSourceData()
+        {
+            while (!_cts.IsCancellationRequested)
+            {
+                var result = dandick.ReadACSourceData();
+                Dispatcher.Invoke(() =>
+                {
+                    tbxReadACSourceDataIsSuccess.Text = result.IsSuccess.ToString();
+                    tbxReadACSourceDataErrorCode.Text = result.ErrorCode.ToString();
+                    tbxReadACSourceDataMesseage.Text = result.Message.ToString();
+                    if (result.IsSuccess)
+                    {
+                        tbxReadACSourceDataResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                    }
+                    lbUA.Content = dandick.UA;
+                    lbUB.Content = dandick.UB;
+                    lbUC.Content = dandick.UC;
+                    lbIA.Content = dandick.IA;
+                    lbIB.Content= dandick.IB;
+                    lbIC.Content= dandick.IC;
+                    lbFaiUA.Content = dandick.UaPhase;
+                    lbFaiUB.Content = dandick.UbPhase;
+                    lbFaiUC.Content = dandick.UcPhase;
+                    lbFaiIA.Content = dandick.IaPhase;
+                    lbFaiIB.Content = dandick.IbPhase;
+                    lbFaiIC.Content = dandick.IcPhase;
+                    lbPA.Content = dandick.Pa;
+                    lbPB.Content = dandick.Pb;
+                    lbPC.Content = dandick.Pc;
+                    lbPall.Content = dandick.P;
+                    lbQA.Content = dandick.Qa;
+                    lbQB.Content = dandick.Qb;
+                    lbQC.Content = dandick.Qc;
+                    lbQall.Content = dandick.Q;
+                    lbSA.Content = dandick.Sa;
+                    lbSB.Content = dandick.Sb;
+                    lbSC.Content = dandick.Sc;
+                    lbSall.Content = dandick.S;
+                    lbPFA.Content = dandick.CosFaiA;
+                    lbPFB.Content = dandick.CosFaiB;
+                    lbPFC.Content = dandick.CosFaiC;
+                    lbPFall.Content = dandick.CosFai;
+                    lbFreq.Content = dandick.Frequency;
+                    lbFreqC.Content = dandick.FrequencyC;
+                });
+                Thread.Sleep(500);
+            }
+        }
+
+        private void Button_Click_StopReadACSourceData(object sender, RoutedEventArgs e)
+        {
+            _cts?.Cancel();
+            gridData.Visibility=Visibility.Collapsed;
         }
     }
 }
