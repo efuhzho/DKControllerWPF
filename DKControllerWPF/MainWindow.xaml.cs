@@ -31,7 +31,7 @@ namespace DKControllerWPF
             cbxSerialPortsNames.Items.Clear();
             //初始化串口列表
             string[] ports = SerialPort.GetPortNames();
-           
+            Array.Sort(ports);
             foreach (string port in ports)
             {
                 cbxSerialPortsNames.Items.Add(port);
