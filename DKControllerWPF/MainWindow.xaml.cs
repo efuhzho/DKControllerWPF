@@ -191,10 +191,10 @@ namespace DKControllerWPF
             {
                 ReadDCSourceRangesResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
 
-                txbDCURangeCount.Text = dandick.DCI_RangesCount.ToString();
+                txbDCURangeCount.Text = dandick.DCU_RangesCount.ToString();
                 txbDCIRangeCount.Text = dandick.DCI_RangesCount.ToString();
                 cbxDCURangs.ItemsSource = dandick.DCU_Ranges;
-                cbxDCIRangs.ItemsSource = dandick.DCU_Ranges;
+                cbxDCIRangs.ItemsSource = dandick.DCI_Ranges;
             }
         }
 
@@ -212,7 +212,7 @@ namespace DKControllerWPF
             ReadDCMeterRangesMesseage.Text = d.Message;
             if (d.IsSuccess)
             {
-                ReadDCSourceRangesResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
+                ReadDCMeterRangesResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
 
                 txbDCMURangeCount.Text = dandick.DCM_URangesCount.ToString();
                 txbDCMIRangeCount.Text = dandick.DCM_IRangesCount.ToString();
@@ -239,7 +239,7 @@ namespace DKControllerWPF
             tbxSetDisplayPageMesseage.Text = d.Message;
             if (d.IsSuccess)
             {
-                tbxSetDisplayPage.Text = SoftBasic.ByteToHexString(d.Content, ' ');
+                tbxSetDisplayPageResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
             }
             tbxSetDisplayPage.Text = dandick.DisplayPage.ToString();
 
@@ -252,8 +252,6 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_StopACSource(object sender, RoutedEventArgs e)
         {
-           
-
             var d = dandick.StopACSource();
             tbxStopACSourceErrorCode.Text = d.ErrorCode.ToString();
             tbxStopACSourceIsSuccess.Text = d.IsSuccess.ToString();
@@ -354,7 +352,7 @@ namespace DKControllerWPF
                 tbxWriteACSourceAmplitudeMesseage.Text = result.Message.ToString();
                 if (result.IsSuccess)
                 {
-                    tbxWriteACSourceAmplitudeResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                    tbxWriteACSourceAmplitudeResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
                 }
             }
             catch (Exception ex)
@@ -389,7 +387,7 @@ namespace DKControllerWPF
                 tbxWritePhaseMesseage.Text = result.Message.ToString();
                 if (result.IsSuccess)
                 {
-                    tbxWriteACSourceAmplitudeResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                    tbxWritePhaseResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
                 }
             }
             catch (Exception ex)
@@ -418,7 +416,7 @@ namespace DKControllerWPF
                 tbxWriteFrequencyMesseage.Text = result.Message.ToString();
                 if (result.IsSuccess)
                 {
-                    tbxWriteACSourceAmplitudeResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                    tbxWriteFrequencyResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
                 }
             }
             catch (Exception ex)
@@ -444,7 +442,7 @@ namespace DKControllerWPF
             tbxSetClosedLoopMesseage.Text = result.Message.ToString();
             if (result.IsSuccess)
             {
-                tbxSetClosedLoopResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                tbxSetClosedLoopResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
             }
             tbxSetClosedLoop.Text = dandick.CloseLoopMode.ToString();
             tbxHarmonicMode.Text = dandick.HarmonicMode.ToString();
@@ -483,7 +481,7 @@ namespace DKControllerWPF
 
                 if (result.IsSuccess)
                 {
-                    tbxWriteHarmonicsResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                    tbxWriteHarmonicsResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
                 }
             }
             catch (Exception ex)
@@ -525,7 +523,7 @@ namespace DKControllerWPF
 
                 if (result.IsSuccess)
                 {
-                    tbxWriteWattPowerResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                    tbxWriteWattPowerResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
                 }
 
             }
@@ -555,7 +553,7 @@ namespace DKControllerWPF
 
                 if (result.IsSuccess)
                 {
-                    tbxWriteWattLessPowerResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                    tbxWriteWattLessPowerResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
                 }
 
             }
@@ -587,7 +585,7 @@ namespace DKControllerWPF
                     tbxReadACSourceDataMesseage.Text = result.Message.ToString();
                     if (result.IsSuccess)
                     {
-                        tbxReadACSourceDataResponse.Text = SoftBasic.ByteToHexString(result.Content);
+                        tbxReadACSourceDataResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
                     }
                     lbUA.Content = dandick.UA;
                     lbUB.Content = dandick.UB;
