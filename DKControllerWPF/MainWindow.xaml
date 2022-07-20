@@ -73,6 +73,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <!--#region  Handshake-->
                         <GroupBox Grid.Row="0"
@@ -586,6 +587,81 @@
                             </Grid>
                         </GroupBox>
                         <!--#endregion SetDisplayPage-->
+                        <!--#region SetSystemMode -->
+                        <GroupBox Grid.Row="5"
+                                  Header="设置系统模式"
+                                  Margin="10"
+                                  Background="AliceBlue">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Margin="10">
+                                    <Button Content="SetSystemMode"
+                                            Padding="10,5"
+                                            Margin="5"
+                                            Click="Button_Click_SetSystemMode"/>
+                                    <TextBlock Text="IsSuccess:"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="10,5,0,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxSetSystemModeIsSuccess"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="ErrorCode:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxSetSystemModeErrorCode"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <TextBlock Text="Message:"
+                                               Margin="10,5,0,5"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Name="tbxSetSystemModeMesseage"
+                                             VerticalContentAlignment="Center"
+                                             Margin="5"
+                                             Padding="5" />
+                                    <Label Content="SystemMode:"
+                                           VerticalContentAlignment="Center"
+                                           Margin="10,5,0,5" />
+                                    <ComboBox x:Name="cbxSetSystemMode"
+                                              Margin="5"
+                                              Padding="5"
+                                              SelectedIndex="0"
+                                              IsReadOnly="True" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <TextBlock Text="Content:下位机回复的原始报文"
+                                               Margin="10,5"
+                                               Padding="5" />
+                                    <TextBox x:Name="tbxSetSystemModeResponse"
+                                             Margin="10,5"
+                                             Padding="10"
+                                             Background="AliceBlue"
+                                             TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                                <WrapPanel Grid.Row="2">
+                                    <StackPanel Margin="10"
+                                                Orientation="Horizontal">
+                                        <Label Content="当前显示页面："
+                                               Margin="5" />
+                                        <TextBox x:Name="tbxSetSystemMode"
+                                                 VerticalContentAlignment="Center"
+                                                 Margin="5"
+                                                 Padding="5" />
+                                    </StackPanel>
+                                </WrapPanel>
+                            </Grid>
+                        </GroupBox>
+                        
+                        <!--#endregion-->
                     </Grid>
                 </ScrollViewer>
             </TabItem>

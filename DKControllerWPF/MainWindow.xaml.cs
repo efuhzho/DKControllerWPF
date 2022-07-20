@@ -41,6 +41,9 @@ namespace DKControllerWPF
             cbxSetDisplayPage.ItemsSource = Enum.GetNames(typeof(DisplayPage));
             cbxSetDisplayPage.SelectedIndex = (int)dandick.DisplayPage;
 
+            cbxSetSystemMode.ItemsSource = Enum.GetNames(typeof(SystemMode));
+            cbxSetSystemMode.SelectedIndex = (int)dandick.SystemMode;
+
             //初始化接线模式设置列表框
             cbxSetWireMode.ItemsSource = Enum.GetNames(typeof(WireMode));
             cbxSetWireMode.SelectedIndex = (int)dandick.WireMode;
@@ -243,6 +246,24 @@ namespace DKControllerWPF
             }
             tbxSetDisplayPage.Text = dandick.DisplayPage.ToString();
 
+        }
+
+        /// <summary>
+        /// 设置系统模式
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_SetSystemMode(object sender, RoutedEventArgs e)
+        {
+            var d = dandick.SetSystemMode((SystemMode)Enum.Parse(typeof(SystemMode), cbxSetSystemMode.SelectedItem.ToString()));
+            tbxSetSystemModeErrorCode.Text = d.ErrorCode.ToString();
+            tbxSetSystemModeIsSuccess.Text = d.IsSuccess.ToString();
+            tbxSetSystemModeMesseage.Text = d.Message;
+            if (d.IsSuccess)
+            {
+                tbxSetSystemModeResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
+            }
+            tbxSetSystemMode.Text = dandick.SystemMode.ToString();
         }
 
         /// <summary>
@@ -618,7 +639,7 @@ namespace DKControllerWPF
                     lbFreq.Content = dandick.Frequency;
                     lbFreqC.Content = dandick.FrequencyC;
                 });
-                Thread.Sleep(500);
+                //Thread.Sleep(500);
             }
         }
 
@@ -627,5 +648,7 @@ namespace DKControllerWPF
             _cts?.Cancel();
             gridData.Visibility=Visibility.Collapsed;
         }
+
+      
     }
 }
