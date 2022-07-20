@@ -510,6 +510,18 @@ namespace DKControllerWPF
                 MessageBox.Show(ex.Message);
             }
         }
+        /// <summary>
+        /// 清空指定通道谐波
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_ClearHarmonics(object sender, RoutedEventArgs e)
+        {
+            var result = dandick.ClearHarmonics();
+            tbxWriteHarmonicsIsSuccess.Text = result.IsSuccess.ToString();
+            tbxWriteHarmonicsErrorCode.Text = result.ErrorCode.ToString();
+            tbxWriteHarmonicsMesseage.Text = result.Message.ToString();
+        }
 
         private void isMultiChannels_Checked(object sender, RoutedEventArgs e)
         {
@@ -639,12 +651,13 @@ namespace DKControllerWPF
                     lbFreq.Content = dandick.Frequency;
                     lbFreqC.Content = dandick.FrequencyC;
                 });
-                //Thread.Sleep(500);
+                Thread.Sleep(100);
             }
         }
 
         private void Button_Click_StopReadACSourceData(object sender, RoutedEventArgs e)
         {
+            Button_Click_StopACSource( sender,  e);
             _cts?.Cancel();
             gridData.Visibility=Visibility.Collapsed;
         }

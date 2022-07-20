@@ -1442,6 +1442,10 @@
                                             Padding="10,5"
                                             Margin="10"
                                             Click="Button_Click_WriteHarmonics" />
+                                    <Button Content="ClearHarmonics"
+                                            Padding="10,5"
+                                            Margin="10"
+                                            Click="Button_Click_ClearHarmonics" />
                                     <TextBlock Text="IsSuccess:"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
