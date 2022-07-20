@@ -31,10 +31,12 @@ namespace DKControllerWPF
             cbxSerialPortsNames.Items.Clear();
             //初始化串口列表
             string[] ports = SerialPort.GetPortNames();
+           
             foreach (string port in ports)
             {
                 cbxSerialPortsNames.Items.Add(port);
             }
+            
             cbxSerialPortsNames.SelectedIndex = 0;
 
             //初始化显示页面设置列表框
@@ -476,7 +478,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_WriteHarmonics(object sender, RoutedEventArgs e)
         {
-            ChannelsHarmonic channelsHarmonic;         
+            ChannelsHarmonic channelsHarmonic;
             try
             {
                 Harmonics harmonic = new Harmonics()
@@ -517,10 +519,33 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_ClearHarmonics(object sender, RoutedEventArgs e)
         {
-            var result = dandick.ClearHarmonics();
-            tbxWriteHarmonicsIsSuccess.Text = result.IsSuccess.ToString();
-            tbxWriteHarmonicsErrorCode.Text = result.ErrorCode.ToString();
-            tbxWriteHarmonicsMesseage.Text = result.Message.ToString();
+            try
+            {
+                ChannelsHarmonic channelsHarmonic;
+                if ((bool)isMultiChannels.IsChecked)
+                {
+                    channelsHarmonic = (ChannelsHarmonic)int.Parse(HarmonicsMultiChannelsValue.Text);
+                }
+                else
+                {
+                    channelsHarmonic = (ChannelsHarmonic)Enum.Parse(typeof(ChannelsHarmonic), cbxHarmonicChannels.Text);
+
+                }
+                var result = dandick.ClearHarmonics(channelsHarmonic);
+                tbxWriteHarmonicsIsSuccess.Text = result.IsSuccess.ToString();
+                tbxWriteHarmonicsErrorCode.Text = result.ErrorCode.ToString();
+                tbxWriteHarmonicsMesseage.Text = result.Message.ToString();
+                if (result.IsSuccess)
+                {
+                    tbxWriteHarmonicsResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        
         }
 
         private void isMultiChannels_Checked(object sender, RoutedEventArgs e)
