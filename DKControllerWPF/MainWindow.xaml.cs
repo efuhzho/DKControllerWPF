@@ -6,15 +6,115 @@ using System.IO.Ports;
 using System.Windows;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace DKControllerWPF
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private DK81Device dandick;
+        private readonly DK81Device dandick;
+        readonly List<int> _BaudRates = new List<int>()
+        {
+           1200,2400,4800,9600,14400,19200,38400,56000,57600,115200
+        };
+
+        #region 属性
+
+        /// <summary>
+        /// 波特率
+        /// </summary>
+        public List<int> BaudRates
+        {
+            get { return _BaudRates; }
+        }
+
+        //private readonly string[] _ElectricityType = Enum.GetNames(typeof(ElectricityType));
+        ///// <summary>
+        ///// 电能校验类型下拉框列表
+        ///// </summary>
+        //public string[] Electricity_Type
+        //{
+        //    get { return _ElectricityType; }
+        //}
+
+        public float MPC { get; set; } = 3600;
+        public float MQC { get; set; } = 3600;
+        public uint MDIV { get; set; } = 1000;
+        public uint MROU { get; set; } = 10;
+
+
+        private ElectricityType _electricityType;
+        /// <summary>
+        /// 电能校验类型
+        /// </summary>
+        public ElectricityType EType
+        {
+            get { return _electricityType; }
+            set
+            {
+                _electricityType = (ElectricityType)Enum.Parse(typeof(ElectricityType), value.ToString());
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _IsSuccess;
+
+        public bool IsSuccess
+        {
+            get { return _IsSuccess; }
+            private set
+            {
+                _IsSuccess = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int _ErrorCode;
+
+        public int ErrorCode
+        {
+            get { return _ErrorCode; }
+            private set
+            {
+                _ErrorCode = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _Message;
+
+        public string Message
+        {
+            get { return _Message; }
+            private set
+            {
+                _Message = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _ResponseContent;
+
+        public string ResponseContent
+        {
+            get { return _ResponseContent; }
+            private set
+            {
+                _ResponseContent = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion 属性
+
+
+
 
         public MainWindow()
         {
@@ -36,8 +136,8 @@ namespace DKControllerWPF
             {
                 cbxSerialPortsNames.Items.Add(port);
             }
-            
-            cbxSerialPortsNames.SelectedIndex = 0;
+
+            cbxSerialPortsNames.SelectedIndex = 0;           
 
             //初始化显示页面设置列表框
             cbxSetDisplayPage.ItemsSource = Enum.GetNames(typeof(DisplayPage));
@@ -66,6 +166,8 @@ namespace DKControllerWPF
 
             //初始化无功功率设置通道列表
             cbxChannelWattLessPower.ItemsSource = Enum.GetNames(typeof(ChannelWattLessPower));
+
+            cbxEType.ItemsSource = Enum.GetNames(typeof(ElectricityType));
         }
 
         /// <summary>
@@ -75,7 +177,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-           
+
             var result = dandick.Handshake();
             txbIsSuccess.Text = result.IsSuccess.ToString();
             txbErrorCode.Text = result.ErrorCode.ToString();
@@ -83,7 +185,7 @@ namespace DKControllerWPF
             if (result.IsSuccess)
             {
                 txbResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
-                txbIsPQ.Text = dandick.IsPQ_Activated.ToString();
+                txbIsPQ.Text = dandick.IsElectricity_Activated.ToString();
                 txbIsDCS.Text = dandick.IsDCU_Activated.ToString();
                 txbIsDCM.Text = dandick.IsDCM_Activated.ToString();
                 txbIsACSource.Text = dandick.IsACU_Activated.ToString();
@@ -100,7 +202,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_ReadACSourceRanges(object sender, RoutedEventArgs e)
         {
-           
+
             var d = dandick.ReadACSourceRanges();
             ReadACSourceRangesIsSuccess.Text = d.IsSuccess.ToString();
             ReadACSourceRangesErrorCode.Text = d.ErrorCode.ToString();
@@ -130,7 +232,7 @@ namespace DKControllerWPF
         {
             try
             {
-                dandick.SerialPortInni(cbxSerialPortsNames.SelectedValue.ToString());
+                dandick.SerialPortInni(cbxSerialPortsNames.SelectedValue.ToString(), (int)cbxBaudRate.SelectedValue);
                 dandick.Open();
                 if (dandick.IsOpen())
                 {
@@ -187,7 +289,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_ReadDCSourceRanges(object sender, RoutedEventArgs e)
         {
-           
+
             var d = dandick.ReadDCSourceRanges();
             ReadDCSourceRangesIsSuccess.Text = d.IsSuccess.ToString();
             ReadDCSourceRangesErrorCode.Text = d.ErrorCode.ToString();
@@ -210,7 +312,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_ReadDCMeterRanges(object sender, RoutedEventArgs e)
         {
-            
+
             var d = dandick.ReadDCMeterRanges();
             ReadDCMeterRangesIsSuccess.Text = d.IsSuccess.ToString();
             ReadDCMeterRangesErrorCode.Text = d.ErrorCode.ToString();
@@ -356,7 +458,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_WriteACSourceAmplitude(object sender, RoutedEventArgs e)
         {
-            
+
             try
             {
                 float[] amplitude = new float[9];
@@ -375,7 +477,7 @@ namespace DKControllerWPF
                 tbxWriteACSourceAmplitudeMesseage.Text = result.Message.ToString();
                 if (result.IsSuccess)
                 {
-                    tbxWriteACSourceAmplitudeResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
+                    tbxWriteACSourceAmplitudeResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
                 }
             }
             catch (Exception ex)
@@ -393,7 +495,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_WritePhase(object sender, RoutedEventArgs e)
         {
-           
+
             try
             {
                 float[] amplitude = new float[6];
@@ -410,7 +512,7 @@ namespace DKControllerWPF
                 tbxWritePhaseMesseage.Text = result.Message.ToString();
                 if (result.IsSuccess)
                 {
-                    tbxWritePhaseResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
+                    tbxWritePhaseResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
                 }
             }
             catch (Exception ex)
@@ -427,7 +529,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_WriteFrequency(object sender, RoutedEventArgs e)
         {
-           
+
             try
             {
                 float f = float.Parse(txbWriteFrequency.Text);
@@ -439,7 +541,7 @@ namespace DKControllerWPF
                 tbxWriteFrequencyMesseage.Text = result.Message.ToString();
                 if (result.IsSuccess)
                 {
-                    tbxWriteFrequencyResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
+                    tbxWriteFrequencyResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
                 }
             }
             catch (Exception ex)
@@ -456,7 +558,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_SetClosedLoop(object sender, RoutedEventArgs e)
         {
-         
+
             CloseLoopMode closeLoopMode = (CloseLoopMode)Enum.Parse(typeof(CloseLoopMode), cbxSetClosedLoopMode.Text);
             HarmonicMode harmonicMode = (HarmonicMode)Enum.Parse(typeof(HarmonicMode), cbxSetClosedLoopHarmonicMode.Text);
             var result = dandick.SetClosedLoop(closeLoopMode, harmonicMode);
@@ -465,7 +567,7 @@ namespace DKControllerWPF
             tbxSetClosedLoopMesseage.Text = result.Message.ToString();
             if (result.IsSuccess)
             {
-                tbxSetClosedLoopResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
+                tbxSetClosedLoopResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
             }
             tbxSetClosedLoop.Text = dandick.CloseLoopMode.ToString();
             tbxHarmonicMode.Text = dandick.HarmonicMode.ToString();
@@ -489,14 +591,14 @@ namespace DKControllerWPF
                 };
                 if ((bool)isMultiChannels.IsChecked)
                 {
-                    channelsHarmonic=(ChannelsHarmonic)int.Parse(HarmonicsMultiChannelsValue.Text);
+                    channelsHarmonic = (ChannelsHarmonic)int.Parse(HarmonicsMultiChannelsValue.Text);
                 }
                 else
                 {
-                     channelsHarmonic = (ChannelsHarmonic)Enum.Parse(typeof(ChannelsHarmonic), cbxHarmonicChannels.Text);
-                 
+                    channelsHarmonic = (ChannelsHarmonic)Enum.Parse(typeof(ChannelsHarmonic), cbxHarmonicChannels.Text);
+
                 }
-            
+
                 var result = dandick.WriteHarmonics(channelsHarmonic, harmonic);
                 tbxWriteHarmonicsIsSuccess.Text = result.IsSuccess.ToString();
                 tbxWriteHarmonicsErrorCode.Text = result.ErrorCode.ToString();
@@ -504,7 +606,7 @@ namespace DKControllerWPF
 
                 if (result.IsSuccess)
                 {
-                    tbxWriteHarmonicsResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
+                    tbxWriteHarmonicsResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
                 }
             }
             catch (Exception ex)
@@ -545,7 +647,7 @@ namespace DKControllerWPF
 
                 MessageBox.Show(ex.Message);
             }
-        
+
         }
 
         private void isMultiChannels_Checked(object sender, RoutedEventArgs e)
@@ -574,14 +676,14 @@ namespace DKControllerWPF
                 ChannelWattPower channelWattPower = (ChannelWattPower)(byte)Enum.Parse(typeof(ChannelWattPower), cbxChannelWattPower.Text);
                 //ChannelWattPower channelWattPower = (ChannelWattPower)cbxChannelWattPower.SelectedIndex;
                 float data = float.Parse(tbxWriteWattPowerData.Text);
-                var result=dandick.WriteWattPower(channelWattPower, data);
+                var result = dandick.WriteWattPower(channelWattPower, data);
                 tbxWriteWattPowerIsSuccess.Text = result.IsSuccess.ToString();
                 tbxWriteWattPowerErrorCode.Text = result.ErrorCode.ToString();
                 tbxWriteWattPowerMesseage.Text = result.Message.ToString();
 
                 if (result.IsSuccess)
                 {
-                    tbxWriteWattPowerResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
+                    tbxWriteWattPowerResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
                 }
 
             }
@@ -589,7 +691,7 @@ namespace DKControllerWPF
             {
                 MessageBox.Show(ex.Message);
             }
-           
+
         }
 
         /// <summary>
@@ -607,11 +709,11 @@ namespace DKControllerWPF
                 var result = dandick.WriteWattLessPower(channelWattLessPower, data);
                 tbxWriteWattLessPowerIsSuccess.Text = result.IsSuccess.ToString();
                 tbxWriteWattLessPowerErrorCode.Text = result.ErrorCode.ToString();
-                tbxWriteWattLessPowerMesseage.Text = result.Message.ToString();
+                tbxWriteWattLessPowerMesseage.Text = result.Message;
 
                 if (result.IsSuccess)
                 {
-                    tbxWriteWattLessPowerResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
+                    tbxWriteWattLessPowerResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
                 }
 
             }
@@ -623,14 +725,29 @@ namespace DKControllerWPF
         }
 
         private CancellationTokenSource _cts;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// 开始读取数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_ReadACSourceData(object sender, RoutedEventArgs e)
         {
-            gridData.Visibility = Visibility.Visible ;
+            gridData.Visibility = Visibility.Visible;
             _cts = new CancellationTokenSource();
             //开启线程
             Task.Run(new Action(ReadingACSourceData), _cts.Token);
         }
 
+        /// <summary>
+        /// 更新界面
+        /// </summary>
         private void ReadingACSourceData()
         {
             while (!_cts.IsCancellationRequested)
@@ -643,14 +760,16 @@ namespace DKControllerWPF
                     tbxReadACSourceDataMesseage.Text = result.Message.ToString();
                     if (result.IsSuccess)
                     {
-                        tbxReadACSourceDataResponse.Text = SoftBasic.ByteToHexString(result.Content,' ');
+                        tbxReadACSourceDataResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
                     }
                     lbUA.Content = dandick.UA;
                     lbUB.Content = dandick.UB;
                     lbUC.Content = dandick.UC;
+                    lbURange.Content = dandick.ACU_Range;
                     lbIA.Content = dandick.IA;
-                    lbIB.Content= dandick.IB;
-                    lbIC.Content= dandick.IC;
+                    lbIB.Content = dandick.IB;
+                    lbIC.Content = dandick.IC;
+                    lbIRange.Content = dandick.ACI_Range;
                     lbFaiUA.Content = dandick.UaPhase;
                     lbFaiUB.Content = dandick.UbPhase;
                     lbFaiUC.Content = dandick.UcPhase;
@@ -676,17 +795,82 @@ namespace DKControllerWPF
                     lbFreq.Content = dandick.Frequency;
                     lbFreqC.Content = dandick.FrequencyC;
                 });
-                Thread.Sleep(100);
+                Thread.Sleep(200);
             }
         }
 
+        /// <summary>
+        /// 停止读取数据，取消线程，关闭源输出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_StopReadACSourceData(object sender, RoutedEventArgs e)
         {
-            Button_Click_StopACSource( sender,  e);
+            Button_Click_StopACSource(sender, e);
             _cts?.Cancel();
-            gridData.Visibility=Visibility.Collapsed;
+            gridData.Visibility = Visibility.Collapsed;
         }
 
-      
+        /// <summary>
+        /// 【设置电能校验参数并启动电能校验】
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var result = dandick.WriteElectricity(EType, MPC, MQC, MDIV, MROU);
+            Update(result);
+        }
+
+        private void Update(dynamic operateResult)
+        {
+            IsSuccess = operateResult.IsSuccess;
+            ErrorCode = operateResult.ErrorCode;
+            Message = operateResult.Message;
+            ResponseContent = string.Empty;
+            if (operateResult.IsSuccess)
+            {
+                ResponseContent = SoftBasic.ByteToHexString(operateResult.Content,' ');
+            }
+        }
+
+        private char _ElectricityFlag;
+
+        public char EFlag
+        {
+            get { return _ElectricityFlag; }
+            private set { _ElectricityFlag = value; NotifyPropertyChanged(); }
+        }
+
+        private float _EV;
+
+        public float EV
+        {
+            get { return _EV; }
+            private set { _EV = value; NotifyPropertyChanged(); }
+        }
+
+        private uint _ROUND;
+
+        public uint ROUND
+        {
+            get { return _ROUND; }
+            private set { _ROUND = value; NotifyPropertyChanged(); }
+        }
+
+        private void ReadElectricityDeviation(object sender, RoutedEventArgs e)
+        {
+            var result = dandick.ReadElectricityDeviation();
+            if (result.IsSuccess)
+            {
+                byte[] data = new byte[1] { dandick.ElectricityDeviationDataFlag };
+                EFlag = Encoding.ASCII.GetChars(data)[0];
+                EV = dandick.ElectricityDeviationData;
+                ROUND = dandick.ElectricityMeasuredRounds;                
+            }
+            Update(result);
+        }
+
+       
     }
 }
