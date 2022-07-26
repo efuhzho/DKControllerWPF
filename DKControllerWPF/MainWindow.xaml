@@ -61,58 +61,76 @@
                           Content="TabStripPlacement"
                           Margin="10"
                           Padding="5"
-                          Checked="tbtnTabControl_Checked"
-                          Unchecked="tbtnTabControl_Unchecked" />
+                          Unchecked="tbtnTabControl_Checked"
+                          Checked="tbtnTabControl_Unchecked" />
         </StackPanel>
         <!--#endregion 设置-->
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
-                    Grid.ColumnSpan="100"
-                    Background="LightBlue">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="IsSuccess:"
+                    Background="SteelBlue">
+            <StackPanel Orientation="Horizontal"
+                        Margin="35,10,10,10"
+                        Background="WhiteSmoke">
+                <TextBlock Text="IsSuccess:" Foreground="SteelBlue"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
-                           Margin="10"
-                           Padding="10" />
-                <Label Margin="10"
-                       Padding="10"
-                       Background="White"
-                       Content="{Binding IsSuccess}" />
+                           Padding="5"
+                           FontSize="15"
+                           FontWeight="Medium" />
+                <Label VerticalContentAlignment="Center"
+                       HorizontalContentAlignment="Center"
+                       Content="{Binding IsSuccess}"
+                       FontSize="15"
+                       FontWeight="Normal" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal"
+                        Margin="10"
+                        Background="WhiteSmoke">
                 <TextBlock Text="ErrorCode:"
+                           Foreground="SteelBlue"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
-                           Margin="10"
-                           Padding="10" />
-                <Label Margin="10"
-                       Padding="10"
-                       Background="White"
-                       Content="{Binding ErrorCode}" />
+                           Padding="5"
+                           FontSize="15"
+                           FontWeight="Medium" />
+                <Label VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center"
+                       HorizontalContentAlignment="Center"
+                       Content="{Binding ErrorCode}"
+                       FontSize="15"
+                       FontWeight="Normal" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal"
+                        Margin="10"
+                        Background="WhiteSmoke">
                 <TextBlock Text="Message:"
+                           Foreground="SteelBlue"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
-                           Margin="10"
-                           Padding="10" />
-                <Label Margin="10"
-                       Padding="10"
-                       Background="White"
-                       Content="{Binding Message}" />
+                           Padding="5"
+                           FontSize="15"
+                           FontWeight="Medium" />
+                <Label VerticalContentAlignment="Center"
+                       Content="{Binding Message}"
+                       FontSize="15"
+                       FontWeight="Normal" />
             </StackPanel>
-            <TextBlock Text="下位机回复的原始报文 Content:"
-                       Margin="10"
-                       Padding="10" />
+            <TextBlock Text="Content:"
+                       FontSize="15" Margin="30,0,0,0"
+                       FontWeight="Medium"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center" Foreground="White"/>
             <Label Margin="10"
-                   Padding="10"
-                   Background="White"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Center"
                    Focusable="True"
                    Cursor="Hand"
-                   Content="{Binding ResponseContent}" />
+                   Content="{Binding ResponseContent}"
+                   FontSize="15"
+                   FontWeight="Normal"
+                   Background="WhiteSmoke" />
         </StackPanel>
-        <TabControl TabStripPlacement="Left"
+        <TabControl TabStripPlacement="Bottom"
                     Name="tabControl"
                     Grid.Row="2"
                     Margin="10">
@@ -2605,10 +2623,11 @@
                                                Margin="10" />
                                     <ComboBox Grid.Column="1"
                                               Margin="10"
+                                              Padding="5"
                                               VerticalContentAlignment="Center"
                                               HorizontalContentAlignment="Center"
                                               SelectedIndex="0"
-                                             SelectedValue="{Binding EType, Mode=OneWayToSource}"
+                                              SelectedValue="{Binding EType, Mode=OneWayToSource}"
                                               Name="cbxEType" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
@@ -2621,6 +2640,7 @@
                                                Margin="10" />
                                     <TextBox Grid.Column="1"
                                              Margin="10"
+                                             Padding="5"
                                              VerticalContentAlignment="Center"
                                              HorizontalContentAlignment="Center"
                                              MinWidth="80"
@@ -2636,6 +2656,7 @@
                                                Margin="10" />
                                     <TextBox Grid.Column="1"
                                              Margin="10"
+                                             Padding="5"
                                              VerticalContentAlignment="Center"
                                              HorizontalContentAlignment="Center"
                                              MinWidth="80"
@@ -2651,6 +2672,7 @@
                                                Margin="10" />
                                     <TextBox Grid.Column="1"
                                              Margin="10"
+                                             Padding="5"
                                              VerticalContentAlignment="Center"
                                              HorizontalContentAlignment="Center"
                                              MinWidth="50"
@@ -2666,6 +2688,7 @@
                                                Margin="10" />
                                     <TextBox Grid.Column="1"
                                              Margin="10"
+                                             Padding="5"
                                              VerticalContentAlignment="Center"
                                              HorizontalContentAlignment="Center"
                                              MinWidth="50"
@@ -2703,10 +2726,11 @@
                                     <TextBlock Text="电能有效标志 Flag："
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Center"
-                                               Margin="10" />
+                                               Margin="10"
+                                               Padding="5" />
                                     <Label Grid.Column="1"
                                            Margin="10"
-                                           Background="White"
+                                           Padding="5"
                                            VerticalContentAlignment="Center"
                                            HorizontalContentAlignment="Center"
                                            Content="{Binding EFlag}" />
@@ -2718,14 +2742,15 @@
                                     <TextBlock Text="电能误差（%）："
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Center"
-                                               Margin="10" />
+                                               Margin="10"
+                                               Padding="5" />
                                     <Label Grid.Column="1"
                                            Margin="10"
                                            VerticalContentAlignment="Center"
                                            HorizontalContentAlignment="Center"
                                            MinWidth="80"
                                            Content="{Binding EV}"
-                                           Background="White" />
+                                           Padding="5" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
                                             Background="LightBlue"
@@ -2734,14 +2759,15 @@
                                     <TextBlock Text="当前校验圈数："
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Center"
-                                               Margin="10" />
+                                               Margin="10"
+                                               Padding="5" />
                                     <Label Grid.Column="1"
                                            Margin="10"
+                                           Padding="5"
                                            VerticalContentAlignment="Center"
                                            HorizontalContentAlignment="Center"
                                            MinWidth="80"
-                                           Content="{Binding ROUND}"
-                                           Background="White" />
+                                           Content="{Binding ROUND}" />
                                 </StackPanel>
                             </Grid>
                         </GroupBox>
