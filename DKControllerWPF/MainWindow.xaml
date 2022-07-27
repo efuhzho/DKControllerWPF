@@ -6,9 +6,45 @@
         xmlns:local="clr-namespace:DKControllerWPF"
         mc:Ignorable="d"
         Title="DKCommunicationTEST"
-        Height="900"
-        Width="1600"
+        Height="1080"
+        Width="1920"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Padding"
+                    Value="5" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Padding"
+                    Value="5" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="SelectedIndex"
+                    Value="0" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding"
+                    Value="5" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+        </Style>
+        <Style TargetType="StackPanel">
+            <Setter Property="Margin"
+                    Value=" 10" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Padding"
+                    Value="10" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -18,19 +54,14 @@
         <!--#region 设置-->
         <StackPanel Orientation="Horizontal"
                     Margin="10">
-            <TextBlock Text="串口号:"
-                       Margin="10"
-                       Padding="5" />
+            <TextBlock Text="串口号:" />
             <ComboBox x:Name="cbxSerialPortsNames"
                       MinWidth="100"
-                      Margin="10"
-                      SelectedIndex="0"
-                      VerticalContentAlignment="Center" />
+                      Margin="5"
+                      SelectedIndex="0" />
             <ComboBox x:Name="cbxBaudRate"
                       MinWidth="100"
-                      Margin="10"
-                      SelectedIndex="9"
-                      VerticalContentAlignment="Center"
+                      SelectedIndex="1"
                       ItemsSource="{Binding BaudRates}" />
             <Button x:Name="btnOpen"
                     Content="打开串口"
@@ -39,13 +70,15 @@
                     Click="btnOpen_Click" />
             <Button x:Name="btnClose"
                     Content="关闭串口"
-                    Margin="10"
+                    VerticalAlignment="Center"
                     Padding="5"
+                    Margin="10"
                     Click="btnClose_Click"
                     IsEnabled="False" />
             <Button x:Name="btnrefresh"
                     Content="刷新串口列表"
                     Margin="10"
+                    VerticalAlignment="Center"
                     Padding="5"
                     Click="btnrefresh_Click" />
             <Label Content="数据格式："
@@ -54,82 +87,53 @@
                    VerticalContentAlignment="Center" />
             <ComboBox MinWidth="100"
                       Name="cbxDataFormat"
-                      Margin="0,10,10,10"
+                      VerticalAlignment="Center"
                       Padding="5"
-                      SelectionChanged="cbxDataFormat_SelectionChanged" />
+                      SelectionChanged="cbxDataFormat_SelectionChanged" SelectedIndex="3"/>
             <ToggleButton x:Name="tbtnTabControl"
                           Content="TabStripPlacement"
                           Margin="10"
+                          VerticalAlignment="Center"
                           Padding="5"
                           Unchecked="tbtnTabControl_Checked"
                           Checked="tbtnTabControl_Unchecked" />
         </StackPanel>
         <!--#endregion 设置-->
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal"
-                    Background="SteelBlue">
+        <!--#region 操作结果信息 -->
+        <WrapPanel Grid.Row="1"
+                   Margin="10"
+                   Orientation="Horizontal"
+                   Background="SteelBlue"
+                   Name="stkOperateResultInfo">
             <StackPanel Orientation="Horizontal"
-                        Margin="35,10,10,10"
                         Background="WhiteSmoke">
-                <TextBlock Text="IsSuccess:" Foreground="SteelBlue"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Padding="5"
-                           FontSize="15"
-                           FontWeight="Medium" />
-                <Label VerticalContentAlignment="Center"
-                       HorizontalContentAlignment="Center"
-                       Content="{Binding IsSuccess}"
-                       FontSize="15"
-                       FontWeight="Normal" />
+                <TextBlock Text="IsSuccess:"
+                           Foreground="SteelBlue" />
+                <Label Content="{Binding IsSuccess}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal"
-                        Margin="10"
                         Background="WhiteSmoke">
                 <TextBlock Text="ErrorCode:"
-                           Foreground="SteelBlue"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Padding="5"
-                           FontSize="15"
-                           FontWeight="Medium" />
-                <Label VerticalContentAlignment="Center"
-                       HorizontalAlignment="Center"
-                       HorizontalContentAlignment="Center"
-                       Content="{Binding ErrorCode}"
-                       FontSize="15"
-                       FontWeight="Normal" />
+                           Foreground="SteelBlue" />
+                <Label Content="{Binding ErrorCode}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal"
-                        Margin="10"
                         Background="WhiteSmoke">
                 <TextBlock Text="Message:"
-                           Foreground="SteelBlue"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Padding="5"
-                           FontSize="15"
-                           FontWeight="Medium" />
-                <Label VerticalContentAlignment="Center"
-                       Content="{Binding Message}"
-                       FontSize="15"
-                       FontWeight="Normal" />
+                           Foreground="SteelBlue" />
+                <Label Content="{Binding Message}" />
             </StackPanel>
-            <TextBlock Text="Content:"
-                       FontSize="15" Margin="30,0,0,0"
-                       FontWeight="Medium"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center" Foreground="White"/>
-            <Label Margin="10"
-                   VerticalContentAlignment="Center"
-                   HorizontalContentAlignment="Center"
-                   Focusable="True"
-                   Cursor="Hand"
-                   Content="{Binding ResponseContent}"
-                   FontSize="15"
-                   FontWeight="Normal"
-                   Background="WhiteSmoke" />
-        </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Content:"
+                           Foreground="White" />
+                <TextBox Focusable="True"
+                         Cursor="Hand"
+                         Text="{Binding ResponseContent, Mode=OneWay}"
+                         Background="WhiteSmoke"
+                         TextWrapping="Wrap" />
+            </StackPanel>
+        </WrapPanel>
+        <!--#endregion 操作结果信息-->
         <TabControl TabStripPlacement="Bottom"
                     Name="tabControl"
                     Grid.Row="2"
@@ -138,451 +142,228 @@
             <TabItem Header="系统信息"
                      Padding="10">
                 <ScrollViewer>
-                    <Grid Margin="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
+                    <StackPanel>
                         <!--#region  Handshake-->
-                        <GroupBox Grid.Row="0"
-                                  Header="联机命令，读取型号和版本号"
+                        <GroupBox Header="联机命令，读取型号和版本号"
                                   Margin="10"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
+                            <WrapPanel Orientation="Horizontal"
+                                       Margin="10">
+                                <Button Content="HandShake"
+                                        VerticalAlignment="Center"
+                                        Click="ClickCommand" />
+                                <StackPanel Orientation="Horizontal"
                                             Margin="10">
-                                    <Button Content="HandShake"
-                                            Padding="10,5"
-                                            Margin="5"
-                                            Click="Button_Click" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
+                                    <TextBlock Text="设备型号："
                                                VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
                                                Padding="5" />
-                                    <TextBox Text=""
-                                             x:Name="txbIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Text=""
-                                             Name="txbErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Text=""
-                                             Name="txbMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
+                                    <TextBox x:Name="txbModel"
+                                             VerticalAlignment="Center"
                                              Padding="5" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10,5"
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="10">
+                                    <TextBlock Text="系统版本："
+                                               VerticalAlignment="Center"
                                                Padding="5" />
-                                    <TextBox x:Name="txbResponse"
-                                             Margin="10,5"
-                                             Padding="10"
-                                             Background="AliceBlue"
-                                             Text=""
-                                             TextWrapping="WrapWithOverflow" />
+                                    <TextBox x:Name="txbVersion"
+                                             VerticalAlignment="Center"
+                                             Padding="5" />
                                 </StackPanel>
-                                <WrapPanel Grid.Row="2">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="设备型号："
-                                                   Margin="5,10,0,10"
-                                                   Padding="5" />
-                                        <TextBox x:Name="txbModel"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="系统版本："
-                                                   Margin="5,10,0,10"
-                                                   Padding="5" />
-                                        <TextBox x:Name="txbVersion"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="设备编号："
-                                                   Margin="5,10,0,10"
-                                                   Padding="5" />
-                                        <TextBox x:Name="txbSerialNO"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="交流源功能："
-                                                   Margin="5,10,0,10"
-                                                   Padding="5" />
-                                        <TextBox x:Name="txbIsACSource"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="交流表功能："
-                                                   Margin="5,10,0,10"
-                                                   Padding="5" />
-                                        <TextBox x:Name="txbIsACMeter"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5"
-                                                 Text="Defult True" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="直流源功能："
-                                                   Margin="5,10,0,10"
-                                                   Padding="5" />
-                                        <TextBox x:Name="txbIsDCS"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="直流表功能："
-                                                   Margin="5,10,0,10"
-                                                   Padding="5" />
-                                        <TextBox x:Name="txbIsDCM"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="电能功能："
-                                                   Margin="5,10,0,10"
-                                                   Padding="5" />
-                                        <TextBox x:Name="txbIsPQ"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                </WrapPanel>
-                            </Grid>
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="10">
+                                    <TextBlock Text="设备编号："
+                                               VerticalAlignment="Center"
+                                               Padding="5" />
+                                    <TextBox x:Name="txbSerialNO"
+                                             VerticalAlignment="Center"
+                                             Padding="5" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="10">
+                                    <TextBlock Text="交流源功能："
+                                               VerticalAlignment="Center"
+                                               Padding="5" />
+                                    <TextBox x:Name="txbIsACSource"
+                                             VerticalAlignment="Center"
+                                             Padding="5" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="10">
+                                    <TextBlock Text="交流表功能："
+                                               VerticalAlignment="Center"
+                                               Padding="5" />
+                                    <TextBox x:Name="txbIsACMeter"
+                                             VerticalAlignment="Center"
+                                             Padding="5"
+                                             Text="Defult True" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="10">
+                                    <TextBlock Text="直流源功能："
+                                               VerticalAlignment="Center"
+                                               Padding="5" />
+                                    <TextBox x:Name="txbIsDCS"
+                                             VerticalAlignment="Center"
+                                             Padding="5" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="10">
+                                    <TextBlock Text="直流表功能："
+                                               VerticalAlignment="Center"
+                                               Padding="5" />
+                                    <TextBox x:Name="txbIsDCM"
+                                             VerticalAlignment="Center"
+                                             Padding="5" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="10">
+                                    <TextBlock Text="电能功能："
+                                               VerticalAlignment="Center"
+                                               Padding="5" />
+                                    <TextBox x:Name="txbIsPQ"
+                                             VerticalAlignment="Center"
+                                             Padding="5" />
+                                </StackPanel>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion HandShake-->
                         <!--#region  ReadACSourceRanges-->
-                        <GroupBox Grid.Row="1"
-                                  Header="读取交流源/表档位"
+                        <GroupBox Header="读取交流源/表档位"
                                   Margin="10"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
+                            <WrapPanel Grid.Row="0"
+                                       Orientation="Horizontal"
+                                       Margin="10">
+                                <Button Content="ReadACSourceRanges"
+                                        VerticalAlignment="Center"
+                                        Click="ClickCommand" />
+                                <StackPanel Orientation="Horizontal"
                                             Margin="10">
-                                    <Button Content="ReadACSourceRanges"
-                                            Padding="10,5"
-                                            Margin="5"
-                                            Click="Button_Click_ReadACSourceRanges" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
+                                    <TextBlock Text="ACU Ranges："
                                                VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="ReadACSourceRangesIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="ReadACSourceRangesErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="ReadACSourceRangesMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <Label Content="ACU Ranges:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="10,5,0,5" />
+                                               Margin="5" />
                                     <ComboBox x:Name="cbxACURangs"
-                                              Margin="5"
                                               Padding="5"
                                               SelectedIndex="0"
-                                              IsReadOnly="True" />
-                                    <Label Content="ACI Ranges:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="10,5,0,5" />
+                                              IsReadOnly="True"
+                                              VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Margin="10"
+                                            Orientation="Horizontal">
+                                    <TextBlock Text="ACI Ranges："
+                                               VerticalAlignment="Center" />
                                     <ComboBox x:Name="cbxACIRangs"
-                                              Margin="5"
                                               Padding="5"
                                               SelectedIndex="0"
                                               IsReadOnly="False"
-                                              IsEditable="False" />
+                                              IsEditable="False"
+                                              VerticalAlignment="Center" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="ReadACSourceRangesResponse"
-                                             Margin="10,5"
-                                             Padding="10"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow" />
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="10">
+                                    <TextBlock Text="交流电压档位个数："
+                                               VerticalAlignment="Center" />
+                                    <TextBox x:Name="txbURangeCount"
+                                             VerticalAlignment="Center"
+                                             Padding="5" />
                                 </StackPanel>
-                                <WrapPanel Grid.Row="2">
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="交流电压档位个数："
-                                               Margin="5" />
-                                        <TextBox x:Name="txbURangeCount"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="交流电流档位个数："
-                                               Margin="5" />
-                                        <TextBox x:Name="txbIRangeCount"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="保护电流档位个数："
-                                               Margin="5" />
-                                        <TextBox x:Name="txbIProtectRangeCount"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="只支持A相的电压档位索引号："
-                                               Margin="5" />
-                                        <TextBox x:Name="txbURangsASingle"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="只支持A相的电流档位索引号："
-                                               Margin="5" />
-                                        <TextBox x:Name="txbIRangsASingle"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="只支持A相的保护电流档位索引号："
-                                               Margin="5" />
-                                        <TextBox x:Name="txbIProtectRangsASingle"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                </WrapPanel>
-                            </Grid>
+                                <StackPanel Margin="10"
+                                            Orientation="Horizontal">
+                                    <Label Content="交流电流档位个数："
+                                           Margin="5" />
+                                    <TextBox x:Name="txbIRangeCount"
+                                             VerticalContentAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="保护电流档位个数："
+                                           VerticalAlignment="Center" />
+                                    <TextBox x:Name="txbIProtectRangeCount"
+                                             VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Margin="10"
+                                            Orientation="Horizontal">
+                                    <Label Content="只支持A相的电压档位索引号：" />
+                                    <TextBox x:Name="txbURangsASingle"
+                                             VerticalContentAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Margin="10"
+                                            Orientation="Horizontal">
+                                    <Label Content="只支持A相的电流档位索引号："
+                                           Margin="5" />
+                                    <TextBox x:Name="txbIRangsASingle"
+                                             VerticalContentAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Margin="10"
+                                            Orientation="Horizontal">
+                                    <Label Content="只支持A相的保护电流档位索引号："
+                                           Margin="5" />
+                                    <TextBox x:Name="txbIProtectRangsASingle"
+                                             VerticalContentAlignment="Center" />
+                                </StackPanel>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion ReadACSourceRanges-->
                         <!--#region ReadDCSourceRanges -->
-                        <GroupBox Grid.Row="2"
-                                  Header="读取直流源档位"
+                        <GroupBox Header="读取直流源档位"
                                   Margin="10"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            Margin="10">
-                                    <Button Content="ReadDCSourceRanges"
-                                            Padding="10,5"
-                                            Margin="5"
-                                            Click="Button_Click_ReadDCSourceRanges" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="ReadDCSourceRangesIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="ReadDCSourceRangesErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="ReadDCSourceRangesMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <Label Content="DCU Ranges:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="10,5,0,5" />
+                            <WrapPanel Margin="10">
+                                <Button Content="ReadDCSourceRanges"
+                                        Click="ClickCommand" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="DCU Ranges:" />
                                     <ComboBox x:Name="cbxDCURangs"
-                                              Margin="5"
-                                              Padding="5"
-                                              SelectedIndex="0"
-                                              IsReadOnly="True" />
-                                    <Label Content="DCI Ranges:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="10,5,0,5" />
+                                              SelectedIndex="0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="DCI Ranges:" />
                                     <ComboBox x:Name="cbxDCIRangs"
-                                              Margin="5"
-                                              Padding="5"
                                               SelectedIndex="0"
                                               IsReadOnly="False"
                                               IsEditable="False" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="ReadDCSourceRangesResponse"
-                                             Margin="10,5"
-                                             Padding="10"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="直流电压档位个数：" />
+                                    <TextBox x:Name="txbDCURangeCount" />
                                 </StackPanel>
-                                <WrapPanel Grid.Row="2">
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="直流电压档位个数："
-                                               Margin="5" />
-                                        <TextBox x:Name="txbDCURangeCount"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="直流电流档位个数："
-                                               Margin="5" />
-                                        <TextBox x:Name="txbDCIRangeCount"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                </WrapPanel>
-                            </Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="直流电流档位个数：" />
+                                    <TextBox x:Name="txbDCIRangeCount" />
+                                </StackPanel>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion ReadDCSourceRanges-->
                         <!--#region ReadDCMeterRanges -->
-                        <GroupBox Grid.Row="3"
-                                  Header="读取直流表档位"
+                        <GroupBox Header="读取直流表档位"
                                   Margin="10"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            Margin="10">
-                                    <Button Content="ReadDCMeterRanges"
-                                            Padding="10,5"
-                                            Margin="5"
-                                            Click="Button_Click_ReadDCMeterRanges" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="ReadDCMeterRangesIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="ReadDCMeterRangesErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="ReadDCMeterRangesMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <Label Content="DCMU Ranges:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="10,5,0,5" />
+                            <WrapPanel Orientation="Horizontal"
+                                       Margin="10">
+                                <Button Content="ReadDCMeterRanges"
+                                        Click="ClickCommand"
+                                        Tag="ReadDCMRanges" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="DCMU Ranges:" />
                                     <ComboBox x:Name="cbxDCMURangs"
-                                              Margin="5"
-                                              Padding="5"
                                               SelectedIndex="0"
                                               IsReadOnly="True" />
-                                    <Label Content="DCMI Ranges:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="10,5,0,5" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="DCMI Ranges:" />
                                     <ComboBox x:Name="cbxDCMIRangs"
-                                              Margin="5"
-                                              Padding="5"
                                               SelectedIndex="0"
-                                              IsReadOnly="False"
-                                              IsEditable="False" />
+                                              IsReadOnly="False" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="ReadDCMeterRangesResponse"
-                                             Margin="10,5"
-                                             Padding="10"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="直流电压表档位个数：" />
+                                    <TextBox x:Name="txbDCMURangeCount" />
                                 </StackPanel>
-                                <WrapPanel Grid.Row="2">
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="直流电压表档位个数："
-                                               Margin="5" />
-                                        <TextBox x:Name="txbDCMURangeCount"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="直流电流表档位个数："
-                                               Margin="5" />
-                                        <TextBox x:Name="txbDCMIRangeCount"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                </WrapPanel>
-                            </Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="直流电流表档位个数：" />
+                                    <TextBox x:Name="txbDCMIRangeCount" />
+                                </StackPanel>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion ReadDCMeterRanges-->
                         <!--#region SetDisplayPage -->
@@ -590,150 +371,50 @@
                                   Header="设置当前显示页面"
                                   Margin="10"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            Margin="10">
-                                    <Button Content="SetDisplayPage"
-                                            Padding="10,5"
-                                            Margin="5"
-                                            Click="Button_Click_SetDisplayPage" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxSetDisplayPageIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxSetDisplayPageErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxSetDisplayPageMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <Label Content="DisplayPage:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="10,5,0,5" />
+                            <WrapPanel Orientation="Horizontal"
+                                       Margin="10">
+                                <Button Content="SetDisplayPage"
+                                        Click="ClickCommand" />
+                                <StackPanel Orientation="Horizontal"
+                                            Background="LightBlue">
+                                    <TextBlock Text="DisplayPage:" />
                                     <ComboBox x:Name="cbxSetDisplayPage"
-                                              Margin="5"
-                                              Padding="5"
                                               SelectedIndex="0"
-                                              IsReadOnly="True" />
+                                              IsReadOnly="True"
+                                              Margin="5" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxSetDisplayPageResponse"
-                                             Margin="10,5"
-                                             Padding="10"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow" />
+                                <StackPanel Orientation="Horizontal"
+                                            Background="WhiteSmoke">
+                                    <TextBlock Text="当前显示页面：" />
+                                    <TextBlock x:Name="tbxSetDisplayPage" />
                                 </StackPanel>
-                                <WrapPanel Grid.Row="2">
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="当前显示页面："
-                                               Margin="5" />
-                                        <TextBox x:Name="tbxSetDisplayPage"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                </WrapPanel>
-                            </Grid>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion SetDisplayPage-->
                         <!--#region SetSystemMode -->
                         <GroupBox Grid.Row="5"
                                   Header="设置系统模式"
-                                  Margin="10"
-                                  Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            Margin="10">
-                                    <Button Content="SetSystemMode"
-                                            Padding="10,5"
-                                            Margin="5"
-                                            Click="Button_Click_SetSystemMode" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxSetSystemModeIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxSetSystemModeErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxSetSystemModeMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <Label Content="SystemMode:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="10,5,0,5" />
+                                  Background="AliceBlue" Margin="10">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="SetSystemMode"
+                                        Click="ClickCommand" />
+                                <StackPanel Orientation="Horizontal"
+                                            Background="LightBlue">
+                                    <Label Content="SystemMode:" />
                                     <ComboBox x:Name="cbxSetSystemMode"
-                                              Margin="5"
-                                              Padding="5"
                                               SelectedIndex="0"
-                                              IsReadOnly="True" />
+                                              IsReadOnly="True"
+                                              Margin="5" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxSetSystemModeResponse"
-                                             Margin="10,5"
-                                             Padding="10"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow" />
+                                <StackPanel Orientation="Horizontal"
+                                            Background="WhiteSmoke">
+                                    <TextBlock Text="当前系统模式：" />
+                                    <TextBlock x:Name="tbxSetSystemMode" />
                                 </StackPanel>
-                                <WrapPanel Grid.Row="2">
-                                    <StackPanel Margin="10"
-                                                Orientation="Horizontal">
-                                        <Label Content="当前显示页面："
-                                               Margin="5" />
-                                        <TextBox x:Name="tbxSetSystemMode"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                </WrapPanel>
-                            </Grid>
+                            </StackPanel>
                         </GroupBox>
                         <!--#endregion-->
-                    </Grid>
+                    </StackPanel>
                 </ScrollViewer>
             </TabItem>
             <!--#endregion 系统信息-->
@@ -2587,9 +2268,10 @@
             </TabItem>
             <!--#endregion 交流源/表:读取数据-->
             <!--#region 电能-->
-            <TabItem Header="电能"
-                     Padding="10">
-                <ScrollViewer>
+            <TabItem Header="电能模块"
+                     Padding="10"
+                     Name="tbElectricity">
+                <ScrollViewer Grid.Row="1">
                     <StackPanel>
                         <GroupBox Header="设置电能校验参数并启动电能校验"
                                   Margin="10"
@@ -2626,9 +2308,9 @@
                                               Padding="5"
                                               VerticalContentAlignment="Center"
                                               HorizontalContentAlignment="Center"
+                                              ItemsSource="{Binding Electricity_Type}"
                                               SelectedIndex="0"
-                                              SelectedValue="{Binding EType, Mode=OneWayToSource}"
-                                              Name="cbxEType" />
+                                              SelectedValue="{Binding EType, Mode=OneWayToSource}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
                                             Background="LightBlue"
@@ -2732,7 +2414,7 @@
                                            Margin="10"
                                            Padding="5"
                                            VerticalContentAlignment="Center"
-                                           HorizontalContentAlignment="Center"
+                                           HorizontalContentAlignment="Left"
                                            Content="{Binding EFlag}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
@@ -2747,8 +2429,7 @@
                                     <Label Grid.Column="1"
                                            Margin="10"
                                            VerticalContentAlignment="Center"
-                                           HorizontalContentAlignment="Center"
-                                           MinWidth="80"
+                                           HorizontalContentAlignment="Left"
                                            Content="{Binding EV}"
                                            Padding="5" />
                                 </StackPanel>
@@ -2765,8 +2446,7 @@
                                            Margin="10"
                                            Padding="5"
                                            VerticalContentAlignment="Center"
-                                           HorizontalContentAlignment="Center"
-                                           MinWidth="80"
+                                           HorizontalContentAlignment="Left"
                                            Content="{Binding ROUND}" />
                                 </StackPanel>
                             </Grid>
@@ -2776,7 +2456,7 @@
             </TabItem>
             <!--#endregion 电能-->
             <!--#region 直流表-->
-            <TabItem Header="直流表"
+            <TabItem Header="直流表模块"
                      Padding="10"></TabItem>
             <!--#endregion 直流表-->
             <!--#region 直流源/电阻-->

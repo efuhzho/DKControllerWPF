@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Windows.Controls;
 
 namespace DKControllerWPF
 {
@@ -19,52 +20,15 @@ namespace DKControllerWPF
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private readonly DK81Device dandick;
-        readonly List<int> _BaudRates = new List<int>()
-        {
-           1200,2400,4800,9600,14400,19200,38400,56000,57600,115200
-        };
+
 
         #region 属性
 
-        /// <summary>
-        /// 波特率
-        /// </summary>
-        public List<int> BaudRates
-        {
-            get { return _BaudRates; }
-        }
-
-        //private readonly string[] _ElectricityType = Enum.GetNames(typeof(ElectricityType));
-        ///// <summary>
-        ///// 电能校验类型下拉框列表
-        ///// </summary>
-        //public string[] Electricity_Type
-        //{
-        //    get { return _ElectricityType; }
-        //}
-
-        public float MPC { get; set; } = 3600;
-        public float MQC { get; set; } = 3600;
-        public uint MDIV { get; set; } = 1000;
-        public uint MROU { get; set; } = 10;
-
-
-        private ElectricityType _electricityType;
-        /// <summary>
-        /// 电能校验类型
-        /// </summary>
-        public ElectricityType EType
-        {
-            get { return _electricityType; }
-            set
-            {
-                _electricityType = (ElectricityType)Enum.Parse(typeof(ElectricityType), value.ToString());
-                NotifyPropertyChanged();
-            }
-        }
-
+        #region OperrateResult返回对象属性
         private bool _IsSuccess;
-
+        /// <summary>
+        /// 是否成功标志
+        /// </summary>
         public bool IsSuccess
         {
             get { return _IsSuccess; }
@@ -76,7 +40,9 @@ namespace DKControllerWPF
         }
 
         private int _ErrorCode;
-
+        /// <summary>
+        /// 错误码
+        /// </summary>
         public int ErrorCode
         {
             get { return _ErrorCode; }
@@ -88,7 +54,9 @@ namespace DKControllerWPF
         }
 
         private string _Message;
-
+        /// <summary>
+        /// 消息
+        /// </summary>
         public string Message
         {
             get { return _Message; }
@@ -99,8 +67,10 @@ namespace DKControllerWPF
             }
         }
 
-        private string _ResponseContent;
-
+        private string _ResponseContent = String.Empty;
+        /// <summary>
+        /// 下位机回复的原始报文
+        /// </summary>
         public string ResponseContent
         {
             get { return _ResponseContent; }
@@ -110,12 +80,108 @@ namespace DKControllerWPF
                 NotifyPropertyChanged();
             }
         }
+        #endregion OperrateResult返回对象属性
+
+        #region 波特率ComboBox
+        readonly List<string> _BaudRates = new List<string>()
+        {
+           "9600","115200"
+        };
+        /// <summary>
+        /// 波特率
+        /// </summary>
+        public List<string> BaudRates
+        {
+            get { return _BaudRates; }
+        }
+        #endregion 波特率ComboBox
+
+        #region 电能校验类型ComboBox
+        private readonly string[] _ElectricityType = Enum.GetNames(typeof(ElectricityType));
+        /// <summary>
+        /// 电能校验类型下拉框列表
+        /// </summary>
+        public string[] Electricity_Type
+        {
+            get { return _ElectricityType; }
+        }
+        #endregion 电能校验类型ComboBox
+
+        #region 设置电能校验参数
+        #region 设置电能校验类型
+        private ElectricityType _electricityType;
+        /// <summary>
+        /// 设置电能校验类型
+        /// </summary>
+        public ElectricityType EType
+        {
+            get { return _electricityType; }
+            set
+            {
+                _electricityType = (ElectricityType)Enum.Parse(typeof(ElectricityType), value.ToString());
+                NotifyPropertyChanged();
+            }
+        }
+        #endregion 设置电能校验类型
+        /// <summary>
+        /// 设置表有功常数
+        /// </summary>
+        public float MPC { get; set; } = 3600;
+
+        /// <summary>
+        /// 设置表无功常数
+        /// </summary>
+        public float MQC { get; set; } = 3600;
+
+        /// <summary>
+        /// 设置表分频系数
+        /// </summary>
+        public uint MDIV { get; set; } = 1000;
+
+        /// <summary>
+        /// 设置表校验圈数
+        /// </summary>
+        public uint MROU { get; set; } = 10;
+        #endregion 设置电能校验参数
+
+        #region 读电能误差返回值
+        private char _ElectricityFlag;
+        /// <summary>
+        /// 当前校验类型
+        /// </summary>
+        public char EFlag
+        {
+            get { return _ElectricityFlag; }
+            private set { _ElectricityFlag = value; NotifyPropertyChanged(); }
+        }
+
+        private float _EV;
+        /// <summary>
+        /// 误差值，单位（%）
+        /// </summary>
+        public float EV
+        {
+            get { return _EV; }
+            private set { _EV = value; NotifyPropertyChanged(); }
+        }
+
+        private uint _ROUND;
+        /// <summary>
+        /// 当前已校验圈数
+        /// </summary>
+        public uint ROUND
+        {
+            get { return _ROUND; }
+            private set { _ROUND = value; NotifyPropertyChanged(); }
+        }
+        #endregion 读电能误差返回值
+
 
         #endregion 属性
 
-
-
-
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public MainWindow()
         {
             dandick = new DK81Device();
@@ -126,6 +192,9 @@ namespace DKControllerWPF
             cbxDataFormat.SelectedIndex = (int)dandick.ByteTransform.DataFormat;
         }
 
+        /// <summary>
+        /// 初始化ComboBox
+        /// </summary>
         void innit()
         {
             cbxSerialPortsNames.Items.Clear();
@@ -137,7 +206,7 @@ namespace DKControllerWPF
                 cbxSerialPortsNames.Items.Add(port);
             }
 
-            cbxSerialPortsNames.SelectedIndex = 0;           
+            cbxSerialPortsNames.SelectedIndex = 0;
 
             //初始化显示页面设置列表框
             cbxSetDisplayPage.ItemsSource = Enum.GetNames(typeof(DisplayPage));
@@ -167,24 +236,19 @@ namespace DKControllerWPF
             //初始化无功功率设置通道列表
             cbxChannelWattLessPower.ItemsSource = Enum.GetNames(typeof(ChannelWattLessPower));
 
-            cbxEType.ItemsSource = Enum.GetNames(typeof(ElectricityType));
+            //cbxEType.ItemsSource = Enum.GetNames(typeof(ElectricityType));
         }
 
         /// <summary>
-        /// Handshake
+        /// HandShake
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
 
+        private void HandShake()
+        {
             var result = dandick.Handshake();
-            txbIsSuccess.Text = result.IsSuccess.ToString();
-            txbErrorCode.Text = result.ErrorCode.ToString();
-            txbMesseage.Text = result.Message;
+            Update(result);
             if (result.IsSuccess)
             {
-                txbResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
                 txbIsPQ.Text = dandick.IsElectricity_Activated.ToString();
                 txbIsDCS.Text = dandick.IsDCU_Activated.ToString();
                 txbIsDCM.Text = dandick.IsDCM_Activated.ToString();
@@ -198,18 +262,14 @@ namespace DKControllerWPF
         /// <summary>
         /// ReadACSourceRanges
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button_Click_ReadACSourceRanges(object sender, RoutedEventArgs e)
+
+        private void ReadACSourceRanges()
         {
 
-            var d = dandick.ReadACSourceRanges();
-            ReadACSourceRangesIsSuccess.Text = d.IsSuccess.ToString();
-            ReadACSourceRangesErrorCode.Text = d.ErrorCode.ToString();
-            ReadACSourceRangesMesseage.Text = d.Message;
-            if (d.IsSuccess)
+            var result = dandick.ReadACSourceRanges();
+            Update(result);
+            if (result.IsSuccess)
             {
-                ReadACSourceRangesResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
                 txbURangeCount.Text = dandick.ACU_RangesCount.ToString();
                 txbIRangeCount.Text = dandick.ACI_RangesCount.ToString();
                 txbIProtectRangeCount.Text = dandick.IProtectRangesCount.ToString();
@@ -232,7 +292,7 @@ namespace DKControllerWPF
         {
             try
             {
-                dandick.SerialPortInni(cbxSerialPortsNames.SelectedValue.ToString(), (int)cbxBaudRate.SelectedValue);
+                dandick.SerialPortInni(cbxSerialPortsNames.SelectedValue.ToString(), Convert.ToInt32( cbxBaudRate.SelectedValue));
                 dandick.Open();
                 if (dandick.IsOpen())
                 {
@@ -284,20 +344,13 @@ namespace DKControllerWPF
 
         /// <summary>
         /// ReadDCSourceRanges
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button_Click_ReadDCSourceRanges(object sender, RoutedEventArgs e)
+        /// </summary>      
+        private void ReadDCSourceRanges()
         {
-
-            var d = dandick.ReadDCSourceRanges();
-            ReadDCSourceRangesIsSuccess.Text = d.IsSuccess.ToString();
-            ReadDCSourceRangesErrorCode.Text = d.ErrorCode.ToString();
-            ReadDCSourceRangesMesseage.Text = d.Message;
-            if (d.IsSuccess)
+            var result = dandick.ReadDCSourceRanges();
+            Update(result);
+            if (result.IsSuccess)
             {
-                ReadDCSourceRangesResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
-
                 txbDCURangeCount.Text = dandick.DCU_RangesCount.ToString();
                 txbDCIRangeCount.Text = dandick.DCI_RangesCount.ToString();
                 cbxDCURangs.ItemsSource = dandick.DCU_Ranges;
@@ -307,20 +360,13 @@ namespace DKControllerWPF
 
         /// <summary>
         /// 读取直流表档位
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button_Click_ReadDCMeterRanges(object sender, RoutedEventArgs e)
+        /// </summary>      
+        private void ReadDCMeterRanges()
         {
-
             var d = dandick.ReadDCMeterRanges();
-            ReadDCMeterRangesIsSuccess.Text = d.IsSuccess.ToString();
-            ReadDCMeterRangesErrorCode.Text = d.ErrorCode.ToString();
-            ReadDCMeterRangesMesseage.Text = d.Message;
+            Update(d);
             if (d.IsSuccess)
             {
-                ReadDCMeterRangesResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
-
                 txbDCMURangeCount.Text = dandick.DCM_URangesCount.ToString();
                 txbDCMIRangeCount.Text = dandick.DCM_IRangesCount.ToString();
                 cbxDCMURangs.ItemsSource = dandick.DCM_URanges;
@@ -328,6 +374,11 @@ namespace DKControllerWPF
             }
         }
 
+        /// <summary>
+        /// 数据类型格式定义
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbxDataFormat_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             dandick.ByteTransform.DataFormat = (DKCommunication.Core.DataFormat)cbxDataFormat.SelectedIndex;
@@ -335,21 +386,15 @@ namespace DKControllerWPF
 
         /// <summary>
         /// 设置当前显示页面
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button_Click_SetDisplayPage(object sender, RoutedEventArgs e)
+        /// </summary>     
+        private void SetDisplayPage()
         {
             var d = dandick.SetDisplayPage((DisplayPage)Enum.Parse(typeof(DisplayPage), cbxSetDisplayPage.SelectedItem.ToString()));
-            tbxSetDisplayPageErrorCode.Text = d.ErrorCode.ToString();
-            tbxSetDisplayPageIsSuccess.Text = d.IsSuccess.ToString();
-            tbxSetDisplayPageMesseage.Text = d.Message;
+            Update(d);
             if (d.IsSuccess)
             {
-                tbxSetDisplayPageResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
+                tbxSetDisplayPage.Text = dandick.DisplayPage.ToString();
             }
-            tbxSetDisplayPage.Text = dandick.DisplayPage.ToString();
-
         }
 
         /// <summary>
@@ -357,17 +402,14 @@ namespace DKControllerWPF
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_SetSystemMode(object sender, RoutedEventArgs e)
+        private void SetSystemMode()
         {
             var d = dandick.SetSystemMode((SystemMode)Enum.Parse(typeof(SystemMode), cbxSetSystemMode.SelectedItem.ToString()));
-            tbxSetSystemModeErrorCode.Text = d.ErrorCode.ToString();
-            tbxSetSystemModeIsSuccess.Text = d.IsSuccess.ToString();
-            tbxSetSystemModeMesseage.Text = d.Message;
+            Update(d);
             if (d.IsSuccess)
             {
-                tbxSetSystemModeResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
+                tbxSetSystemMode.Text = dandick.SystemMode.ToString();
             }
-            tbxSetSystemMode.Text = dandick.SystemMode.ToString();
         }
 
         /// <summary>
@@ -822,6 +864,10 @@ namespace DKControllerWPF
             Update(result);
         }
 
+        /// <summary>
+        /// 更新公共返回对象
+        /// </summary>
+        /// <param name="operateResult">返回对象</param>
         private void Update(dynamic operateResult)
         {
             IsSuccess = operateResult.IsSuccess;
@@ -830,34 +876,15 @@ namespace DKControllerWPF
             ResponseContent = string.Empty;
             if (operateResult.IsSuccess)
             {
-                ResponseContent = SoftBasic.ByteToHexString(operateResult.Content,' ');
+                ResponseContent = SoftBasic.ByteToHexString(operateResult.Content, ' ');
             }
         }
 
-        private char _ElectricityFlag;
-
-        public char EFlag
-        {
-            get { return _ElectricityFlag; }
-            private set { _ElectricityFlag = value; NotifyPropertyChanged(); }
-        }
-
-        private float _EV;
-
-        public float EV
-        {
-            get { return _EV; }
-            private set { _EV = value; NotifyPropertyChanged(); }
-        }
-
-        private uint _ROUND;
-
-        public uint ROUND
-        {
-            get { return _ROUND; }
-            private set { _ROUND = value; NotifyPropertyChanged(); }
-        }
-
+        /// <summary>
+        /// 【读取电能误差】
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ReadElectricityDeviation(object sender, RoutedEventArgs e)
         {
             var result = dandick.ReadElectricityDeviation();
@@ -866,11 +893,44 @@ namespace DKControllerWPF
                 byte[] data = new byte[1] { dandick.ElectricityDeviationDataFlag };
                 EFlag = Encoding.ASCII.GetChars(data)[0];
                 EV = dandick.ElectricityDeviationData;
-                ROUND = dandick.ElectricityMeasuredRounds;                
+                ROUND = dandick.ElectricityMeasuredRounds;
             }
             Update(result);
         }
 
-       
+        /// <summary>
+        /// 按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ClickCommand(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            switch (button.Content)
+            {
+                case "ReadDCMeterRanges":
+                    ReadDCMeterRanges(); break;
+
+                case "ReadDCSourceRanges":
+                    ReadDCSourceRanges(); break;
+
+                case "ReadACSourceRanges":
+                    ReadACSourceRanges(); break;
+
+                case "HandShake":
+                    HandShake(); break;
+
+                case "SetDisplayPage":
+                    SetDisplayPage(); break;
+
+                case "SetSystemMode":
+                    SetSystemMode(); break;
+
+                default:
+                    MessageBox.Show("没找到合适的命令标志"); break;
+            }
+
+        }
+
     }
 }
