@@ -292,7 +292,7 @@ namespace DKControllerWPF
         {
             try
             {
-                dandick.SerialPortInni(cbxSerialPortsNames.SelectedValue.ToString(), Convert.ToInt32( cbxBaudRate.SelectedValue));
+                dandick.SerialPortInni(cbxSerialPortsNames.SelectedValue.ToString(), Convert.ToInt32(cbxBaudRate.SelectedValue));
                 dandick.Open();
                 if (dandick.IsOpen())
                 {
@@ -417,16 +417,10 @@ namespace DKControllerWPF
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_StopACSource(object sender, RoutedEventArgs e)
+        private void StopACSource()
         {
             var d = dandick.StopACSource();
-            tbxStopACSourceErrorCode.Text = d.ErrorCode.ToString();
-            tbxStopACSourceIsSuccess.Text = d.IsSuccess.ToString();
-            tbxStopACSourceMesseage.Text = d.Message;
-            if (d.IsSuccess)
-            {
-                tbxStopACSourceeResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
-            }
+            Update(d);
         }
 
         /// <summary>
@@ -434,16 +428,10 @@ namespace DKControllerWPF
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_StarACSource(object sender, RoutedEventArgs e)
+        private void StartACSource()
         {
             var d = dandick.StartACSource();
-            tbxStartACSourceErrorCode.Text = d.ErrorCode.ToString();
-            tbxStartACSourceIsSuccess.Text = d.IsSuccess.ToString();
-            tbxStartACSourceMesseage.Text = d.Message;
-            if (d.IsSuccess)
-            {
-                tbxStartACSourceResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
-            }
+            Update(d);
         }
 
         /// <summary>
@@ -451,16 +439,10 @@ namespace DKControllerWPF
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_SetWireMode(object sender, RoutedEventArgs e)
+        private void SetWireMode()
         {
             var d = dandick.SetWireMode((WireMode)Enum.Parse(typeof(WireMode), cbxSetWireMode.SelectedItem.ToString()));
-            tbxSetWireModeErrorCode.Text = d.ErrorCode.ToString();
-            tbxSetWireModeIsSuccess.Text = d.IsSuccess.ToString();
-            tbxSetWireModeMesseage.Text = d.Message;
-            if (d.IsSuccess)
-            {
-                tbxSetWireModeResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
-            }
+            Update((d));
             tbxSetWireModePage.Text = dandick.WireMode.ToString();
         }
 
@@ -469,15 +451,12 @@ namespace DKControllerWPF
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_SetACSourceRange(object sender, RoutedEventArgs e)
+        private void SetACSourceRange()
         {
             var d = dandick.SetACSourceRange(cbxACSourceURanges.SelectedIndex, cbxACSourceIRanges.SelectedIndex);
-            tbxSetACSourceRangeErrorCode.Text = d.ErrorCode.ToString();
-            tbxSetACSourceRangeIsSuccess.Text = d.IsSuccess.ToString();
-            tbxSetACSourceRangeMesseage.Text = d.Message;
+            Update(d);
             if (d.IsSuccess)
             {
-                tbxSetACSourceRangeResponse.Text = SoftBasic.ByteToHexString(d.Content, ' ');
                 tbxACSourceURange.Text = dandick.ACU_RangeIndex.ToString();
                 tbxACSourceIRange.Text = dandick.ACI_RangeIndex.ToString();
             }
@@ -498,9 +477,8 @@ namespace DKControllerWPF
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_WriteACSourceAmplitude(object sender, RoutedEventArgs e)
+        private void WriteACSourceAmplitude()
         {
-
             try
             {
                 float[] amplitude = new float[9];
@@ -514,17 +492,10 @@ namespace DKControllerWPF
                 amplitude[7] = float.Parse(txbAmplitudeIPb.Text);
                 amplitude[8] = float.Parse(txbAmplitudeIPc.Text);
                 var result = dandick.WriteACSourceAmplitude(amplitude);
-                tbxWriteACSourceAmplitudeIsSuccess.Text = result.IsSuccess.ToString();
-                tbxWriteACSourceAmplitudeErrorCode.Text = result.ErrorCode.ToString();
-                tbxWriteACSourceAmplitudeMesseage.Text = result.Message.ToString();
-                if (result.IsSuccess)
-                {
-                    tbxWriteACSourceAmplitudeResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
-                }
+                Update(result);
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
 
@@ -848,7 +819,7 @@ namespace DKControllerWPF
         /// <param name="e"></param>
         private void Button_Click_StopReadACSourceData(object sender, RoutedEventArgs e)
         {
-            Button_Click_StopACSource(sender, e);
+            StopACSource();
             _cts?.Cancel();
             gridData.Visibility = Visibility.Collapsed;
         }
@@ -925,6 +896,27 @@ namespace DKControllerWPF
 
                 case "SetSystemMode":
                     SetSystemMode(); break;
+
+                case "StopACSource":
+                    StopACSource(); break;
+
+                case "StartACSource":
+                    StartACSource(); break;
+
+                case "SetWireMode":
+                    SetWireMode(); break;
+
+                case "SetACSourceRange":
+                    SetACSourceRange(); break;
+
+                case "WriteACSourceAmplitude":
+                    WriteACSourceAmplitude(); break;
+
+
+
+
+
+
 
                 default:
                     MessageBox.Show("没找到合适的命令标志"); break;
