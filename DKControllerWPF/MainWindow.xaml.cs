@@ -18,7 +18,7 @@ namespace DKControllerWPF
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged,ICommand
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private readonly DK81Device dandick;
 
@@ -177,6 +177,80 @@ namespace DKControllerWPF
         }
         #endregion 读电能误差返回值
 
+        #region 设置直流表量程
+        private string[] _DCM_MeasureType = Enum.GetNames(typeof(DCMerterMeasureType));
+
+        public string[] DCM_MeasureType
+        {
+            get { return _DCM_MeasureType; }
+            set { _DCM_MeasureType = value; }
+        }
+
+        private int setDCMRangeIndex;
+
+        public int SetDCMRangeIndex
+        {
+            get { return setDCMRangeIndex; }
+            set
+            {
+                setDCMRangeIndex = value; NotifyPropertyChanged();
+            }
+        }
+
+        private DCMerterMeasureType dcMerterMeasureType;
+
+        public DCMerterMeasureType DCMerterMeasureType
+        {
+            get { return dcMerterMeasureType; }
+            set { dcMerterMeasureType = value; }
+        }
+
+
+        private List<float> dcMeterURanges;
+
+        public List<float> DCMeterURanges
+        {
+            get { return dcMeterURanges; }
+            private set { dcMeterURanges = value; }
+        }
+
+        private float dcMData;
+
+        public float DCMData
+        {
+            get { return dcMData; }
+            private set
+            {
+                dcMData = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private byte dcMRangeIndex;
+
+        public byte DCMRangeIndex
+        {
+            get { return dcMRangeIndex; }
+            private set
+            {
+                dcMRangeIndex = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private DCMerterMeasureType dCM_MType;
+
+        public DCMerterMeasureType DCM_MType
+        {
+            get { return dCM_MType; ; }
+            private set
+            {
+                dCM_MType = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion 设置直流表量程
 
         #endregion 属性
 
@@ -186,11 +260,12 @@ namespace DKControllerWPF
         public MainWindow()
         {
             dandick = new DK81Device();
+            dandick.ReadTimeOut = 250;
+            dandick.ReceiveTimeout = 250;
             InitializeComponent();
             DataContext = this;
             innit();
-            cbxDataFormat.ItemsSource = Enum.GetNames(typeof(DKCommunication.Core.DataFormat));
-            cbxDataFormat.SelectedIndex = (int)dandick.ByteTransform.DataFormat;
+
         }
 
         /// <summary>
@@ -198,6 +273,8 @@ namespace DKControllerWPF
         /// </summary>
         void innit()
         {
+            cbxDataFormat.ItemsSource = Enum.GetNames(typeof(DKCommunication.Core.DataFormat));
+            cbxDataFormat.SelectedIndex = (int)dandick.ByteTransform.DataFormat;
             cbxSerialPortsNames.Items.Clear();
             //初始化串口列表
             string[] ports = SerialPort.GetPortNames();
@@ -237,6 +314,7 @@ namespace DKControllerWPF
             //初始化无功功率设置通道列表
             cbxChannelWattLessPower.ItemsSource = Enum.GetNames(typeof(ChannelWattLessPower));
 
+            cbxDCM_MeasureType.SelectedIndex = 0;
             //cbxEType.ItemsSource = Enum.GetNames(typeof(ElectricityType));
         }
 
@@ -697,7 +775,7 @@ namespace DKControllerWPF
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public event EventHandler CanExecuteChanged;
+
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
@@ -758,10 +836,10 @@ namespace DKControllerWPF
                     lbPFB.Content = dandick.CosFaiB;
                     lbPFC.Content = dandick.CosFaiC;
                     lbPFall.Content = dandick.CosFai;
-                    lbFreq.Content = dandick.Frequency;                   
+                    lbFreq.Content = dandick.Frequency;
                     lbFreqC.Content = dandick.FrequencyC;
                 });
-                Thread.Sleep(200);
+                //Thread.Sleep(500);
             }
         }
 
@@ -771,8 +849,8 @@ namespace DKControllerWPF
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Button_Click_StopReadACSourceData(object sender, RoutedEventArgs e)
-        {           
-            _cts?.Cancel();  
+        {
+            _cts?.Cancel();
             gridData.Visibility = Visibility.Collapsed;
 
         }
@@ -822,11 +900,57 @@ namespace DKControllerWPF
             Update(result);
         }
 
+        #region 按钮事件执行方法
+        public void SetDCMeterRange()
+        {
+            var result = dandick.SetDCMeterRange((byte)SetDCMRangeIndex, DCMerterMeasureType);
+            if (result.IsSuccess)
+            {
+
+            }
+            Update(result);
+        }
+
+        private CancellationTokenSource _ctsDCM;
+        private void ReadDCMeterData()
+        {
+            _ctsDCM = new CancellationTokenSource();
+            Task.Run(new Action(ReadingDCMData), _ctsDCM.Token);
+        }
+
+        private void ReadingDCMData()
+        {
+            while (!_ctsDCM.IsCancellationRequested)
+            {
+                var result = dandick.ReadDCMeterData();
+                Update(result);
+                DCM_MType = dandick.DCM_MeasureType;
+                DCMRangeIndex = dandick.DCM_RangeIndex;
+                DCMData = dandick.DCM_Data;
+                //Dispatcher.Invoke(() =>
+                //{
+                //lbDCMData.Content = dandick.DCM_Data;
+                //lbDCMRangeIndex.Content = dandick.DCM_RangeIndex;
+                //lbdCM_MType.Content = dandick.DCM_MeasureType;
+                //});
+                //Thread.Sleep(50);
+            }
+        }
+
+        private void StopReadingDCMData()
+        {
+            _ctsDCM.Cancel();
+        }
+        #endregion
+
+
         /// <summary>
         /// 按钮事件
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
+
         private void ClickCommand(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -874,6 +998,14 @@ namespace DKControllerWPF
                 case "SetClosedLoop":
                     SetClosedLoop(); break;
 
+                case "SetDCMeterRange":
+                    SetDCMeterRange(); break;
+
+                case "ReadDCMeterData":
+                    ReadDCMeterData(); break;
+
+                case "StopReadingDCMData":
+                    StopReadingDCMData(); break;
 
                 default:
                     MessageBox.Show("没找到合适的命令标志"); break;
@@ -881,15 +1013,25 @@ namespace DKControllerWPF
 
         }
 
-        public bool CanExecute(object parameter)
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            throw new NotImplementedException();
+
+            if (DCMerterMeasureType.DCM_Voltage.Equals(DCMerterMeasureType) || DCMerterMeasureType.DCM_VoltageRipple.Equals(DCMerterMeasureType))
+            {
+                cbxSetDCMRangeIndex.ItemsSource = dandick.DCM_URanges;
+                cbxSetDCMRangeIndex.SelectedIndex = 0;
+            }
+            else if (DCMerterMeasureType.DCM_Current.Equals(DCMerterMeasureType) || DCMerterMeasureType.DCM_CurrentRipple.Equals(DCMerterMeasureType))
+            {
+                cbxSetDCMRangeIndex.ItemsSource = dandick.DCM_IRanges;
+                cbxSetDCMRangeIndex.SelectedIndex = 0;
+            }
         }
 
-        public void Execute(object parameter)
-        {
-            
-            throw new NotImplementedException();
-        }
     }
+
+
+
+
 }
+

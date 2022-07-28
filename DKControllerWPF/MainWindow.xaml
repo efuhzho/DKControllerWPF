@@ -31,6 +31,8 @@
         <Style TargetType="Label">
             <Setter Property="VerticalAlignment"
                     Value="Center" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Center" />
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Padding"
@@ -55,7 +57,7 @@
         </Style>
         <Style TargetType="Button">
             <Setter Property="Padding"
-                    Value="5" />
+                    Value="10" />
             <Setter Property="VerticalAlignment"
                     Value="Center" />
             <Setter Property="Margin"
@@ -68,6 +70,8 @@
         <Style TargetType="GroupBox">
             <Setter Property="Margin"
                     Value="10" />
+            <Setter Property="Background"
+                    Value="AliceBlue" />
         </Style>
         <Style TargetType="CheckBox">
             <Setter Property="Padding"
@@ -76,7 +80,7 @@
                     Value="Center" />
             <Setter Property="Margin"
                     Value="10" />
-        </Style>      
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -379,13 +383,13 @@
                                         Click="ClickCommand"
                                         Tag="ReadDCMRanges" />
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="DCMU Ranges:" />
+                                    <TextBlock Text="DCM URanges:" />
                                     <ComboBox x:Name="cbxDCMURangs"
                                               SelectedIndex="0"
                                               IsReadOnly="True" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="DCMI Ranges:" />
+                                    <TextBlock Text="DCM IRanges:" />
                                     <ComboBox x:Name="cbxDCMIRangs"
                                               SelectedIndex="0"
                                               IsReadOnly="False" />
@@ -812,7 +816,7 @@
                           Margin="10"
                           Name="gridData"
                           Visibility="Visible">
-                        <Grid.Resources>                        
+                        <Grid.Resources>
                             <Style TargetType="Label">
                                 <Setter Property="Margin"
                                         Value="2" />
@@ -1041,7 +1045,8 @@
                                Name="lbPC" />
                         <Label Grid.Row="7"
                                Grid.Column="5"
-                               Name="lbPall" Background="LightBlue"/>
+                               Name="lbPall"
+                               Background="LightBlue" />
                         <Label Grid.Row="8"
                                Grid.Column="2"
                                Name="lbQA" />
@@ -1088,7 +1093,8 @@
                         <Label Grid.Row="11"
                                Grid.Column="4"
                                Name="lbFreqC" />
-                        <Slider Grid.Row="12" Grid.ColumnSpan="6"
+                        <Slider Grid.Row="12"
+                                Grid.ColumnSpan="6"
                                 Name="sliderFontSize"
                                 Minimum="15"
                                 Maximum="24"
@@ -1097,18 +1103,15 @@
                                 TickPlacement="TopLeft"
                                 AutoToolTipPlacement="TopLeft" />
                     </Grid>
-                   
                     <WrapPanel Grid.Row="0"
                                Grid.Column="1"
                                Background="AliceBlue"
                                AllowDrop="True">
                         <Button Content="ReadACSourceData"
-                               
                                 Click="Button_Click_ReadACSourceData"
                                 AllowDrop="True" />
                         <Button Content="STOP Reading"
                                 Background="LightPink"
-                               
                                 Click="Button_Click_StopReadACSourceData"
                                 AllowDrop="True" />
                     </WrapPanel>
@@ -1121,14 +1124,10 @@
                      Name="tbElectricity">
                 <ScrollViewer Grid.Row="1">
                     <StackPanel>
-                        <GroupBox Header="设置电能校验参数并启动电能校验"
-                                  Margin="10"
-                                  Padding="5"
-                                  Background="AliceBlue">
-                            <Grid Margin="10">
+                        <GroupBox Header="设置电能校验参数并启动电能校验">
+                            <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
+                                    <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto" />
@@ -1140,99 +1139,53 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Button Content="WriteElectricity"
-                                        Margin="10"
-                                        Padding="10"
                                         Click="Button_Click_1" />
                                 <StackPanel Orientation="Horizontal"
                                             Background="LightBlue"
-                                            Margin="10"
                                             Grid.Column="1">
-                                    <TextBlock Text="电能校验类型："
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               Margin="10" />
+                                    <TextBlock Text="电能校验类型：" />
                                     <ComboBox Grid.Column="1"
-                                              Margin="10"
-                                              Padding="5"
-                                              VerticalContentAlignment="Center"
-                                              HorizontalContentAlignment="Center"
                                               ItemsSource="{Binding Electricity_Type}"
                                               SelectedIndex="0"
                                               SelectedValue="{Binding EType, Mode=OneWayToSource}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
                                             Background="LightBlue"
-                                            Margin="10"
                                             Grid.Column="2">
-                                    <TextBlock Text="表有功电能常数："
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               Margin="10" />
+                                    <TextBlock Text="表有功电能常数：" />
                                     <TextBox Grid.Column="1"
-                                             Margin="10"
-                                             Padding="5"
-                                             VerticalContentAlignment="Center"
-                                             HorizontalContentAlignment="Center"
                                              MinWidth="80"
                                              Text="{Binding MPC}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
                                             Background="LightBlue"
-                                            Margin="10"
                                             Grid.Column="3">
-                                    <TextBlock Text="表无功电能常数："
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               Margin="10" />
+                                    <TextBlock Text="表无功电能常数：" />
                                     <TextBox Grid.Column="1"
-                                             Margin="10"
-                                             Padding="5"
-                                             VerticalContentAlignment="Center"
-                                             HorizontalContentAlignment="Center"
                                              MinWidth="80"
                                              Text="{Binding MQC}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
                                             Background="LightBlue"
-                                            Margin="10"
                                             Grid.Column="4">
-                                    <TextBlock Text="分频系数："
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               Margin="10" />
+                                    <TextBlock Text="分频系数：" />
                                     <TextBox Grid.Column="1"
-                                             Margin="10"
-                                             Padding="5"
-                                             VerticalContentAlignment="Center"
-                                             HorizontalContentAlignment="Center"
                                              MinWidth="50"
                                              Text="{Binding MDIV}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
                                             Background="LightBlue"
-                                            Margin="10"
                                             Grid.Column="5">
-                                    <TextBlock Text="校验圈数："
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               Margin="10" />
+                                    <TextBlock Text="校验圈数：" />
                                     <TextBox Grid.Column="1"
-                                             Margin="10"
-                                             Padding="5"
-                                             VerticalContentAlignment="Center"
-                                             HorizontalContentAlignment="Center"
                                              MinWidth="50"
                                              Text="{Binding MROU}" />
                                 </StackPanel>
                             </Grid>
                         </GroupBox>
-                        <GroupBox Header="读取电能校验误差"
-                                  Margin="10"
-                                  Padding="5"
-                                  Background="AliceBlue">
-                            <Grid Margin="10">
+                        <GroupBox Header="读取电能校验误差">
+                            <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -1245,56 +1198,24 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Button Content="ReadElectricityDeviation"
-                                        Margin="10"
-                                        Padding="10"
                                         Click="ReadElectricityDeviation" />
                                 <StackPanel Orientation="Horizontal"
-                                            Background="LightBlue"
-                                            Margin="10"
                                             Grid.Column="1"
                                             ToolTip="Flag=0：无效；='P' 表示有功误差；='Q'表示无功误差">
-                                    <TextBlock Text="电能有效标志 Flag："
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               Margin="10"
-                                               Padding="5" />
+                                    <TextBlock Text="电能有效标志 Flag：" />
                                     <Label Grid.Column="1"
-                                           Margin="10"
-                                           Padding="5"
-                                           VerticalContentAlignment="Center"
-                                           HorizontalContentAlignment="Left"
                                            Content="{Binding EFlag}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
-                                            Background="LightBlue"
-                                            Margin="10"
                                             Grid.Column="2">
-                                    <TextBlock Text="电能误差（%）："
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               Margin="10"
-                                               Padding="5" />
+                                    <TextBlock Text="电能误差（%）：" />
                                     <Label Grid.Column="1"
-                                           Margin="10"
-                                           VerticalContentAlignment="Center"
-                                           HorizontalContentAlignment="Left"
-                                           Content="{Binding EV}"
-                                           Padding="5" />
+                                           Content="{Binding EV}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"
-                                            Background="LightBlue"
-                                            Margin="10"
                                             Grid.Column="3">
-                                    <TextBlock Text="当前校验圈数："
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               Margin="10"
-                                               Padding="5" />
+                                    <TextBlock Text="当前校验圈数：" />
                                     <Label Grid.Column="1"
-                                           Margin="10"
-                                           Padding="5"
-                                           VerticalContentAlignment="Center"
-                                           HorizontalContentAlignment="Left"
                                            Content="{Binding ROUND}" />
                                 </StackPanel>
                             </Grid>
@@ -1305,7 +1226,57 @@
             <!--#endregion 电能-->
             <!--#region 直流表-->
             <TabItem Header="直流表模块"
-                     Padding="10"></TabItem>
+                     Padding="10">
+                <StackPanel>
+                    <GroupBox>
+                        <WrapPanel>
+                            <Button Content="SetDCMeterRange"
+                                    Click="ClickCommand" />
+                            <StackPanel Orientation="Horizontal"
+                                        Background="LightBlue">
+                                <TextBlock Text="直流表测量类型" />
+                                <ComboBox ItemsSource="{Binding DCM_MeasureType}"
+                                          SelectedValue="{Binding DCMerterMeasureType, Mode=OneWayToSource}"
+                                          SelectionChanged="ComboBox_SelectionChanged"
+                                          Name="cbxDCM_MeasureType" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Background="LightBlue">
+                                <TextBlock Text="档位" />
+                                <ComboBox Name="cbxSetDCMRangeIndex"
+                                          SelectedIndex="{Binding SetDCMRangeIndex, Mode=OneWayToSource}" />
+                            </StackPanel>
+                        </WrapPanel>
+                    </GroupBox>
+                    <GroupBox>
+                        <WrapPanel>
+                            <Button Content="ReadDCMeterData"
+                                    Click="ClickCommand" />
+                            <Button Content="StopReadingDCMData"
+                                    Click="ClickCommand"
+                                    Background="LightPink" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="DCM_Data:" />
+                                <Label Background="WhiteSmoke"
+                                       Name="lbDCMData"
+                                       Content="{Binding DCMData}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="DCM_MeasureType:" />
+                                <Label Background="WhiteSmoke"
+                                       Name="lbdCM_MType"
+                                       Content="{Binding DCM_MType}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="DCM_RangeIndex:" />
+                                <Label Background="WhiteSmoke"
+                                       Name="lbDCMRangeIndex"
+                                       Content="{Binding DCMRangeIndex}" />
+                            </StackPanel>
+                        </WrapPanel>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
             <!--#endregion 直流表-->
             <!--#region 直流源/电阻-->
             <TabItem Header="直流源/电阻"
