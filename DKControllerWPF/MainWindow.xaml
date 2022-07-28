@@ -15,6 +15,8 @@
                     Value="5" />
             <Setter Property="VerticalAlignment"
                     Value="Center" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Center" />
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="Padding"
@@ -37,16 +39,27 @@
                     Value="Center" />
             <Setter Property="Margin"
                     Value="5" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Center" />
         </Style>
         <Style TargetType="StackPanel">
             <Setter Property="Margin"
                     Value=" 10" />
         </Style>
+        <Style x:Key="StackPanelInWrapPanel"
+               TargetType="StackPanel">
+            <Setter Property="Background"
+                    Value="LightBlue" />
+            <Setter Property="Margin"
+                    Value="10" />
+        </Style>
         <Style TargetType="Button">
             <Setter Property="Padding"
-                    Value="10" />
+                    Value="5" />
             <Setter Property="VerticalAlignment"
                     Value="Center" />
+            <Setter Property="Margin"
+                    Value="5" />
         </Style>
         <Style TargetType="WrapPanel">
             <Setter Property="Margin"
@@ -56,6 +69,14 @@
             <Setter Property="Margin"
                     Value="10" />
         </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Padding"
+                    Value="5" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="Margin"
+                    Value="10" />
+        </Style>      
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -136,7 +157,8 @@
                            Foreground="SteelBlue" />
                 <Label Content="{Binding Message}" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="5">
+            <StackPanel Orientation="Horizontal"
+                        Margin="5">
                 <TextBlock Text="Content:"
                            Foreground="White" />
                 <TextBox Focusable="True"
@@ -440,16 +462,16 @@
                         <!--#region 交流源打开和关闭命令 -->
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <!--#region StopACSource -->
                             <GroupBox Header="交流源停止命令"
                                       Background="AliceBlue">
-                                <WrapPanel>
-                                    <Button Content="StopACSource"
-                                            Click="ClickCommand" />
-                                </WrapPanel>
+                                <Button Content="StopACSource"
+                                        Click="ClickCommand"
+                                        Background="LightPink" />
                             </GroupBox>
                             <!--#endregion StopACSource-->
                             <!--#region StarACSource -->
@@ -458,32 +480,34 @@
                                       Background="AliceBlue">
                                 <StackPanel Orientation="Horizontal">
                                     <Button Content="StartACSource"
-                                            Click="ClickCommand" />
+                                            Click="ClickCommand"
+                                            Background="Lavender" />
                                 </StackPanel>
                             </GroupBox>
+                            <!--#region SetWireMode -->
+                            <GroupBox Header="设置接线模式"
+                                      Grid.Column="2"
+                                      Background="AliceBlue">
+                                <WrapPanel>
+                                    <Button Content="SetWireMode"
+                                            Click="ClickCommand" />
+                                    <StackPanel Orientation="Horizontal"
+                                                Background="LightBlue">
+                                        <Label Content="WireMode:" />
+                                        <ComboBox x:Name="cbxSetWireMode"
+                                                  SelectedIndex="0" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal"
+                                                Background="LightGray">
+                                        <TextBlock Text="当前接线模式：" />
+                                        <TextBlock x:Name="tbxSetWireModePage" />
+                                    </StackPanel>
+                                </WrapPanel>
+                            </GroupBox>
+                            <!--#endregion SetWireMode-->
                             <!--#endregion StopACSource-->
                         </Grid>
                         <!--#endregion 交流源打开和关闭命令-->
-                        <!--#region SetWireMode -->
-                        <GroupBox Header="设置接线模式"
-                                  Background="AliceBlue">
-                            <WrapPanel>
-                                <Button Content="SetWireMode"
-                                        Click="ClickCommand" />
-                                <StackPanel Orientation="Horizontal"
-                                            Background="LightBlue">
-                                    <Label Content="WireMode:" />
-                                    <ComboBox x:Name="cbxSetWireMode"
-                                              SelectedIndex="0" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal"
-                                            Background="LightGray">
-                                    <TextBlock Text="当前接线模式：" />
-                                    <TextBlock x:Name="tbxSetWireModePage" />
-                                </StackPanel>
-                            </WrapPanel>
-                        </GroupBox>
-                        <!--#endregion SetWireMode-->
                         <!--#region SetACSourceRange -->
                         <GroupBox Header="设置交流源档位"
                                   Background="AliceBlue">
@@ -526,11 +550,11 @@
                                         <Setter Property="Margin"
                                                 Value="10" />
                                     </Style>
-                                 
                                 </WrapPanel.Resources>
                                 <Button Content="WriteACSourceAmplitude"
                                         Click="ClickCommand" />
-                                <StackPanel Orientation="Horizontal" Background="LightBlue">
+                                <StackPanel Orientation="Horizontal"
+                                            Background="LightBlue">
                                     <TextBlock Text="Ua:" />
                                     <TextBox x:Name="txbAmplitudeUa"
                                              Text="57.735"
@@ -588,214 +612,76 @@
                         </GroupBox>
                         <!--#endregion WriteACSourceAmplitude-->
                         <!--#region WritePhase -->
-                        <GroupBox Grid.Row="5"
-                                  Header="设置相位"
-                                  Margin="10"
+                        <GroupBox Header="设置相位"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            Margin="10">
-                                    <Button Content="WritePhase"
-                                            Padding="10,5"
-                                            Margin="5"
-                                            Click="Button_Click_WritePhase" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxWritePhaseIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxWritePhaseErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxWritePhaseMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
+                            <WrapPanel>
+                                <Button Content="WritePhase"
+                                        Click="ClickCommand" />
+                                <StackPanel Orientation="Horizontal"
+                                            Style="{StaticResource StackPanelInWrapPanel}">
+                                    <TextBlock Text="ΦUa:" />
+                                    <TextBox x:Name="txbAmplitudeFaiUa"
+                                             MinWidth="50"
+                                             Text="0" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxWritePhaseResponse"
-                                             Margin="10,5"
-                                             Padding="10"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow" />
+                                <StackPanel Orientation="Horizontal"
+                                            Style="{StaticResource StackPanelInWrapPanel}">
+                                    <TextBlock Text="ΦUb:" />
+                                    <TextBox x:Name="txbAmplitudeFaiUb"
+                                             MinWidth="50"
+                                             Text="120" />
                                 </StackPanel>
-                                <WrapPanel Grid.Row="2">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="10,10,0,10"
-                                                   Padding="5"
-                                                   Text="ΦUa:"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center" />
-                                        <TextBox x:Name="txbAmplitudeFaiUa"
-                                                 MinWidth="80"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5"
-                                                 Text="0"
-                                                 IsReadOnly="True"
-                                                 IsEnabled="False" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="10,10,0,10"
-                                                   Padding="5"
-                                                   Text="ΦUb:"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center" />
-                                        <TextBox x:Name="txbAmplitudeFaiUb"
-                                                 MinWidth="80"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5"
-                                                 Text="240" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="10,10,0,10"
-                                                   Padding="5"
-                                                   Text="ΦUc:"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center" />
-                                        <TextBox x:Name="txbAmplitudeFaiUc"
-                                                 MinWidth="80"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5"
-                                                 Text="120" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="10,10,0,10"
-                                                   Padding="5"
-                                                   Text="ΦIa:"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center" />
-                                        <TextBox x:Name="txbAmplitudeFaiIa"
-                                                 MinWidth="80"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5"
-                                                 Text="0" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="10,10,0,10"
-                                                   Padding="5"
-                                                   Text="ΦIb:"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center" />
-                                        <TextBox x:Name="txbAmplitudeFaiIb"
-                                                 MinWidth="80"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5"
-                                                 Text="240" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="10,10,0,10"
-                                                   Padding="5"
-                                                   Text="ΦIc:"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center" />
-                                        <TextBox x:Name="txbAmplitudeFaiIc"
-                                                 MinWidth="80"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5"
-                                                 Text="120" />
-                                    </StackPanel>
-                                </WrapPanel>
-                            </Grid>
+                                <StackPanel Orientation="Horizontal"
+                                            Style="{StaticResource StackPanelInWrapPanel}">
+                                    <TextBlock Text="ΦUc:" />
+                                    <TextBox x:Name="txbAmplitudeFaiUc"
+                                             MinWidth="50"
+                                             Text="240" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Style="{StaticResource StackPanelInWrapPanel}">
+                                    <TextBlock Text="ΦIa:" />
+                                    <TextBox x:Name="txbAmplitudeFaiIa"
+                                             MinWidth="50"
+                                             Text="0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Style="{StaticResource StackPanelInWrapPanel}">
+                                    <TextBlock Text="ΦIb:" />
+                                    <TextBox x:Name="txbAmplitudeFaiIb"
+                                             MinWidth="50"
+                                             Text="120" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Style="{StaticResource StackPanelInWrapPanel}">
+                                    <TextBlock Text="ΦIc:" />
+                                    <TextBox x:Name="txbAmplitudeFaiIc"
+                                             MinWidth="50"
+                                             Text="240" />
+                                </StackPanel>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion WritePhase-->
                         <!--#region WriteFrequency -->
-                        <GroupBox Grid.Row="6"
-                                  Header="设置频率"
-                                  Margin="10"
+                        <GroupBox Header="设置频率"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            Margin="10">
-                                    <Button Content="WriteFrequency"
-                                            Padding="10,5"
-                                            Margin="5"
-                                            Click="Button_Click_WriteFrequency" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxWriteFrequencyIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxWriteFrequencyErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxWriteFrequencyMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
+                            <WrapPanel>
+                                <Button Content="WriteFrequency"
+                                        Click="ClickCommand" />
+                                <StackPanel Orientation="Horizontal"
+                                            Style="{StaticResource StackPanelInWrapPanel}">
+                                    <TextBlock Text="F:" />
+                                    <TextBox x:Name="txbWriteFrequency"
+                                             MinWidth="50" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxWriteFrequencyResponse"
-                                             Margin="10,5"
-                                             Padding="10"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow" />
+                                <StackPanel Orientation="Horizontal"
+                                            Style="{StaticResource StackPanelInWrapPanel}">
+                                    <TextBlock Text="Fc:" />
+                                    <TextBox x:Name="txbWriteFrequencyC"
+                                             MinWidth="50"
+                                             Text="50" />
                                 </StackPanel>
-                                <WrapPanel Grid.Row="2">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="10,10,0,10"
-                                                   Padding="5"
-                                                   Text="F:"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center" />
-                                        <TextBox x:Name="txbWriteFrequency"
-                                                 MinWidth="80"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="10,10,0,10"
-                                                   Padding="5"
-                                                   Text="Fc:"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center" />
-                                        <TextBox x:Name="txbWriteFrequencyC"
-                                                 MinWidth="80"
-                                                 Margin="0,10,10,10"
-                                                 Padding="5"
-                                                 Text="50" />
-                                    </StackPanel>
-                                </WrapPanel>
-                            </Grid>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion WriteFrequency-->
                         <!--#region SetClosedLoop -->
@@ -803,287 +689,86 @@
                                   Header="设置闭环模式和谐波模式"
                                   Margin="10"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            Margin="10">
-                                    <Button Content="SetClosedLoop"
-                                            Padding="10,5"
-                                            Margin="5"
-                                            Click="Button_Click_SetClosedLoop" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxSetClosedLoopIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxSetClosedLoopErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxSetClosedLoopMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5" />
-                                    <Label Content="CloseLoopMode:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="10,5,0,5" />
+                            <WrapPanel>
+                                <Button Content="SetClosedLoop"
+                                        Click="ClickCommand" />
+                                <StackPanel Orientation="Horizontal"
+                                            Style="{StaticResource StackPanelInWrapPanel}">
+                                    <Label Content="CloseLoopMode:" />
                                     <ComboBox x:Name="cbxSetClosedLoopMode"
-                                              Margin="5"
-                                              Padding="5"
-                                              SelectedIndex="0"
-                                              IsReadOnly="True" />
-                                    <Label Content="CloseLoopMode:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="10,5,0,5" />
+                                              SelectedIndex="0" />
+                                    <Label Content="CloseLoopMode:" />
                                     <ComboBox x:Name="cbxSetClosedLoopHarmonicMode"
-                                              Margin="5"
-                                              Padding="5"
-                                              SelectedIndex="0"
-                                              IsReadOnly="True" />
+                                              SelectedIndex="0" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxSetClosedLoopResponse"
-                                             Margin="10,5"
-                                             Padding="10"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow" />
+                                <StackPanel Orientation="Horizontal"
+                                            Background="LightGray">
+                                    <TextBlock Text="当前闭环模式："
+                                               Margin="5" />
+                                    <TextBlock x:Name="tbxSetClosedLoop" />
+                                    <TextBlock Text="当前谐波模式：" />
+                                    <TextBlock x:Name="tbxHarmonicMode" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="2"
-                                            Margin="10"
-                                            Orientation="Horizontal">
-                                    <Label Content="当前闭环模式："
-                                           Margin="5" />
-                                    <TextBox x:Name="tbxSetClosedLoop"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5"
-                                             IsReadOnly="True" />
-                                    <Label Content="当前谐波模式："
-                                           Margin="5" />
-                                    <TextBox x:Name="tbxHarmonicMode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="5"
-                                             Padding="5"
-                                             IsReadOnly="True" />
-                                </StackPanel>
-                            </Grid>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion SetClosedLoop-->
                         <!--#region WriteHarmonics -->
-                        <GroupBox Grid.Row="8"
-                                  Header="设置谐波参数"
-                                  Margin="10"
+                        <GroupBox Header="设置谐波参数"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            Margin="10">
-                                    <Button Content="WriteHarmonics"
-                                            Padding="10,5"
-                                            Margin="10"
-                                            Click="Button_Click_WriteHarmonics" />
-                                    <Button Content="ClearHarmonics"
-                                            Padding="10,5"
-                                            Margin="10"
-                                            Click="Button_Click_ClearHarmonics" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxWriteHarmonicsIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxWriteHarmonicsErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxWriteHarmonicsMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5" />
-                                    <TextBlock Text="谐波通道:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
+                            <WrapPanel>
+                                <Button Content="WriteHarmonics"
+                                        Click="Button_Click_WriteHarmonics" />
+                                <Button Content="ClearHarmonics"
+                                        Click="Button_Click_ClearHarmonics"
+                                        Foreground="Green" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="谐波通道:" />
                                     <ComboBox x:Name="cbxHarmonicChannels"
-                                              Margin="10"
-                                              Padding="5"
-                                              SelectedIndex="0"
-                                              VerticalContentAlignment="Center" />
-                                    <TextBlock Text="谐波次数:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
+                                              SelectedIndex="0" />
+                                    <TextBlock Text="谐波次数:" />
                                     <TextBox Name="tbxWriteHarmonicsTimes"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5"
                                              Text="2" />
-                                    <TextBlock Text="谐波幅度:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="谐波幅度:" />
                                     <TextBox x:Name="tbxWriteHarmonicsAmplitude"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10,10,2,10"
-                                             Padding="5"
                                              Text="0.2" />
-                                    <TextBlock Text="%"
-                                               Margin="0,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBlock Text="谐波相位:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="%" />
+                                    <TextBlock Text="谐波相位:" />
                                     <TextBox Name="tbxWriteHarmonicsAngle"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5"
                                              Text="0" />
                                     <StackPanel Orientation="Horizontal"
                                                 Background="LightBlue">
                                         <CheckBox x:Name="isMultiChannels"
-                                                  Margin="10"
-                                                  Padding="5"
-                                                  VerticalAlignment="Center"
-                                                  VerticalContentAlignment="Center"
-                                                  Content="设置多通道"
+                                                  Content="自定义多通道"
                                                   Checked="isMultiChannels_Checked"
                                                   Unchecked="isMultiChannels_Unchecked" />
                                         <TextBlock x:Name="tbIsMultiChl"
                                                    Text="多通道值:"
-                                                   Margin="10"
-                                                   Padding="5"
-                                                   VerticalAlignment="Center"
                                                    Visibility="Collapsed" />
                                         <TextBox x:Name="HarmonicsMultiChannelsValue"
-                                                 Margin="10"
-                                                 Padding="5"
                                                  MinWidth="50"
-                                                 Visibility="{Binding ElementName=tbIsMultiChl, Path=Visibility}" />
-                                        <TextBlock Text="UA=1,UB=2,UC=4,IA=8,IB=16,IC=32。求和则多选"
-                                                   Margin="10"
-                                                   Padding="5"
-                                                   IsEnabled="False"
-                                                   Foreground="Gray"
-                                                   Visibility="{Binding ElementName=tbIsMultiChl, Path=Visibility}" />
+                                                 Visibility="{Binding ElementName=tbIsMultiChl, Path=Visibility}"
+                                                 ToolTip="UA=1；UB=2；UC=4；IA=8；IB=16；IC=32：求和则多选" />
                                     </StackPanel>
                                 </StackPanel>
-                                <StackPanel Grid.Row="1"
-                                            Margin="10">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10"
-                                               Padding="5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox x:Name="tbxWriteHarmonicsResponse"
-                                             Margin="10"
-                                             Padding="5"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow"
-                                             VerticalContentAlignment="Center" />
-                                </StackPanel>
-                            </Grid>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion WriteHarmonics-->
                         <!--#region WriteWattPower -->
-                        <GroupBox Grid.Row="9"
-                                  Header="设置有功功率"
-                                  Margin="10"
+                        <GroupBox Header="设置有功功率"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            Margin="10">
-                                    <Button Content="WriteWattPower"
-                                            Padding="10,5"
-                                            Margin="10"
-                                            Click="Button_Click_WriteWattPower" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxWriteWattPowerIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxWriteWattPowerErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxWriteWattPowerMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5" />
-                                    <TextBlock Text="有功功率通道:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
+                            <WrapPanel>
+                                <Button Content="WriteWattPower"
+                                        Click="Button_Click_WriteWattPower" />
+                                <StackPanel Background="LightBlue"
+                                            Orientation="Horizontal">
+                                    <TextBlock Text="有功功率通道:" />
                                     <ComboBox x:Name="cbxChannelWattPower"
-                                              Margin="10"
-                                              Padding="5"
-                                              SelectedIndex="0"
-                                              VerticalContentAlignment="Center" />
-                                    <TextBlock Text="有功功率值:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
+                                              SelectedIndex="3" />
+                                    <TextBlock Text="有功功率值:" />
                                     <TextBox Name="tbxWriteWattPowerData"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5"
                                              MinWidth="80" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1"
-                                            Margin="10">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10"
-                                               Padding="5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox x:Name="tbxWriteWattPowerResponse"
-                                             Margin="10"
-                                             Padding="5"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow"
-                                             VerticalContentAlignment="Center" />
-                                </StackPanel>
-                            </Grid>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion WriteWattPower-->
                         <!--#region WriteWattLessPower -->
@@ -1091,73 +776,19 @@
                                   Header="设置无功功率"
                                   Margin="10"
                                   Background="AliceBlue">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            Margin="10">
-                                    <Button Content="WriteWattLessPower"
-                                            Padding="10,5"
-                                            Margin="10"
-                                            Click="Button_Click_WriteWattLessPower" />
-                                    <TextBlock Text="IsSuccess:"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="10,5,0,5"
-                                               Padding="5" />
-                                    <TextBox x:Name="tbxWriteWattLessPowerIsSuccess"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5" />
-                                    <TextBlock Text="ErrorCode:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxWriteWattLessPowerErrorCode"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5" />
-                                    <TextBlock Text="Message:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox Name="tbxWriteWattLessPowerMesseage"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5" />
-                                    <TextBlock Text="无功功率通道:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
+                            <WrapPanel>
+                                <Button Content="WriteWattLessPower"
+                                        Click="Button_Click_WriteWattLessPower" />
+                                <StackPanel Orientation="Horizontal"
+                                            Background="LightBlue">
+                                    <TextBlock Text="无功功率通道:" />
                                     <ComboBox x:Name="cbxChannelWattLessPower"
-                                              Margin="10"
-                                              Padding="5"
-                                              SelectedIndex="0"
-                                              VerticalContentAlignment="Center" />
-                                    <TextBlock Text="无功功率值:"
-                                               Margin="10,5,0,5"
-                                               VerticalAlignment="Center" />
+                                              SelectedIndex="3" />
+                                    <TextBlock Text="无功功率值:" />
                                     <TextBox Name="tbxWriteWattLessPowerData"
-                                             VerticalContentAlignment="Center"
-                                             Margin="10"
-                                             Padding="5"
                                              MinWidth="80" />
                                 </StackPanel>
-                                <StackPanel Grid.Row="1"
-                                            Margin="10">
-                                    <TextBlock Text="Content:下位机回复的原始报文"
-                                               Margin="10"
-                                               Padding="5"
-                                               VerticalAlignment="Center" />
-                                    <TextBox x:Name="tbxWriteWattLessPowerResponse"
-                                             Margin="10"
-                                             Padding="5"
-                                             Background="AliceBlue"
-                                             TextWrapping="WrapWithOverflow"
-                                             VerticalContentAlignment="Center" />
-                                </StackPanel>
-                            </Grid>
+                            </WrapPanel>
                         </GroupBox>
                         <!--#endregion WriteWattLessPower-->
                     </StackPanel>
@@ -1170,19 +801,43 @@
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Row="0"
-                          Grid.Column="1"
-                          Background="AliceBlue"
+                    <Grid Background="AliceBlue"
                           Margin="10"
                           Name="gridData"
                           Visibility="Visible">
+                        <Grid.Resources>                        
+                            <Style TargetType="Label">
+                                <Setter Property="Margin"
+                                        Value="2" />
+                                <Setter Property="Background"
+                                        Value="White" />
+                                <Setter Property="FontSize"
+                                        Value="{Binding ElementName=sliderFontSize, Path=Value, Mode=TwoWay}" />
+                                <Setter Property="VerticalContentAlignment"
+                                        Value="Center" />
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Center" />
+                            </Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize"
+                                        Value="{Binding ElementName=sliderFontSize, Path=Value, Mode=TwoWay}" />
+                                <Setter Property="VerticalAlignment"
+                                        Value="Center" />
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                                <Setter Property="Margin"
+                                        Value="5" />
+                            </Style>
+                        </Grid.Resources>
                         <Grid.RowDefinitions>
+                            <RowDefinition MinHeight="50" />
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
@@ -1209,772 +864,254 @@
                                               Width="auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="2"
-                                   Text="A相"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10"
-                                   Padding="10,0,10,0" />
+                                   Text="A相" />
                         <TextBlock Grid.Column="3"
-                                   Text="B相"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10"
-                                   Padding="10,0,10,0" />
+                                   Text="B相" />
                         <TextBlock Grid.Column="4"
-                                   Text="C相"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10"
-                                   Padding="10,0,10,0" />
+                                   Text="C相" />
                         <TextBlock Grid.Column="5"
-                                   Text="Σ"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center" />
+                                   Text="Σ" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="0"
-                                   Text="U"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="U" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="1"
                                    Text="V"
-                                   Foreground="Gray"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Padding="10" />
+                                   Foreground="Gray" />
                         <TextBlock Grid.Row="2"
                                    Grid.Column="0"
-                                   Text="I"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="I" />
                         <TextBlock Grid.Row="2"
                                    Grid.Column="1"
                                    Text="A"
-                                   Foreground="Gray"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Padding="10" />
+                                   Foreground="Gray" />
                         <TextBlock Grid.Row="3"
                                    Grid.Column="0"
-                                   Text="Φ U"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="Φ U" />
                         <TextBlock Grid.Row="3"
                                    Grid.Column="1"
                                    Text="°"
-                                   Foreground="Gray"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Padding="10" />
+                                   Foreground="Gray" />
                         <TextBlock Grid.Row="4"
                                    Grid.Column="0"
-                                   Text="Φ I"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="Φ I" />
                         <TextBlock Grid.Row="4"
                                    Grid.Column="1"
                                    Text="°"
-                                   Foreground="Gray"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Padding="10" />
+                                   Foreground="Gray" />
                         <TextBlock Grid.Row="5"
                                    Grid.Column="0"
-                                   Text="THDU"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="THDU" />
                         <TextBlock Grid.Row="5"
                                    Grid.Column="1"
                                    Text="%"
-                                   Foreground="Gray"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Padding="10" />
+                                   Foreground="Gray" />
                         <TextBlock Grid.Row="6"
                                    Grid.Column="0"
-                                   Text="THDI"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="THDI" />
                         <TextBlock Grid.Row="6"
                                    Grid.Column="1"
                                    Text="%"
-                                   Foreground="Gray"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Padding="10" />
+                                   Foreground="Gray" />
                         <TextBlock Grid.Row="7"
                                    Grid.Column="0"
-                                   Text="P"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="P" />
                         <TextBlock Grid.Row="7"
                                    Grid.Column="1"
                                    Text="W"
-                                   Foreground="Gray"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Padding="10" />
+                                   Foreground="Gray" />
                         <TextBlock Grid.Row="8"
                                    Grid.Column="0"
-                                   Text="Q"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="Q" />
                         <TextBlock Grid.Row="8"
                                    Grid.Column="1"
                                    Text="Var"
-                                   Foreground="Gray"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Padding="10" />
+                                   Foreground="Gray" />
                         <TextBlock Grid.Row="9"
                                    Grid.Column="0"
-                                   Text="S"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="S" />
                         <TextBlock Grid.Row="9"
                                    Grid.Column="1"
                                    Text="VA"
-                                   Foreground="Gray"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Padding="10" />
+                                   Foreground="Gray" />
                         <TextBlock Grid.Row="10"
                                    Grid.Column="0"
-                                   Text="PF"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="PF" />
                         <TextBlock Grid.Row="11"
                                    Grid.Column="0"
-                                   Text="Freq."
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="10" />
+                                   Text="Freq." />
                         <TextBlock Grid.Row="11"
                                    Grid.Column="1"
                                    Text="Hz"
-                                   Foreground="Gray"
-                                   FontSize="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Padding="10" />
+                                   Foreground="Gray" />
                         <Label Name="lbUA"
                                Grid.Row="1"
-                               Grid.Column="2"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Grid.Column="2" />
                         <Label Grid.Row="1"
                                Name="lbUB"
-                               Grid.Column="3"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Grid.Column="3" />
                         <Label Grid.Row="1"
                                Name="lbUC"
-                               Grid.Column="4"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
-                        <Label Grid.Row="1"
-                               Name="lbURange"
-                               Grid.Column="5"
-                               Padding="5"
-                               Background="LightGray"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18"
-                               Foreground="White"
-                               FontWeight="Bold"
-                               Margin="2,2,2,0" />
-                        <Label Grid.Row="2"
-                               Name="lbIRange"
-                               Grid.Column="5"
-                               Padding="5"
-                               Background="LightGray"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18"
-                               Foreground="White"
-                               FontWeight="Bold"
-                               Margin="2,0,2,0" />
-                        <Label Grid.Row="3"
-                               Content="当前档位"
-                               Grid.Column="5"
-                               Padding="5"
-                               Background="LightGray"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18"
-                               Foreground="White"
-                               FontWeight="Bold"
-                               Margin="2,0,2,2" />
+                               Grid.Column="4" />
+                        <Border Grid.Row="1"
+                                Grid.Column="5"
+                                Grid.RowSpan="3"
+                                Background="Lavender"
+                                Margin="2">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0"
+                                       Name="lbURange"
+                                       Grid.Column="5"
+                                       Background="Lavender" />
+                                <Label Grid.Row="1"
+                                       Name="lbIRange"
+                                       Grid.Column="5"
+                                       Background="Lavender" />
+                                <TextBlock Grid.Row="2"
+                                           Text="当前档位"
+                                           Grid.Column="5"
+                                           Foreground="White" />
+                            </Grid>
+                        </Border>
                         <Label Grid.Row="2"
                                Name="lbIA"
-                               Grid.Column="2"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Grid.Column="2" />
                         <Label Grid.Row="2"
                                Name="lbIB"
-                               Grid.Column="3"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Grid.Column="3" />
                         <Label Grid.Row="2"
                                Grid.Column="4"
-                               Name="lbIC"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbIC" />
                         <Label Grid.Row="3"
                                Name="lbFaiUA"
-                               Grid.Column="2"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Grid.Column="2" />
                         <Label Grid.Row="3"
                                Name="lbFaiUB"
-                               Grid.Column="3"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Grid.Column="3" />
                         <Label Grid.Row="3"
                                Grid.Column="4"
-                               Name="lbFaiUC"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbFaiUC" />
                         <Label Grid.Row="4"
                                Grid.Column="2"
-                               Name="lbFaiIA"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbFaiIA" />
                         <Label Grid.Row="4"
                                Grid.Column="3"
-                               Name="lbFaiIB"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbFaiIB" />
                         <Label Grid.Row="4"
                                Grid.Column="4"
-                               Name="lbFaiIC"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbFaiIC" />
                         <Label Grid.Row="5"
                                Grid.Column="2"
                                Name="lbTHDUA"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Content="N/A"
+                               Foreground="AliceBlue" />
                         <Label Grid.Row="5"
                                Grid.Column="3"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Content="N/A"
+                               Foreground="AliceBlue" />
                         <Label Grid.Row="5"
                                Grid.Column="4"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Content="N/A"
+                               Foreground="AliceBlue" />
                         <Label Grid.Row="6"
                                Grid.Column="2"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Content="N/A"
+                               Foreground="AliceBlue" />
                         <Label Grid.Row="6"
                                Grid.Column="3"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Content="N/A"
+                               Foreground="AliceBlue" />
                         <Label Grid.Row="6"
                                Grid.Column="4"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Content="N/A"
+                               Foreground="AliceBlue" />
                         <Label Grid.Row="7"
                                Grid.Column="2"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbPA"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbPA" />
                         <Label Grid.Row="7"
                                Grid.Column="3"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbPB"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbPB" />
                         <Label Grid.Row="7"
                                Grid.Column="4"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbPC"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbPC" />
                         <Label Grid.Row="7"
                                Grid.Column="5"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="LightBlue"
-                               Name="lbPall"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbPall" Background="LightBlue"/>
                         <Label Grid.Row="8"
                                Grid.Column="2"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbQA"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbQA" />
                         <Label Grid.Row="8"
                                Grid.Column="3"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbQB"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbQB" />
                         <Label Grid.Row="8"
                                Grid.Column="4"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbQC"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbQC" />
                         <Label Grid.Row="8"
-                               Grid.Column="5"
-                               Margin="2,2,2,2"
-                               Padding="5"
                                Background="LightBlue"
-                               Name="lbQall"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Grid.Column="5"
+                               Name="lbQall" />
                         <Label Grid.Row="9"
                                Grid.Column="2"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbSA"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbSA" />
                         <Label Grid.Row="9"
                                Grid.Column="3"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbSB"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbSB" />
                         <Label Grid.Row="9"
                                Grid.Column="4"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbSC"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbSC" />
                         <Label Grid.Row="9"
-                               Grid.Column="5"
-                               Margin="2,2,2,2"
-                               Padding="5"
                                Background="LightBlue"
-                               Name="lbSall"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Grid.Column="5"
+                               Name="lbSall" />
                         <Label Grid.Row="10"
                                Grid.Column="2"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbPFA"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbPFA" />
                         <Label Grid.Row="10"
                                Grid.Column="3"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbPFB"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbPFB" />
                         <Label Grid.Row="10"
                                Grid.Column="4"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbPFC"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbPFC" />
                         <Label Grid.Row="10"
-                               Grid.Column="5"
-                               Margin="2,2,2,2"
-                               Padding="5"
                                Background="LightBlue"
-                               Name="lbPFall"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Grid.Column="5"
+                               Name="lbPFall" />
                         <Label Grid.Row="11"
                                Grid.Column="2"
                                Grid.ColumnSpan="2"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="White"
-                               Name="lbFreq"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbFreq" />
                         <Label Grid.Row="11"
                                Grid.Column="4"
-                               Margin="2,2,2,2"
-                               Padding="5"
-                               Background="LightGray"
-                               Name="lbFreqC"
-                               VerticalContentAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               FontSize="18" />
+                               Name="lbFreqC" />
+                        <Slider Grid.Row="12" Grid.ColumnSpan="6"
+                                Name="sliderFontSize"
+                                Minimum="15"
+                                Maximum="24"
+                                Value="18"
+                                TickFrequency="1"
+                                TickPlacement="TopLeft"
+                                AutoToolTipPlacement="TopLeft" />
                     </Grid>
-                    <GroupBox Grid.Row="0"
-                              Grid.Column="0"
-                              Header="读取交流源数据"
-                              Margin="10"
-                              Background="AliceBlue">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0"
-                                        Orientation="Horizontal"
-                                        Margin="10">
-                                <Button Content="ReadACSourceData"
-                                        Padding="10,5"
-                                        Margin="5"
-                                        Click="Button_Click_ReadACSourceData" />
-                                <Button Content="STOP Reading"
-                                        Background="LightPink"
-                                        Padding="10,5"
-                                        Margin="5"
-                                        Click="Button_Click_StopReadACSourceData" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="10"
-                                        Grid.Row="1">
-                                <TextBlock Text="IsSuccess:"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Margin="10,5,0,5"
-                                           Padding="5" />
-                                <TextBox x:Name="tbxReadACSourceDataIsSuccess"
-                                         VerticalContentAlignment="Center"
-                                         Margin="5"
-                                         Padding="5" />
-                                <TextBlock Text="ErrorCode:"
-                                           Margin="10,5,0,5"
-                                           VerticalAlignment="Center" />
-                                <TextBox Name="tbxReadACSourceDataErrorCode"
-                                         VerticalContentAlignment="Center"
-                                         Margin="5"
-                                         Padding="5" />
-                                <TextBlock Text="Message:"
-                                           Margin="10,5,0,5"
-                                           VerticalAlignment="Center" />
-                                <TextBox Name="tbxReadACSourceDataMesseage"
-                                         VerticalContentAlignment="Center"
-                                         Margin="5"
-                                         Padding="5" />
-                            </StackPanel>
-                            <GroupBox Grid.Row="2"
-                                      Header="设置交流源幅度"
-                                      Margin="10"
-                                      Background="LightGray">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <StackPanel Grid.Row="0"
-                                                Orientation="Horizontal"
-                                                Margin="10">
-                                        <Button Content="WriteACSourceAmplitude"
-                                                Padding="10,5"
-                                                Margin="5"
-                                                Click="Button_Click_WriteACSourceAmplitude" />
-                                        <TextBlock Text="IsSuccess:"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   Margin="10,5,0,5"
-                                                   Padding="5" />
-                                        <TextBox x:Name="tbxWriteACSourceAmplitudeIsSuccess2"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5"
-                                                 Text="{Binding ElementName=tbxWriteACSourceAmplitudeIsSuccess, Path=Text}" />
-                                        <TextBlock Text="ErrorCode:"
-                                                   Margin="10,5,0,5"
-                                                   VerticalAlignment="Center" />
-                                        <TextBox Name="tbxWriteACSourceAmplitudeErrorCode2"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Padding="5"
-                                                 Text="{Binding ElementName=tbxWriteACSourceAmplitudeErrorCode, Path=Text}" />
-                                        <TextBlock Text="Message:"
-                                                   Margin="10,5,0,5"
-                                                   VerticalAlignment="Center" />
-                                        <TextBox Name="tbxWriteACSourceAmplitudeMesseage2"
-                                                 VerticalContentAlignment="Center"
-                                                 Margin="5"
-                                                 Text="{Binding ElementName=tbxWriteACSourceAmplitudeMesseage, Path=Text}"
-                                                 Padding="5" />
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="1">
-                                        <TextBlock Text="Content:下位机回复的原始报文"
-                                                   Margin="10,5"
-                                                   Padding="5" />
-                                        <TextBox x:Name="tbxWriteACSourceAmplitudeResponse2"
-                                                 Margin="10,5"
-                                                 Padding="10"
-                                                 TextWrapping="WrapWithOverflow"
-                                                 Text="{Binding ElementName=tbxWriteACSourceAmplitudeResponse, Path=Text}" />
-                                    </StackPanel>
-                                    <UniformGrid Grid.Row="2">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="10,10,0,10"
-                                                       Padding="5"
-                                                       Text="Ua:"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center" />
-                                            <TextBox x:Name="txbAmplitudeUa2"
-                                                     MinWidth="80"
-                                                     Margin="0,10,10,10"
-                                                     Padding="5"
-                                                     Text="{Binding ElementName=txbAmplitudeUa, Path=Text}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="10,10,0,10"
-                                                       Padding="5"
-                                                       Text="Ub:"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center" />
-                                            <TextBox x:Name="txbAmplitudeUb2"
-                                                     MinWidth="80"
-                                                     Margin="0,10,10,10"
-                                                     Padding="5"
-                                                     Text="{Binding ElementName=txbAmplitudeUb, Path=Text}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="10,10,0,10"
-                                                       Padding="5"
-                                                       Text="Uc:"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center" />
-                                            <TextBox x:Name="txbAmplitudeUc2"
-                                                     MinWidth="80"
-                                                     Margin="0,10,10,10"
-                                                     Padding="5"
-                                                     Text="{Binding ElementName=txbAmplitudeUc, Path=Text}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="10,10,0,10"
-                                                       Padding="5"
-                                                       Text="Ia:"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center" />
-                                            <TextBox x:Name="txbAmplitudeIa2"
-                                                     MinWidth="80"
-                                                     Margin="0,10,10,10"
-                                                     Padding="5"
-                                                     Text="{Binding ElementName=txbAmplitudeIa, Path=Text}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="10,10,0,10"
-                                                       Padding="5"
-                                                       Text="Ib:"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center" />
-                                            <TextBox x:Name="txbAmplitudeIb2"
-                                                     MinWidth="80"
-                                                     Margin="0,10,10,10"
-                                                     Padding="5"
-                                                     Text="{Binding ElementName=txbAmplitudeIb, Path=Text}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="10,10,0,10"
-                                                       Padding="5"
-                                                       Text="Ic:"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center" />
-                                            <TextBox x:Name="txbAmplitudeIc2"
-                                                     MinWidth="80"
-                                                     Margin="0,10,10,10"
-                                                     Padding="5"
-                                                     Text="{Binding ElementName=txbAmplitudeIc, Path=Text}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="10,10,0,10"
-                                                       Padding="5"
-                                                       Text="IPa:"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center" />
-                                            <TextBox x:Name="txbAmplitudeIPa2"
-                                                     MinWidth="80"
-                                                     Margin="0,10,10,10"
-                                                     Padding="5"
-                                                     Text="{Binding ElementName=txbAmplitudeIPa, Path=Text}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="10,10,0,10"
-                                                       Padding="5"
-                                                       Text="IPb:"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center" />
-                                            <TextBox x:Name="txbAmplitudeIPb2"
-                                                     MinWidth="80"
-                                                     Margin="0,10,10,10"
-                                                     Padding="5"
-                                                     Text="{Binding ElementName=txbAmplitudeIPb, Path=Text}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="10,10,0,10"
-                                                       Padding="5"
-                                                       Text="IPc:"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center" />
-                                            <TextBox x:Name="txbAmplitudeIPc2"
-                                                     MinWidth="80"
-                                                     Margin="0,10,10,10"
-                                                     Padding="5"
-                                                     Text="{Binding ElementName=txbAmplitudeIPc, Path=Text}" />
-                                        </StackPanel>
-                                    </UniformGrid>
-                                </Grid>
-                            </GroupBox>
-                        </Grid>
-                    </GroupBox>
-                    <TextBox x:Name="tbxReadACSourceDataResponse"
-                             Margin="10,5"
-                             Padding="10"
-                             Background="AliceBlue"
-                             TextWrapping="WrapWithOverflow"
-                             ScrollViewer.CanContentScroll="True"
-                             VerticalScrollBarVisibility="Auto"
-                             Grid.Row="1"
-                             Grid.Column="0"
-                             Grid.ColumnSpan="2" />
+                   
+                    <WrapPanel Grid.Row="0"
+                               Grid.Column="1"
+                               Background="AliceBlue"
+                               AllowDrop="True">
+                        <Button Content="ReadACSourceData"
+                               
+                                Click="Button_Click_ReadACSourceData"
+                                AllowDrop="True" />
+                        <Button Content="STOP Reading"
+                                Background="LightPink"
+                               
+                                Click="Button_Click_StopReadACSourceData"
+                                AllowDrop="True" />
+                    </WrapPanel>
                 </Grid>
             </TabItem>
             <!--#endregion 交流源/表:读取数据-->

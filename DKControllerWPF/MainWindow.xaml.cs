@@ -11,13 +11,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace DKControllerWPF
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window, INotifyPropertyChanged,ICommand
     {
         private readonly DK81Device dandick;
 
@@ -443,7 +444,10 @@ namespace DKControllerWPF
         {
             var d = dandick.SetWireMode((WireMode)Enum.Parse(typeof(WireMode), cbxSetWireMode.SelectedItem.ToString()));
             Update((d));
-            tbxSetWireModePage.Text = dandick.WireMode.ToString();
+            if (d.IsSuccess)
+            {
+                tbxSetWireModePage.Text = dandick.WireMode.ToString();
+            }
         }
 
         /// <summary>
@@ -506,9 +510,8 @@ namespace DKControllerWPF
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_WritePhase(object sender, RoutedEventArgs e)
+        private void WritePhase()
         {
-
             try
             {
                 float[] amplitude = new float[6];
@@ -520,13 +523,7 @@ namespace DKControllerWPF
                 amplitude[5] = float.Parse(txbAmplitudeFaiIc.Text);
 
                 var result = dandick.WritePhase(amplitude);
-                tbxWritePhaseIsSuccess.Text = result.IsSuccess.ToString();
-                tbxWritePhaseErrorCode.Text = result.ErrorCode.ToString();
-                tbxWritePhaseMesseage.Text = result.Message.ToString();
-                if (result.IsSuccess)
-                {
-                    tbxWritePhaseResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
-                }
+                Update(result);
             }
             catch (Exception ex)
             {
@@ -540,26 +537,18 @@ namespace DKControllerWPF
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_WriteFrequency(object sender, RoutedEventArgs e)
+        private void WriteFrequency()
         {
-
             try
             {
                 float f = float.Parse(txbWriteFrequency.Text);
                 float fc = float.Parse(txbWriteFrequencyC.Text);
 
                 var result = dandick.WriteFrequency(f, fc);
-                tbxWriteFrequencyIsSuccess.Text = result.IsSuccess.ToString();
-                tbxWriteFrequencyErrorCode.Text = result.ErrorCode.ToString();
-                tbxWriteFrequencyMesseage.Text = result.Message.ToString();
-                if (result.IsSuccess)
-                {
-                    tbxWriteFrequencyResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
-                }
+                Update(result);
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
         }
@@ -569,19 +558,13 @@ namespace DKControllerWPF
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_SetClosedLoop(object sender, RoutedEventArgs e)
+        private void SetClosedLoop()
         {
 
             CloseLoopMode closeLoopMode = (CloseLoopMode)Enum.Parse(typeof(CloseLoopMode), cbxSetClosedLoopMode.Text);
             HarmonicMode harmonicMode = (HarmonicMode)Enum.Parse(typeof(HarmonicMode), cbxSetClosedLoopHarmonicMode.Text);
             var result = dandick.SetClosedLoop(closeLoopMode, harmonicMode);
-            tbxSetClosedLoopIsSuccess.Text = result.IsSuccess.ToString();
-            tbxSetClosedLoopErrorCode.Text = result.ErrorCode.ToString();
-            tbxSetClosedLoopMesseage.Text = result.Message.ToString();
-            if (result.IsSuccess)
-            {
-                tbxSetClosedLoopResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
-            }
+            Update(result);
             tbxSetClosedLoop.Text = dandick.CloseLoopMode.ToString();
             tbxHarmonicMode.Text = dandick.HarmonicMode.ToString();
         }
@@ -613,14 +596,7 @@ namespace DKControllerWPF
                 }
 
                 var result = dandick.WriteHarmonics(channelsHarmonic, harmonic);
-                tbxWriteHarmonicsIsSuccess.Text = result.IsSuccess.ToString();
-                tbxWriteHarmonicsErrorCode.Text = result.ErrorCode.ToString();
-                tbxWriteHarmonicsMesseage.Text = result.Message.ToString();
-
-                if (result.IsSuccess)
-                {
-                    tbxWriteHarmonicsResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
-                }
+                Update(result);
             }
             catch (Exception ex)
             {
@@ -647,13 +623,7 @@ namespace DKControllerWPF
 
                 }
                 var result = dandick.ClearHarmonics(channelsHarmonic);
-                tbxWriteHarmonicsIsSuccess.Text = result.IsSuccess.ToString();
-                tbxWriteHarmonicsErrorCode.Text = result.ErrorCode.ToString();
-                tbxWriteHarmonicsMesseage.Text = result.Message.ToString();
-                if (result.IsSuccess)
-                {
-                    tbxWriteHarmonicsResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
-                }
+                Update(result);
             }
             catch (Exception ex)
             {
@@ -690,14 +660,7 @@ namespace DKControllerWPF
                 //ChannelWattPower channelWattPower = (ChannelWattPower)cbxChannelWattPower.SelectedIndex;
                 float data = float.Parse(tbxWriteWattPowerData.Text);
                 var result = dandick.WriteWattPower(channelWattPower, data);
-                tbxWriteWattPowerIsSuccess.Text = result.IsSuccess.ToString();
-                tbxWriteWattPowerErrorCode.Text = result.ErrorCode.ToString();
-                tbxWriteWattPowerMesseage.Text = result.Message.ToString();
-
-                if (result.IsSuccess)
-                {
-                    tbxWriteWattPowerResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
-                }
+                Update(result);
 
             }
             catch (Exception ex)
@@ -720,14 +683,7 @@ namespace DKControllerWPF
                 //ChannelWattLessPower channelWattLessPower = (ChannelWattLessPower)cbxChannelWattLessPower.SelectedIndex;
                 float data = float.Parse(tbxWriteWattLessPowerData.Text);
                 var result = dandick.WriteWattLessPower(channelWattLessPower, data);
-                tbxWriteWattLessPowerIsSuccess.Text = result.IsSuccess.ToString();
-                tbxWriteWattLessPowerErrorCode.Text = result.ErrorCode.ToString();
-                tbxWriteWattLessPowerMesseage.Text = result.Message;
-
-                if (result.IsSuccess)
-                {
-                    tbxWriteWattLessPowerResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
-                }
+                Update(result);
 
             }
             catch (Exception ex)
@@ -740,6 +696,9 @@ namespace DKControllerWPF
         private CancellationTokenSource _cts;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public event EventHandler CanExecuteChanged;
+
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -768,13 +727,7 @@ namespace DKControllerWPF
                 var result = dandick.ReadACSourceData();
                 Dispatcher.Invoke(() =>
                 {
-                    tbxReadACSourceDataIsSuccess.Text = result.IsSuccess.ToString();
-                    tbxReadACSourceDataErrorCode.Text = result.ErrorCode.ToString();
-                    tbxReadACSourceDataMesseage.Text = result.Message.ToString();
-                    if (result.IsSuccess)
-                    {
-                        tbxReadACSourceDataResponse.Text = SoftBasic.ByteToHexString(result.Content, ' ');
-                    }
+                    Update(result);
                     lbUA.Content = dandick.UA;
                     lbUB.Content = dandick.UB;
                     lbUC.Content = dandick.UC;
@@ -805,7 +758,7 @@ namespace DKControllerWPF
                     lbPFB.Content = dandick.CosFaiB;
                     lbPFC.Content = dandick.CosFaiC;
                     lbPFall.Content = dandick.CosFai;
-                    lbFreq.Content = dandick.Frequency;
+                    lbFreq.Content = dandick.Frequency;                   
                     lbFreqC.Content = dandick.FrequencyC;
                 });
                 Thread.Sleep(200);
@@ -818,10 +771,10 @@ namespace DKControllerWPF
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Button_Click_StopReadACSourceData(object sender, RoutedEventArgs e)
-        {
-            StopACSource();
-            _cts?.Cancel();
+        {           
+            _cts?.Cancel();  
             gridData.Visibility = Visibility.Collapsed;
+
         }
 
         /// <summary>
@@ -912,10 +865,14 @@ namespace DKControllerWPF
                 case "WriteACSourceAmplitude":
                     WriteACSourceAmplitude(); break;
 
+                case "WritePhase":
+                    WritePhase(); break;
 
+                case "WriteFrequency":
+                    WriteFrequency(); break;
 
-
-
+                case "SetClosedLoop":
+                    SetClosedLoop(); break;
 
 
                 default:
@@ -924,5 +881,15 @@ namespace DKControllerWPF
 
         }
 
+        public bool CanExecute(object parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Execute(object parameter)
+        {
+            
+            throw new NotImplementedException();
+        }
     }
 }
