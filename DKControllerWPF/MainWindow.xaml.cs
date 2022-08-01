@@ -839,7 +839,7 @@ namespace DKControllerWPF
                     lbFreq.Content = dandick.Frequency;
                     lbFreqC.Content = dandick.FrequencyC;
                 });
-                //Thread.Sleep(500);
+                Thread. Sleep ( 500 );
             }
         }
 
@@ -927,13 +927,13 @@ namespace DKControllerWPF
                 DCM_MType = dandick.DCM_MeasureType;
                 DCMRangeIndex = dandick.DCM_RangeIndex;
                 DCMData = dandick.DCM_Data;
-                //Dispatcher.Invoke(() =>
-                //{
-                //lbDCMData.Content = dandick.DCM_Data;
-                //lbDCMRangeIndex.Content = dandick.DCM_RangeIndex;
-                //lbdCM_MType.Content = dandick.DCM_MeasureType;
-                //});
-                //Thread.Sleep(50);
+                Dispatcher. Invoke ( ( ) =>
+                {
+                    lbDCMData. Content = dandick. DCM_Data;
+                    lbDCMRangeIndex. Content = dandick. DCM_RangeIndex;
+                    lbdCM_MType. Content = dandick. DCM_MeasureType;
+                } );
+                Thread. Sleep (500 );
             }
         }
 
