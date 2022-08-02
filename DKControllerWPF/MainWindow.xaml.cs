@@ -546,12 +546,12 @@ namespace DKControllerWPF
 
         private void tbtnTabControl_Checked(object sender, RoutedEventArgs e)
         {
-            tabControl.TabStripPlacement = System.Windows.Controls.Dock.Bottom;
+            tabControl.TabStripPlacement = Dock.Bottom;
         }
 
         private void tbtnTabControl_Unchecked(object sender, RoutedEventArgs e)
         {
-            tabControl.TabStripPlacement = System.Windows.Controls.Dock.Left;
+            tabControl.TabStripPlacement = Dock.Top;
         }
 
         /// <summary>
