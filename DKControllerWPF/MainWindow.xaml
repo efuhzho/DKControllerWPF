@@ -85,8 +85,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <!--#region 设置-->
         <StackPanel Orientation="Horizontal"
@@ -138,15 +138,18 @@
         </StackPanel>
         <!--#endregion 设置-->
         <!--#region 操作结果信息 -->
-        <Grid Grid.Row="1"
+        <Grid Grid.Row="2"
               Background="SteelBlue">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition />                
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" MinWidth="200"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0"
                         Margin="10"
-                        Orientation="Horizontal"
+                        Orientation="Vertical"
                         Background="SteelBlue"
                         Name="stkOperateResultInfo">
                 <StackPanel Orientation="Horizontal"
@@ -169,7 +172,7 @@
                 </StackPanel>
             </StackPanel>
             <Grid Margin="5"
-                  Grid.Row="1">
+                  Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
@@ -177,18 +180,17 @@
                 <TextBlock Text="Content:"
                            Foreground="White" />
                 <TextBox Focusable="True"
-                         Text="{Binding ResponseContent, Mode=OneWay}"
-                         MinHeight="45"
+                         Text="{Binding ResponseContent, Mode=OneWay}"                        
                          Background="WhiteSmoke"
                          TextWrapping="Wrap"
                          Grid.Column="1"
-                         HorizontalAlignment="Left" />
+                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
             </Grid>
         </Grid>
         <!--#endregion 操作结果信息-->
         <TabControl TabStripPlacement="Bottom"
                     Name="tabControl"
-                    Grid.Row="2"
+                    Grid.Row="1"
                     Margin="10">
             <!--#region 系统信息-->
             <TabItem Header="系统信息"
