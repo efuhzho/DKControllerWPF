@@ -260,8 +260,8 @@ namespace DKControllerWPF
         public MainWindow()
         {
             dandick = new DK81Device();
-            dandick.ReadTimeOut = 250;
-            dandick.ReceiveTimeout = 250;
+            dandick.ReadTimeOut = 2000;
+            dandick.ReceiveTimeout = 1000;
             InitializeComponent();
             DataContext = this;
             innit();
@@ -837,7 +837,7 @@ namespace DKControllerWPF
                     lbPFC.Content = dandick.CosFaiC;
                     lbPFall.Content = dandick.CosFai;
                     lbFreq.Content = dandick.Frequency;
-                    lbFreqC.Content = dandick.FrequencyC;
+                    lbFreqC.Content = dandick.FrequencyC;                   
                 });
                 Thread. Sleep ( 500 );
             }

@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:DKControllerWPF"
         mc:Ignorable="d"
         Title="DKCommunicationTEST"
-        Height="1080"
-        Width="1920"
+        Height="800"
+        Width="1280"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="{x:Type TextBlock}">
@@ -138,40 +138,53 @@
         </StackPanel>
         <!--#endregion 设置-->
         <!--#region 操作结果信息 -->
-        <WrapPanel Grid.Row="1"
-                   Margin="10"
-                   Orientation="Horizontal"
-                   Background="SteelBlue"
-                   Name="stkOperateResultInfo">
-            <StackPanel Orientation="Horizontal"
-                        Background="WhiteSmoke">
-                <TextBlock Text="IsSuccess:"
-                           Foreground="SteelBlue" />
-                <Label Content="{Binding IsSuccess}" />
+        <Grid Grid.Row="1"
+              Background="SteelBlue">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0"
+                        Margin="10"
+                        Orientation="Horizontal"
+                        Background="SteelBlue"
+                        Name="stkOperateResultInfo">
+                <StackPanel Orientation="Horizontal"
+                            Background="WhiteSmoke">
+                    <TextBlock Text="IsSuccess:"
+                               Foreground="SteelBlue" />
+                    <Label Content="{Binding IsSuccess}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Background="WhiteSmoke">
+                    <TextBlock Text="ErrorCode:"
+                               Foreground="SteelBlue" />
+                    <Label Content="{Binding ErrorCode}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Background="WhiteSmoke">
+                    <TextBlock Text="Message:"
+                               Foreground="SteelBlue" />
+                    <Label Content="{Binding Message}" />
+                </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal"
-                        Background="WhiteSmoke">
-                <TextBlock Text="ErrorCode:"
-                           Foreground="SteelBlue" />
-                <Label Content="{Binding ErrorCode}" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal"
-                        Background="WhiteSmoke">
-                <TextBlock Text="Message:"
-                           Foreground="SteelBlue" />
-                <Label Content="{Binding Message}" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal"
-                        Margin="5">
+            <Grid Margin="5"
+                  Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <TextBlock Text="Content:"
                            Foreground="White" />
                 <TextBox Focusable="True"
-                         Cursor="Hand"
                          Text="{Binding ResponseContent, Mode=OneWay}"
+                         MinHeight="45"
                          Background="WhiteSmoke"
-                         TextWrapping="Wrap" />
-            </StackPanel>
-        </WrapPanel>
+                         TextWrapping="Wrap"
+                         Grid.Column="1"
+                         HorizontalAlignment="Left" />
+            </Grid>
+        </Grid>
         <!--#endregion 操作结果信息-->
         <TabControl TabStripPlacement="Bottom"
                     Name="tabControl"
@@ -802,320 +815,322 @@
             <!--#region 交流源/表:读取数据-->
             <TabItem Header="交流源/表：读取数据"
                      Padding="10">
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid Background="AliceBlue"
-                          Margin="10"
-                          Name="gridData"
-                          Visibility="Visible">
-                        <Grid.Resources>
-                            <Style TargetType="Label">
-                                <Setter Property="Margin"
-                                        Value="2" />
-                                <Setter Property="Background"
-                                        Value="White" />
-                                <Setter Property="FontSize"
-                                        Value="{Binding ElementName=sliderFontSize, Path=Value, Mode=TwoWay}" />
-                                <Setter Property="VerticalContentAlignment"
-                                        Value="Center" />
-                                <Setter Property="HorizontalContentAlignment"
-                                        Value="Center" />
-                            </Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="FontSize"
-                                        Value="{Binding ElementName=sliderFontSize, Path=Value, Mode=TwoWay}" />
-                                <Setter Property="VerticalAlignment"
-                                        Value="Center" />
-                                <Setter Property="HorizontalAlignment"
-                                        Value="Center" />
-                                <Setter Property="Margin"
-                                        Value="5" />
-                            </Style>
-                        </Grid.Resources>
+                <ScrollViewer>
+                    <Grid Margin="10">
                         <Grid.RowDefinitions>
-                            <RowDefinition MinHeight="50" />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="AUTO" />
-                            <ColumnDefinition Width="AUTO" />
-                            <ColumnDefinition MinWidth="150"
-                                              Width="auto" />
-                            <ColumnDefinition MinWidth="150"
-                                              Width="auto" />
-                            <ColumnDefinition MinWidth="150"
-                                              Width="auto" />
-                            <ColumnDefinition MinWidth="150"
-                                              Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="2"
-                                   Text="A相" />
-                        <TextBlock Grid.Column="3"
-                                   Text="B相" />
-                        <TextBlock Grid.Column="4"
-                                   Text="C相" />
-                        <TextBlock Grid.Column="5"
-                                   Text="Σ" />
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="0"
-                                   Text="U" />
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="1"
-                                   Text="V"
-                                   Foreground="Gray" />
-                        <TextBlock Grid.Row="2"
-                                   Grid.Column="0"
-                                   Text="I" />
-                        <TextBlock Grid.Row="2"
-                                   Grid.Column="1"
-                                   Text="A"
-                                   Foreground="Gray" />
-                        <TextBlock Grid.Row="3"
-                                   Grid.Column="0"
-                                   Text="Φ U" />
-                        <TextBlock Grid.Row="3"
-                                   Grid.Column="1"
-                                   Text="°"
-                                   Foreground="Gray" />
-                        <TextBlock Grid.Row="4"
-                                   Grid.Column="0"
-                                   Text="Φ I" />
-                        <TextBlock Grid.Row="4"
-                                   Grid.Column="1"
-                                   Text="°"
-                                   Foreground="Gray" />
-                        <TextBlock Grid.Row="5"
-                                   Grid.Column="0"
-                                   Text="THDU" />
-                        <TextBlock Grid.Row="5"
-                                   Grid.Column="1"
-                                   Text="%"
-                                   Foreground="Gray" />
-                        <TextBlock Grid.Row="6"
-                                   Grid.Column="0"
-                                   Text="THDI" />
-                        <TextBlock Grid.Row="6"
-                                   Grid.Column="1"
-                                   Text="%"
-                                   Foreground="Gray" />
-                        <TextBlock Grid.Row="7"
-                                   Grid.Column="0"
-                                   Text="P" />
-                        <TextBlock Grid.Row="7"
-                                   Grid.Column="1"
-                                   Text="W"
-                                   Foreground="Gray" />
-                        <TextBlock Grid.Row="8"
-                                   Grid.Column="0"
-                                   Text="Q" />
-                        <TextBlock Grid.Row="8"
-                                   Grid.Column="1"
-                                   Text="Var"
-                                   Foreground="Gray" />
-                        <TextBlock Grid.Row="9"
-                                   Grid.Column="0"
-                                   Text="S" />
-                        <TextBlock Grid.Row="9"
-                                   Grid.Column="1"
-                                   Text="VA"
-                                   Foreground="Gray" />
-                        <TextBlock Grid.Row="10"
-                                   Grid.Column="0"
-                                   Text="PF" />
-                        <TextBlock Grid.Row="11"
-                                   Grid.Column="0"
-                                   Text="Freq." />
-                        <TextBlock Grid.Row="11"
-                                   Grid.Column="1"
-                                   Text="Hz"
-                                   Foreground="Gray" />
-                        <Label Name="lbUA"
-                               Grid.Row="1"
-                               Grid.Column="2" />
-                        <Label Grid.Row="1"
-                               Name="lbUB"
-                               Grid.Column="3" />
-                        <Label Grid.Row="1"
-                               Name="lbUC"
-                               Grid.Column="4" />
-                        <Border Grid.Row="1"
-                                Grid.Column="5"
-                                Grid.RowSpan="3"
-                                Background="Lavender"
-                                Margin="2">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Label Grid.Row="0"
-                                       Name="lbURange"
-                                       Grid.Column="5"
-                                       Background="Lavender" />
-                                <Label Grid.Row="1"
-                                       Name="lbIRange"
-                                       Grid.Column="5"
-                                       Background="Lavender" />
-                                <TextBlock Grid.Row="2"
-                                           Text="当前档位"
+                        <Grid Background="AliceBlue"
+                              Margin="10"
+                              Name="gridData"
+                              Visibility="Visible">
+                            <Grid.Resources>
+                                <Style TargetType="Label">
+                                    <Setter Property="Margin"
+                                            Value="2" />
+                                    <Setter Property="Background"
+                                            Value="White" />
+                                    <Setter Property="FontSize"
+                                            Value="{Binding ElementName=sliderFontSize, Path=Value, Mode=TwoWay}" />
+                                    <Setter Property="VerticalContentAlignment"
+                                            Value="Center" />
+                                    <Setter Property="HorizontalContentAlignment"
+                                            Value="Center" />
+                                </Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize"
+                                            Value="{Binding ElementName=sliderFontSize, Path=Value, Mode=TwoWay}" />
+                                    <Setter Property="VerticalAlignment"
+                                            Value="Center" />
+                                    <Setter Property="HorizontalAlignment"
+                                            Value="Center" />
+                                    <Setter Property="Margin"
+                                            Value="5" />
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition MinHeight="50" />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="AUTO" />
+                                <ColumnDefinition Width="AUTO" />
+                                <ColumnDefinition MinWidth="150"
+                                                  Width="auto" />
+                                <ColumnDefinition MinWidth="150"
+                                                  Width="auto" />
+                                <ColumnDefinition MinWidth="150"
+                                                  Width="auto" />
+                                <ColumnDefinition MinWidth="150"
+                                                  Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="2"
+                                       Text="A相" />
+                            <TextBlock Grid.Column="3"
+                                       Text="B相" />
+                            <TextBlock Grid.Column="4"
+                                       Text="C相" />
+                            <TextBlock Grid.Column="5"
+                                       Text="Σ" />
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="0"
+                                       Text="U" />
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Text="V"
+                                       Foreground="Gray" />
+                            <TextBlock Grid.Row="2"
+                                       Grid.Column="0"
+                                       Text="I" />
+                            <TextBlock Grid.Row="2"
+                                       Grid.Column="1"
+                                       Text="A"
+                                       Foreground="Gray" />
+                            <TextBlock Grid.Row="3"
+                                       Grid.Column="0"
+                                       Text="Φ U" />
+                            <TextBlock Grid.Row="3"
+                                       Grid.Column="1"
+                                       Text="°"
+                                       Foreground="Gray" />
+                            <TextBlock Grid.Row="4"
+                                       Grid.Column="0"
+                                       Text="Φ I" />
+                            <TextBlock Grid.Row="4"
+                                       Grid.Column="1"
+                                       Text="°"
+                                       Foreground="Gray" />
+                            <TextBlock Grid.Row="5"
+                                       Grid.Column="0"
+                                       Text="THDU" />
+                            <TextBlock Grid.Row="5"
+                                       Grid.Column="1"
+                                       Text="%"
+                                       Foreground="Gray" />
+                            <TextBlock Grid.Row="6"
+                                       Grid.Column="0"
+                                       Text="THDI" />
+                            <TextBlock Grid.Row="6"
+                                       Grid.Column="1"
+                                       Text="%"
+                                       Foreground="Gray" />
+                            <TextBlock Grid.Row="7"
+                                       Grid.Column="0"
+                                       Text="P" />
+                            <TextBlock Grid.Row="7"
+                                       Grid.Column="1"
+                                       Text="W"
+                                       Foreground="Gray" />
+                            <TextBlock Grid.Row="8"
+                                       Grid.Column="0"
+                                       Text="Q" />
+                            <TextBlock Grid.Row="8"
+                                       Grid.Column="1"
+                                       Text="Var"
+                                       Foreground="Gray" />
+                            <TextBlock Grid.Row="9"
+                                       Grid.Column="0"
+                                       Text="S" />
+                            <TextBlock Grid.Row="9"
+                                       Grid.Column="1"
+                                       Text="VA"
+                                       Foreground="Gray" />
+                            <TextBlock Grid.Row="10"
+                                       Grid.Column="0"
+                                       Text="PF" />
+                            <TextBlock Grid.Row="11"
+                                       Grid.Column="0"
+                                       Text="Freq." />
+                            <TextBlock Grid.Row="11"
+                                       Grid.Column="1"
+                                       Text="Hz"
+                                       Foreground="Gray" />
+                            <Label Name="lbUA"
+                                   Grid.Row="1"
+                                   Grid.Column="2" />
+                            <Label Grid.Row="1"
+                                   Name="lbUB"
+                                   Grid.Column="3" />
+                            <Label Grid.Row="1"
+                                   Name="lbUC"
+                                   Grid.Column="4" />
+                            <Border Grid.Row="1"
+                                    Grid.Column="5"
+                                    Grid.RowSpan="3"
+                                    Background="Lavender"
+                                    Margin="2">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0"
+                                           Name="lbURange"
                                            Grid.Column="5"
-                                           Foreground="White" />
-                            </Grid>
-                        </Border>
-                        <Label Grid.Row="2"
-                               Name="lbIA"
-                               Grid.Column="2" />
-                        <Label Grid.Row="2"
-                               Name="lbIB"
-                               Grid.Column="3" />
-                        <Label Grid.Row="2"
-                               Grid.Column="4"
-                               Name="lbIC" />
-                        <Label Grid.Row="3"
-                               Name="lbFaiUA"
-                               Grid.Column="2" />
-                        <Label Grid.Row="3"
-                               Name="lbFaiUB"
-                               Grid.Column="3" />
-                        <Label Grid.Row="3"
-                               Grid.Column="4"
-                               Name="lbFaiUC" />
-                        <Label Grid.Row="4"
-                               Grid.Column="2"
-                               Name="lbFaiIA" />
-                        <Label Grid.Row="4"
-                               Grid.Column="3"
-                               Name="lbFaiIB" />
-                        <Label Grid.Row="4"
-                               Grid.Column="4"
-                               Name="lbFaiIC" />
-                        <Label Grid.Row="5"
-                               Grid.Column="2"
-                               Name="lbTHDUA"
-                               Content="N/A"
-                               Foreground="AliceBlue" />
-                        <Label Grid.Row="5"
-                               Grid.Column="3"
-                               Content="N/A"
-                               Foreground="AliceBlue" />
-                        <Label Grid.Row="5"
-                               Grid.Column="4"
-                               Content="N/A"
-                               Foreground="AliceBlue" />
-                        <Label Grid.Row="6"
-                               Grid.Column="2"
-                               Content="N/A"
-                               Foreground="AliceBlue" />
-                        <Label Grid.Row="6"
-                               Grid.Column="3"
-                               Content="N/A"
-                               Foreground="AliceBlue" />
-                        <Label Grid.Row="6"
-                               Grid.Column="4"
-                               Content="N/A"
-                               Foreground="AliceBlue" />
-                        <Label Grid.Row="7"
-                               Grid.Column="2"
-                               Name="lbPA" />
-                        <Label Grid.Row="7"
-                               Grid.Column="3"
-                               Name="lbPB" />
-                        <Label Grid.Row="7"
-                               Grid.Column="4"
-                               Name="lbPC" />
-                        <Label Grid.Row="7"
-                               Grid.Column="5"
-                               Name="lbPall"
-                               Background="LightBlue" />
-                        <Label Grid.Row="8"
-                               Grid.Column="2"
-                               Name="lbQA" />
-                        <Label Grid.Row="8"
-                               Grid.Column="3"
-                               Name="lbQB" />
-                        <Label Grid.Row="8"
-                               Grid.Column="4"
-                               Name="lbQC" />
-                        <Label Grid.Row="8"
-                               Background="LightBlue"
-                               Grid.Column="5"
-                               Name="lbQall" />
-                        <Label Grid.Row="9"
-                               Grid.Column="2"
-                               Name="lbSA" />
-                        <Label Grid.Row="9"
-                               Grid.Column="3"
-                               Name="lbSB" />
-                        <Label Grid.Row="9"
-                               Grid.Column="4"
-                               Name="lbSC" />
-                        <Label Grid.Row="9"
-                               Background="LightBlue"
-                               Grid.Column="5"
-                               Name="lbSall" />
-                        <Label Grid.Row="10"
-                               Grid.Column="2"
-                               Name="lbPFA" />
-                        <Label Grid.Row="10"
-                               Grid.Column="3"
-                               Name="lbPFB" />
-                        <Label Grid.Row="10"
-                               Grid.Column="4"
-                               Name="lbPFC" />
-                        <Label Grid.Row="10"
-                               Background="LightBlue"
-                               Grid.Column="5"
-                               Name="lbPFall" />
-                        <Label Grid.Row="11"
-                               Grid.Column="2"
-                               Grid.ColumnSpan="2"
-                               Name="lbFreq" />
-                        <Label Grid.Row="11"
-                               Grid.Column="4"
-                               Name="lbFreqC" />
-                        <Slider Grid.Row="12"
-                                Grid.ColumnSpan="6"
-                                Name="sliderFontSize"
-                                Minimum="15"
-                                Maximum="24"
-                                Value="18"
-                                TickFrequency="1"
-                                TickPlacement="TopLeft"
-                                AutoToolTipPlacement="TopLeft" />
+                                           Background="Lavender" />
+                                    <Label Grid.Row="1"
+                                           Name="lbIRange"
+                                           Grid.Column="5"
+                                           Background="Lavender" />
+                                    <TextBlock Grid.Row="2"
+                                               Text="当前档位"
+                                               Grid.Column="5"
+                                               Foreground="White" />
+                                </Grid>
+                            </Border>
+                            <Label Grid.Row="2"
+                                   Name="lbIA"
+                                   Grid.Column="2" />
+                            <Label Grid.Row="2"
+                                   Name="lbIB"
+                                   Grid.Column="3" />
+                            <Label Grid.Row="2"
+                                   Grid.Column="4"
+                                   Name="lbIC" />
+                            <Label Grid.Row="3"
+                                   Name="lbFaiUA"
+                                   Grid.Column="2" />
+                            <Label Grid.Row="3"
+                                   Name="lbFaiUB"
+                                   Grid.Column="3" />
+                            <Label Grid.Row="3"
+                                   Grid.Column="4"
+                                   Name="lbFaiUC" />
+                            <Label Grid.Row="4"
+                                   Grid.Column="2"
+                                   Name="lbFaiIA" />
+                            <Label Grid.Row="4"
+                                   Grid.Column="3"
+                                   Name="lbFaiIB" />
+                            <Label Grid.Row="4"
+                                   Grid.Column="4"
+                                   Name="lbFaiIC" />
+                            <Label Grid.Row="5"
+                                   Grid.Column="2"
+                                   Name="lbTHDUA"
+                                   Content="N/A"
+                                   Foreground="AliceBlue" />
+                            <Label Grid.Row="5"
+                                   Grid.Column="3"
+                                   Content="N/A"
+                                   Foreground="AliceBlue" />
+                            <Label Grid.Row="5"
+                                   Grid.Column="4"
+                                   Content="N/A"
+                                   Foreground="AliceBlue" />
+                            <Label Grid.Row="6"
+                                   Grid.Column="2"
+                                   Content="N/A"
+                                   Foreground="AliceBlue" />
+                            <Label Grid.Row="6"
+                                   Grid.Column="3"
+                                   Content="N/A"
+                                   Foreground="AliceBlue" />
+                            <Label Grid.Row="6"
+                                   Grid.Column="4"
+                                   Content="N/A"
+                                   Foreground="AliceBlue" />
+                            <Label Grid.Row="7"
+                                   Grid.Column="2"
+                                   Name="lbPA" />
+                            <Label Grid.Row="7"
+                                   Grid.Column="3"
+                                   Name="lbPB" />
+                            <Label Grid.Row="7"
+                                   Grid.Column="4"
+                                   Name="lbPC" />
+                            <Label Grid.Row="7"
+                                   Grid.Column="5"
+                                   Name="lbPall"
+                                   Background="LightBlue" />
+                            <Label Grid.Row="8"
+                                   Grid.Column="2"
+                                   Name="lbQA" />
+                            <Label Grid.Row="8"
+                                   Grid.Column="3"
+                                   Name="lbQB" />
+                            <Label Grid.Row="8"
+                                   Grid.Column="4"
+                                   Name="lbQC" />
+                            <Label Grid.Row="8"
+                                   Background="LightBlue"
+                                   Grid.Column="5"
+                                   Name="lbQall" />
+                            <Label Grid.Row="9"
+                                   Grid.Column="2"
+                                   Name="lbSA" />
+                            <Label Grid.Row="9"
+                                   Grid.Column="3"
+                                   Name="lbSB" />
+                            <Label Grid.Row="9"
+                                   Grid.Column="4"
+                                   Name="lbSC" />
+                            <Label Grid.Row="9"
+                                   Background="LightBlue"
+                                   Grid.Column="5"
+                                   Name="lbSall" />
+                            <Label Grid.Row="10"
+                                   Grid.Column="2"
+                                   Name="lbPFA" />
+                            <Label Grid.Row="10"
+                                   Grid.Column="3"
+                                   Name="lbPFB" />
+                            <Label Grid.Row="10"
+                                   Grid.Column="4"
+                                   Name="lbPFC" />
+                            <Label Grid.Row="10"
+                                   Background="LightBlue"
+                                   Grid.Column="5"
+                                   Name="lbPFall" />
+                            <Label Grid.Row="11"
+                                   Grid.Column="2"
+                                   Grid.ColumnSpan="2"
+                                   Name="lbFreq" />
+                            <Label Grid.Row="11"
+                                   Grid.Column="4"
+                                   Name="lbFreqC" />
+                            <Slider Grid.Row="12"
+                                    Grid.ColumnSpan="6"
+                                    Name="sliderFontSize"
+                                    Minimum="15"
+                                    Maximum="24"
+                                    Value="18"
+                                    TickFrequency="1"
+                                    TickPlacement="TopLeft"
+                                    AutoToolTipPlacement="TopLeft" />
+                        </Grid>
+                        <WrapPanel Grid.Row="0"
+                                   Grid.Column="1"
+                                   Background="AliceBlue"
+                                   AllowDrop="True">
+                            <Button Content="ReadACSourceData"
+                                    Click="Button_Click_ReadACSourceData"
+                                    AllowDrop="True" />
+                            <Button Content="STOP Reading"
+                                    Background="LightPink"
+                                    Click="Button_Click_StopReadACSourceData"
+                                    AllowDrop="True" />
+                        </WrapPanel>
                     </Grid>
-                    <WrapPanel Grid.Row="0"
-                               Grid.Column="1"
-                               Background="AliceBlue"
-                               AllowDrop="True">
-                        <Button Content="ReadACSourceData"
-                                Click="Button_Click_ReadACSourceData"
-                                AllowDrop="True" />
-                        <Button Content="STOP Reading"
-                                Background="LightPink"
-                                Click="Button_Click_StopReadACSourceData"
-                                AllowDrop="True" />
-                    </WrapPanel>
-                </Grid>
+                </ScrollViewer>
             </TabItem>
             <!--#endregion 交流源/表:读取数据-->
             <!--#region 电能-->
@@ -1228,7 +1243,7 @@
             <TabItem Header="直流表模块"
                      Padding="10">
                 <StackPanel>
-                    <GroupBox>
+                    <GroupBox Header="设置直流表档位">
                         <WrapPanel>
                             <Button Content="SetDCMeterRange"
                                     Click="ClickCommand" />
@@ -1248,7 +1263,7 @@
                             </StackPanel>
                         </WrapPanel>
                     </GroupBox>
-                    <GroupBox>
+                    <GroupBox Header="读取直流表数据">
                         <WrapPanel>
                             <Button Content="ReadDCMeterData"
                                     Click="ClickCommand" />
@@ -1259,7 +1274,7 @@
                                 <TextBlock Text="DCM_Data:" />
                                 <Label Background="WhiteSmoke"
                                        Name="lbDCMData"
-                                       Content="{Binding DCMData}"/>
+                                       Content="{Binding DCMData}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="DCM_MeasureType:" />
